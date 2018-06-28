@@ -1,6 +1,6 @@
 ﻿namespace Essenbee.Bot.Core.Interfaces
 {
-    public interface IIntervalAction
+    public interface ITimedAction
     {
         string Name { get; }
         bool ShouldRun();
