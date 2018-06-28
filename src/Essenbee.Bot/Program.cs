@@ -5,6 +5,7 @@ using Essenbee.Bot.Core;
 using Essenbee.Bot.Core.Messaging;
 using Essenbee.Bot.Core.Utilities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using static System.Console;
 
 namespace Essenbee.Bot
@@ -15,13 +16,31 @@ namespace Essenbee.Bot
 
         static void Main(string[] args)
         {
+            var devEnvironmentVariable = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
+            var isDevelopment = string.IsNullOrEmpty(devEnvironmentVariable) || devEnvironmentVariable.ToLower() == "development";
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json");
 
+
+            if (isDevelopment) // Only add secrets in development
+            {
+                builder.AddUserSecrets<UserSecrets>();
+            }
+
             Configuration = builder.Build();
 
             WriteLine("CoreBot is getting ready....");
+
+            // Make UserSecrets injectable ...
+            var services = new ServiceCollection()
+                .Configure<UserSecrets>(Configuration.GetSection(nameof(UserSecrets)))
+                .AddOptions()
+                .BuildServiceProvider();
+
+            services.GetService<UserSecrets>();
+
             WriteLine("Press [Ctrl]+C to exit.");
 
             var autoMessaging = new AutoMessaging(new SystemClock());
