@@ -14,7 +14,7 @@ namespace Essenbee.Bot
     {
         public static IConfiguration Configuration { get; set; }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var devEnvironmentVariable = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
             var isDevelopment = string.IsNullOrEmpty(devEnvironmentVariable) || devEnvironmentVariable.ToLower() == "development";
@@ -44,6 +44,8 @@ namespace Essenbee.Bot
 
             var secrets = services.GetService<UserSecretsProvider>();
 
+            var consoleClient = new ConsoleChatClient();
+
             WriteLine("Press [Ctrl]+C to exit.");
 
             var autoMessaging = new AutoMessaging(new SystemClock());
@@ -66,8 +68,11 @@ namespace Essenbee.Bot
                 while (true)
                 {
                     var result = autoMessaging.DequeueNextMessage();
+
                     if (!result.isMessage) break;
-                    WriteLine($"{DateTime.Now.ToShortTimeString()} - {result.message}");
+
+                    consoleClient.PostMessage(string.Empty, 
+                        $"{DateTime.Now.ToShortTimeString()} - {result.message}");
                 }
             }
         }
