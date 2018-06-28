@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Essenbee.Bot.Core.Interfaces;
 using Slack;
 
@@ -15,9 +14,14 @@ namespace Essenbee.Bot.Infra.Slack
         {
             _slackClient = new Client(apiKey);
 
+            // Wire up basic connectivity events
             _slackClient.ServiceConnected += ClientConnected;
-            _slackClient.ServiceConnectionFailed += new Client.ServiceConnectionFailedEventHandler(DisconnectedConnectionFailure);
-            _slackClient.ServiceDisconnected += new Client.ServiceDisconnectedEventHandler(DisconnectedConnectionFailure);
+            _slackClient.ServiceConnectionFailed += DisconnectedConnectionFailure;
+            _slackClient.ServiceDisconnected += DisconnectedConnectionFailure;
+            _slackClient.Hello += Hello;
+
+            // Wire up additional events
+            _slackClient.Message += Message;
 
             _slackClient.Connect();
         }
@@ -39,6 +43,11 @@ namespace Essenbee.Bot.Infra.Slack
             Console.WriteLine("Connected to Slack service");
         }
 
+        private void Hello(HelloEventArgs e)
+        {
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tHello");
+        }
+
         private void DisconnectedConnectionFailure()
         {
             if (_shutdown)
@@ -49,17 +58,25 @@ namespace Essenbee.Bot.Infra.Slack
             try
             {
                 _connectionFailures++;
-
                 System.Threading.Thread.Sleep(_connectionFailures < 13 ? 5000 : 60_000);
-
-                Console.WriteLine("Attempting to reconnect to slack service. Attempt " + _connectionFailures);
-
+                Console.WriteLine("Attempting to reconnect to Slack service. Attempt " + _connectionFailures);
                 _slackClient.Connect();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Could not handle service disconnected.\r\n" + ex.Message + "\r\n" + ex.StackTrace);
+                Console.WriteLine("Unable to handle service disconnect.\r\n" + ex.Message + "\r\n" + ex.StackTrace);
             }
+        }
+
+        private static void Message(MessageEventArgs e)
+        {
+            if (e.user == null)
+            {
+                return;
+            }
+
+            Console.WriteLine(System.DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage.\t\t[" + e.UserInfo.name + "] [" + e.text + "]");
+            // Process_Message(e.UserInfo.name, e.channel, e.text);
         }
     }
 }
