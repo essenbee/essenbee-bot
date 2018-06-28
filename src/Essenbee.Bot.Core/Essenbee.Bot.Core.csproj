@@ -4,8 +4,4 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj" />
-  </ItemGroup>
-
 </Project>
