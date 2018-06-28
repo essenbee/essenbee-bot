@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Essenbee.Bot.Core;
+using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Essenbee.Bot.Core.Utilities;
+using Essenbee.Bot.Infra.Slack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using static System.Console;
@@ -42,9 +45,9 @@ namespace Essenbee.Bot
 
             services.GetService<UserSecrets>();
 
-            var secrets = services.GetService<UserSecretsProvider>();
-
-            var consoleClient = new ConsoleChatClient();
+            var secrets = services.GetService<UserSecretsProvider>().Secrets;
+            var slackApiKey = secrets.SlackApiKey;
+            var generalChannel = "C9QT99U2D";
 
             WriteLine("Press [Ctrl]+C to exit.");
 
@@ -57,6 +60,13 @@ namespace Essenbee.Bot
             };
 
             autoMessaging.PublishMessage(testMsg);
+
+            // Handle multiple chat clients that implement IChatClient ...
+            var connectedChatClients = new List<IChatClient>
+            {
+                new ConsoleChatClient(),
+                new SlackChatClient(slackApiKey),
+            };
 
             while (true)
             {
@@ -71,8 +81,11 @@ namespace Essenbee.Bot
 
                     if (!result.isMessage) break;
 
-                    consoleClient.PostMessage(string.Empty, 
-                        $"{DateTime.Now.ToShortTimeString()} - {result.message}");
+                    foreach (var client in connectedChatClients)
+                    {
+                        client.PostMessage(generalChannel,
+                            $"{DateTime.Now.ToShortTimeString()} - {result.message}");
+                    }
                 }
             }
         }

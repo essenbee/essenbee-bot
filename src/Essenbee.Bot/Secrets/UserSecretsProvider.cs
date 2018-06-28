@@ -4,11 +4,11 @@ namespace Essenbee.Bot
 {
     public class UserSecretsProvider
     {
-        private readonly UserSecrets _secrets;
+        public UserSecrets Secrets { get; }
 
         public UserSecretsProvider(IOptions<UserSecrets> secrets)
         {
-            _secrets = secrets.Value;
+            Secrets = secrets.Value;
         }
     }
 }

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
+    <ProjectReference Include="..\Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj" />
   </ItemGroup>
 
   <ItemGroup>

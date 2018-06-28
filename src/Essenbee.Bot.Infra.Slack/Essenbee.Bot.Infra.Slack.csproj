@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SlackLibCore" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
   </ItemGroup>
 
