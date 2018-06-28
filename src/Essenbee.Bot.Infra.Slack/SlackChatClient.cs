@@ -15,13 +15,13 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient = new Client(apiKey);
 
             // Wire up basic connectivity events
-            _slackClient.ServiceConnected += ClientConnected;
-            _slackClient.ServiceConnectionFailed += DisconnectedConnectionFailure;
-            _slackClient.ServiceDisconnected += DisconnectedConnectionFailure;
-            _slackClient.Hello += Hello;
+            _slackClient.ServiceConnected += OnClientConnected;
+            _slackClient.ServiceConnectionFailed += OnDisconnectedConnectionFailure;
+            _slackClient.ServiceDisconnected += OnDisconnectedConnectionFailure;
+            _slackClient.Hello += OnHello;
 
             // Wire up additional events
-            _slackClient.Message += Message;
+            _slackClient.Message += OnMessage;
 
             _slackClient.Connect();
         }
@@ -37,18 +37,18 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient.Chat.PostMessage(msgArgs);
         }
 
-        private void ClientConnected()
+        private void OnClientConnected()
         {
             _connectionFailures = 0;
             Console.WriteLine("Connected to Slack service");
         }
 
-        private void Hello(HelloEventArgs e)
+        private void OnHello(HelloEventArgs e)
         {
             Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tHello");
         }
 
-        private void DisconnectedConnectionFailure()
+        private void OnDisconnectedConnectionFailure()
         {
             if (_shutdown)
             {   
@@ -68,7 +68,7 @@ namespace Essenbee.Bot.Infra.Slack
             }
         }
 
-        private static void Message(MessageEventArgs e)
+        private static void OnMessage(MessageEventArgs e)
         {
             if (e.user == null)
             {
