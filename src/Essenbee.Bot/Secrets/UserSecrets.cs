@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Essenbee.Bot
+﻿namespace Essenbee.Bot
 {
     public class UserSecrets
     {

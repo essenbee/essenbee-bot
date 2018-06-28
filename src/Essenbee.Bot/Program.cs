@@ -10,7 +10,7 @@ using static System.Console;
 
 namespace Essenbee.Bot
 {
-    class Program
+    public class Program
     {
         public static IConfiguration Configuration { get; set; }
 
@@ -37,9 +37,12 @@ namespace Essenbee.Bot
             var services = new ServiceCollection()
                 .Configure<UserSecrets>(Configuration.GetSection(nameof(UserSecrets)))
                 .AddOptions()
+                .AddSingleton<UserSecretsProvider>()
                 .BuildServiceProvider();
 
             services.GetService<UserSecrets>();
+
+            var secrets = services.GetService<UserSecretsProvider>();
 
             WriteLine("Press [Ctrl]+C to exit.");
 
@@ -48,7 +51,7 @@ namespace Essenbee.Bot
             var testMsg = new TimerTriggeredMessage
             {
                 Delay = 1, // Minutes
-                Message ="Hi, this is a timed message from CoreBot!"
+                Message = "Hi, this is a timed message from CoreBot!"
             };
 
             autoMessaging.PublishMessage(testMsg);
