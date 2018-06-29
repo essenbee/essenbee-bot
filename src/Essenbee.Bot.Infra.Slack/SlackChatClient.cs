@@ -26,6 +26,7 @@ namespace Essenbee.Bot.Infra.Slack
 
             // Wire up additional events
             _slackClient.Message += OnMessage;
+            _slackClient.MesssageEdit += OnMessageEdit;
 
             _slackClient.Connect();
         }
@@ -99,7 +100,7 @@ namespace Essenbee.Bot.Infra.Slack
             }
         }
 
-        private static void OnMessage(MessageEventArgs e)
+        private void OnMessage(MessageEventArgs e)
         {
             if (e.user == null)
             {
@@ -107,7 +108,13 @@ namespace Essenbee.Bot.Infra.Slack
             }
 
             Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage.\t\t[" + e.UserInfo.name + "] [" + e.text + "]");
-            // Process_Message(e.UserInfo.name, e.channel, e.text);
+            // ProcessCommands(e.UserInfo.name, e.channel, e.text);
+        }
+
+        private void OnMessageEdit(MessageEditEventArgs e)
+        {
+            Console.WriteLine(System.DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage Edit. [" + e.UserInfo.name + "] [" + e.message.text + "]");
+            // ProcessCommands(e.UserInfo.name, e.channel, e.text);
         }
     }
 }
