@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Essenbee.Bot.Core.Interfaces;
+using static System.Console;
 using Slack;
 
 namespace Essenbee.Bot.Infra.Slack
@@ -33,7 +34,7 @@ namespace Essenbee.Bot.Infra.Slack
 
         public void Disconnect()
         {
-            Console.WriteLine("Disconnecting from the Slack service ...");
+            WriteLine("Disconnecting from the Slack service ...");
             _shutdown = true;
             _slackClient.Disconnect();
         }
@@ -60,30 +61,30 @@ namespace Essenbee.Bot.Infra.Slack
         {
             _isReady = true;
             _connectionFailures = 0;
-            Console.WriteLine("Connected to the Slack service");
+            WriteLine("Connected to the Slack service");
         }
 
         private void OnHello(HelloEventArgs e)
         {
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tHello");
+            WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tHello");
             var channels = _slackClient.Channels.List()?.channels ?? new List<RTM.channel>();
 
-            Console.WriteLine("The following channels exist:");
+            WriteLine("The following channels exist:");
 
             foreach (var channel in channels)
             {
                 Channels.Add(channel.name, channel.id);
-                Console.WriteLine($"\t* {channel.name} ({channel.id})");
+                WriteLine($"\t* {channel.name} ({channel.id})");
             }
 
-            Console.WriteLine();
+            WriteLine();
         }
 
         private void OnDisconnected()
         {
             if (_shutdown)
             {
-                Console.WriteLine("Disconnected from Slack (shutdown).");
+                WriteLine("Disconnected from Slack (shutdown).");
                 return;
             }
 
@@ -91,12 +92,12 @@ namespace Essenbee.Bot.Infra.Slack
             {
                 _connectionFailures++;
                 System.Threading.Thread.Sleep(_connectionFailures < 13 ? 5000 : 60_000);
-                Console.WriteLine("Attempting to reconnect to the Slack service. Attempt " + _connectionFailures);
+                WriteLine($"Attempting to reconnect to the Slack service. Attempt {_connectionFailures}");
                 _slackClient.Connect();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Unable to handle service disconnection.\r\n" + ex.Message + "\r\n" + ex.StackTrace);
+                WriteLine($"Unable to handle service disconnection.\r\n{ex.Message}\r\n{ex.StackTrace}");
             }
         }
 
@@ -107,7 +108,10 @@ namespace Essenbee.Bot.Infra.Slack
                 return;
             }
 
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage.\t\t[" + e.UserInfo.name + "] [" + e.text + "]");
+            var user = e?.UserInfo?.name ?? string.Empty;
+            var text = e?.text ?? "<< none >>";
+
+            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
             // ProcessCommands(e.UserInfo.name, e.channel, e.text);
         }
 
@@ -116,7 +120,7 @@ namespace Essenbee.Bot.Infra.Slack
             var user = e?.UserInfo?.name ?? string.Empty;
             var text = e?.message?.text ?? "<< deleted >>";
 
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage Edit. [" + user + "] [" + text + "]");
+            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
             // ProcessCommands(e.UserInfo.name, e.channel, e.text);
         }
     }

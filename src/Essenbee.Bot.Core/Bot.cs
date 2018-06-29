@@ -12,53 +12,64 @@ namespace Essenbee.Bot.Core
     {
         public List<IChatClient> ConnectedClients { get; }
 
-        private static bool _endProgram = false;
+        public static readonly string DefaultChannel = "general";
+
+        private bool _endProgram = false;
+        private readonly AutoMessaging _autoMessaging;
 
         public Bot(List<IChatClient> connectedClients)
         {
-            ConnectedClients = connectedClients;
+            ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
+            _autoMessaging = new AutoMessaging(new SystemClock());
         }
 
         public void Start()
         {
             Console.CancelKeyPress += OnCtrlC;
-            var defaultChannel = "general";
 
             WriteLine();
             WriteLine("Press [Ctrl]+C to exit.");
             WriteLine();
 
-            var autoMessaging = new AutoMessaging(new SystemClock());
+            PublishTimerTriggeredMessages();
+            BeginLoop();
+        }
 
+        private void PublishTimerTriggeredMessages()
+        {
+            // ToDo: Eventally, we will want to get these messages from a datastore ...
             var testMsg = new TimerTriggeredMessage
             {
                 Delay = 1, // Minutes
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            autoMessaging.PublishMessage(testMsg);
+            _autoMessaging.PublishMessage(testMsg);
+        }
 
+        private void BeginLoop()
+        {
             while (true)
             {
                 Thread.Sleep(1000);
 
                 // Show Timer Triggered Messages
-                autoMessaging.EnqueueMessagesToDisplay();
+                _autoMessaging.EnqueueMessagesToDisplay();
 
                 while (true)
                 {
-                    var result = autoMessaging.DequeueNextMessage();
+                    var (isMessage, message) = _autoMessaging.DequeueNextMessage();
 
-                    if (!result.isMessage) break;
+                    if (!isMessage) break;
 
                     foreach (var client in ConnectedClients)
                     {
-                        var channelId = client.Channels.ContainsKey(defaultChannel) ?
-                            client.Channels[defaultChannel]
+                        var channelId = client.Channels.ContainsKey(DefaultChannel)
+                            ? client.Channels[DefaultChannel]
                             : string.Empty;
 
                         client.PostMessage(channelId,
-                            $"{DateTime.Now.ToShortTimeString()} - {result.message}");
+                            $"{DateTime.Now.ToShortTimeString()} - {message}");
                     }
                 }
 
