@@ -51,7 +51,7 @@ namespace Essenbee.Bot
             services.GetService<UserSecrets>();
 
             var secrets = services.GetService<UserSecretsProvider>().Secrets;
-            var generalChannel = "C9QT99U2D";
+            var defaultChannel = "general";
 
             WriteLine("Press [Ctrl]+C to exit.");
 
@@ -63,7 +63,7 @@ namespace Essenbee.Bot
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            //autoMessaging.PublishMessage(testMsg);
+            autoMessaging.PublishMessage(testMsg);
 
             // Handle multiple chat clients that implement IChatClient ...
             _connectedChatClients = ConnectChatClients(secrets);
@@ -83,7 +83,11 @@ namespace Essenbee.Bot
 
                     foreach (var client in _connectedChatClients)
                     {
-                        client.PostMessage(generalChannel,
+                        var channelId = client.Channels.ContainsKey(defaultChannel) ? 
+                            client.Channels[defaultChannel] 
+                            : string.Empty;
+
+                        client.PostMessage(channelId,
                             $"{DateTime.Now.ToShortTimeString()} - {result.message}");
                     }
                 }
@@ -96,11 +100,15 @@ namespace Essenbee.Bot
         {
             var slackApiKey = secrets.SlackApiKey;
 
-            return new List<IChatClient>
+            var connectedClients = new List<IChatClient>
             {
                 new ConsoleChatClient(),
                 new SlackChatClient(slackApiKey),
             };
+
+            Thread.Sleep(5000);
+
+            return connectedClients;
         }
 
         private static void OnCtrlC(object sender, ConsoleCancelEventArgs e)

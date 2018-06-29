@@ -51,7 +51,7 @@ namespace Essenbee.Bot.Infra.Slack
             }
             else
             {
-                Console.WriteLine("SleckChatClient is not connected to the Slack service!");
+                Console.WriteLine("Slack Chat Client is not connected to the Slack service!");
             }
         }
 
@@ -81,7 +81,8 @@ namespace Essenbee.Bot.Infra.Slack
         private void OnDisconnected()
         {
             if (_shutdown)
-            {   
+            {
+                Console.WriteLine("Disconnected from Slack (shutdown).");
                 return;
             }
 
