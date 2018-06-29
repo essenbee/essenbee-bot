@@ -30,6 +30,13 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient.Connect();
         }
 
+        public void Disconnect()
+        {
+            Console.WriteLine("Disconnecting from the Slack service ...");
+            _shutdown = true;
+            _slackClient.Disconnect();
+        }
+
         public void PostMessage(string theChannel, string msg)
         {
             if (_isReady)
@@ -44,7 +51,7 @@ namespace Essenbee.Bot.Infra.Slack
             }
             else
             {
-                Console.WriteLine("SleckChatClient is not connected to Slack service!");
+                Console.WriteLine("SleckChatClient is not connected to the Slack service!");
             }
         }
 
@@ -52,7 +59,7 @@ namespace Essenbee.Bot.Infra.Slack
         {
             _isReady = true;
             _connectionFailures = 0;
-            Console.WriteLine("Connected to Slack service");
+            Console.WriteLine("Connected to the Slack service");
         }
 
         private void OnHello(HelloEventArgs e)
@@ -82,12 +89,12 @@ namespace Essenbee.Bot.Infra.Slack
             {
                 _connectionFailures++;
                 System.Threading.Thread.Sleep(_connectionFailures < 13 ? 5000 : 60_000);
-                Console.WriteLine("Attempting to reconnect to Slack service. Attempt " + _connectionFailures);
+                Console.WriteLine("Attempting to reconnect to the Slack service. Attempt " + _connectionFailures);
                 _slackClient.Connect();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Unable to handle service disconnect.\r\n" + ex.Message + "\r\n" + ex.StackTrace);
+                Console.WriteLine("Unable to handle service disconnection.\r\n" + ex.Message + "\r\n" + ex.StackTrace);
             }
         }
 
@@ -98,7 +105,7 @@ namespace Essenbee.Bot.Infra.Slack
                 return;
             }
 
-            Console.WriteLine(System.DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage.\t\t[" + e.UserInfo.name + "] [" + e.text + "]");
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage.\t\t[" + e.UserInfo.name + "] [" + e.text + "]");
             // Process_Message(e.UserInfo.name, e.channel, e.text);
         }
     }

@@ -17,6 +17,9 @@ namespace Essenbee.Bot
     {
         public static IConfiguration Configuration { get; set; }
 
+        private static IList<IChatClient> _connectedChatClients;
+        private static bool _endProgram = false;
+
         public static void Main(string[] args)
         {
             var devEnvironmentVariable = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
@@ -35,6 +38,8 @@ namespace Essenbee.Bot
             Configuration = builder.Build();
 
             WriteLine("CoreBot is getting ready....");
+
+            Console.CancelKeyPress += OnCtrlC;
 
             // Make UserSecrets injectable ...
             var services = new ServiceCollection()
@@ -58,10 +63,10 @@ namespace Essenbee.Bot
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            autoMessaging.PublishMessage(testMsg);
+            //autoMessaging.PublishMessage(testMsg);
 
             // Handle multiple chat clients that implement IChatClient ...
-            var connectedChatClients = ConnectChatClients(secrets);
+            _connectedChatClients = ConnectChatClients(secrets);
 
             while (true)
             {
@@ -76,12 +81,14 @@ namespace Essenbee.Bot
 
                     if (!result.isMessage) break;
 
-                    foreach (var client in connectedChatClients)
+                    foreach (var client in _connectedChatClients)
                     {
                         client.PostMessage(generalChannel,
                             $"{DateTime.Now.ToShortTimeString()} - {result.message}");
                     }
                 }
+
+                if (_endProgram) break;
             }
         }
 
@@ -94,6 +101,16 @@ namespace Essenbee.Bot
                 new ConsoleChatClient(),
                 new SlackChatClient(slackApiKey),
             };
+        }
+
+        private static void OnCtrlC(object sender, ConsoleCancelEventArgs e)
+        {
+            foreach (var client in _connectedChatClients)
+            {
+                client.Disconnect();
+            }
+
+            _endProgram = true;
         }
     }
 }
