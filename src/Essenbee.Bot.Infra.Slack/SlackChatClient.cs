@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Essenbee.Bot.Core.Interfaces;
 using Slack;
 
@@ -9,15 +10,18 @@ namespace Essenbee.Bot.Infra.Slack
         private readonly Client _slackClient;
         private  int _connectionFailures = 0;
         private  bool _shutdown = false;
+        private bool _isReady = false;
+
+        public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
 
         public SlackChatClient(string apiKey)
         {
             _slackClient = new Client(apiKey);
 
             // Wire up basic connectivity events
-            _slackClient.ServiceConnected += OnClientConnected;
-            _slackClient.ServiceConnectionFailed += OnDisconnectedConnectionFailure;
-            _slackClient.ServiceDisconnected += OnDisconnectedConnectionFailure;
+            _slackClient.ServiceConnected += OnConnected;
+            _slackClient.ServiceConnectionFailed += OnDisconnected;
+            _slackClient.ServiceDisconnected += OnDisconnected;
             _slackClient.Hello += OnHello;
 
             // Wire up additional events
@@ -28,17 +32,25 @@ namespace Essenbee.Bot.Infra.Slack
 
         public void PostMessage(string theChannel, string msg)
         {
-            var msgArgs = new Chat.PostMessageArguments
+            if (_isReady)
             {
-                channel = theChannel,
-                text = msg
-            };
+                var msgArgs = new Chat.PostMessageArguments
+                {
+                    channel = theChannel,
+                    text = msg
+                };
 
-            _slackClient.Chat.PostMessage(msgArgs);
+                _slackClient.Chat.PostMessage(msgArgs);
+            }
+            else
+            {
+                Console.WriteLine("SleckChatClient is not connected to Slack service!");
+            }
         }
 
-        private void OnClientConnected()
+        private void OnConnected()
         {
+            _isReady = true;
             _connectionFailures = 0;
             Console.WriteLine("Connected to Slack service");
         }
@@ -46,9 +58,20 @@ namespace Essenbee.Bot.Infra.Slack
         private void OnHello(HelloEventArgs e)
         {
             Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tHello");
+            var channels = _slackClient.Channels.List()?.channels ?? new List<RTM.channel>();
+
+            Console.WriteLine("The following channels exist:");
+
+            foreach (var channel in channels)
+            {
+                Channels.Add(channel.name, channel.id);
+                Console.WriteLine($"\t* {channel.name} ({channel.id})");
+            }
+
+            Console.WriteLine();
         }
 
-        private void OnDisconnectedConnectionFailure()
+        private void OnDisconnected()
         {
             if (_shutdown)
             {   

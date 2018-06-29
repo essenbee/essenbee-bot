@@ -46,7 +46,6 @@ namespace Essenbee.Bot
             services.GetService<UserSecrets>();
 
             var secrets = services.GetService<UserSecretsProvider>().Secrets;
-            var slackApiKey = secrets.SlackApiKey;
             var generalChannel = "C9QT99U2D";
 
             WriteLine("Press [Ctrl]+C to exit.");
@@ -62,11 +61,7 @@ namespace Essenbee.Bot
             autoMessaging.PublishMessage(testMsg);
 
             // Handle multiple chat clients that implement IChatClient ...
-            var connectedChatClients = new List<IChatClient>
-            {
-                new ConsoleChatClient(),
-                new SlackChatClient(slackApiKey),
-            };
+            var connectedChatClients = ConnectChatClients(secrets);
 
             while (true)
             {
@@ -88,6 +83,17 @@ namespace Essenbee.Bot
                     }
                 }
             }
+        }
+
+        private static List<IChatClient> ConnectChatClients(UserSecrets secrets)
+        {
+            var slackApiKey = secrets.SlackApiKey;
+
+            return new List<IChatClient>
+            {
+                new ConsoleChatClient(),
+                new SlackChatClient(slackApiKey),
+            };
         }
     }
 }
