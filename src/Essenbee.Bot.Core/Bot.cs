@@ -25,8 +25,6 @@ namespace Essenbee.Bot.Core
             var defaultChannel = "general";
 
             WriteLine();
-            WriteLine("{}oo((X))ΞΞΞΞΞΞΞΞΞΞΞΞΞ>");
-            WriteLine();
             WriteLine("Press [Ctrl]+C to exit.");
             WriteLine();
 

@@ -113,7 +113,10 @@ namespace Essenbee.Bot.Infra.Slack
 
         private void OnMessageEdit(MessageEditEventArgs e)
         {
-            Console.WriteLine(System.DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage Edit. [" + e.UserInfo.name + "] [" + e.message.text + "]");
+            var user = e?.UserInfo?.name ?? string.Empty;
+            var text = e?.message?.text ?? "<< deleted >>";
+
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tMessage Edit. [" + user + "] [" + text + "]");
             // ProcessCommands(e.UserInfo.name, e.channel, e.text);
         }
     }
