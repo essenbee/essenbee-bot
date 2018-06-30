@@ -24,7 +24,6 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient.ServiceConnectionFailed += OnDisconnected;
             _slackClient.ServiceDisconnected += OnDisconnected;
             _slackClient.Hello += OnHello;
-            _slackClient.PongReceived += OnPong;
 
             // Wire up additional events
             _slackClient.Message += OnMessage;
@@ -79,12 +78,6 @@ namespace Essenbee.Bot.Infra.Slack
             }
 
             WriteLine();
-        }
-
-        private void OnPong()
-        {
-            _connectionFailures = 0;
-            WriteLine("--> Pong received!");
         }
 
         private void OnDisconnected()
