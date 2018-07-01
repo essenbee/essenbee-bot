@@ -1,6 +1,7 @@
 using System;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
+using Essenbee.Bot.Core;
 using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -25,7 +26,7 @@ namespace UnitTests.TimerTriggeredMessageTests
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            testMsg.Init(fakeClock.Now);
+            testMsg.Init(fakeClock.Now, ItemStatus.Active);
             
             // Act and Assert
             Assert.IsFalse(testMsg.ShouldDisplay(fakeClock.Now));
@@ -45,7 +46,7 @@ namespace UnitTests.TimerTriggeredMessageTests
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            testMsg.Init(fakeClock.Now);
+            testMsg.Init(fakeClock.Now, ItemStatus.Active);
 
             // Act and Assert
             Assert.IsFalse(testMsg.ShouldDisplay(fakeClock.Now.AddSeconds(30)));
@@ -65,7 +66,7 @@ namespace UnitTests.TimerTriggeredMessageTests
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            testMsg.Init(fakeClock.Now);
+            testMsg.Init(fakeClock.Now, ItemStatus.Active);
 
             // Act and Assert
             Assert.IsTrue(testMsg.ShouldDisplay(fakeClock.Now.AddMinutes(Delay)));
@@ -85,7 +86,7 @@ namespace UnitTests.TimerTriggeredMessageTests
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            testMsg.Init(fakeClock.Now);
+            testMsg.Init(fakeClock.Now, ItemStatus.Active);
             testMsg.GetMessage(fakeClock.Now.AddMinutes(Delay)); // Will reset the timer
 
             // Act and Assert

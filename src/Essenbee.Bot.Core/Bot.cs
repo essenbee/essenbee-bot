@@ -44,7 +44,7 @@ namespace Essenbee.Bot.Core
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            _autoMessaging.PublishMessage(testMsg);
+            _autoMessaging.PublishMessage(testMsg, ItemStatus.Active);
         }
 
         private void BeginLoop()

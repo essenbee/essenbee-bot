@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Essenbee.Bot.Core.Interfaces
 {
     public interface IAutoMessage
     {
-        void Init(DateTime currentTime);
+        void Init(DateTime currentTime, ItemStatus status);
         bool ShouldDisplay(DateTime currentTime);
         string GetMessage(DateTime currentTime);
     }
