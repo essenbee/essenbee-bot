@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Essenbee.Bot.Core.Interfaces;
 using static System.Console;
-using Slack;
+using SlackLibCore;
 
 namespace Essenbee.Bot.Infra.Slack
 {
@@ -28,6 +28,7 @@ namespace Essenbee.Bot.Infra.Slack
             // Wire up additional events
             _slackClient.Message += OnMessage;
             _slackClient.MesssageEdit += OnMessageEdit;
+            _slackClient.CommandReceived += ProcessCommand;
 
             _slackClient.Connect();
         }
@@ -67,7 +68,7 @@ namespace Essenbee.Bot.Infra.Slack
         private void OnHello(HelloEventArgs e)
         {
             WriteLine(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "\tHello");
-            var channels = _slackClient.Channels.List()?.channels ?? new List<RTM.channel>();
+            var channels = _slackClient.Channels.List()?.channels ?? new List<RTM.Channel>();
 
             WriteLine("The following channels exist:");
 
@@ -112,7 +113,6 @@ namespace Essenbee.Bot.Infra.Slack
             var text = e?.text ?? "<< none >>";
 
             WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
-            // ProcessCommands(e.UserInfo.name, e.channel, e.text);
         }
 
         private void OnMessageEdit(MessageEditEventArgs e)
@@ -121,7 +121,14 @@ namespace Essenbee.Bot.Infra.Slack
             var text = e?.message?.text ?? "<< deleted >>";
 
             WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
-            // ProcessCommands(e.UserInfo.name, e.channel, e.text);
+        }
+
+        private void ProcessCommand(CommandEventArgs e)
+        {
+            var user = e?.User;
+            var commandText = e?.FullCommandText ?? "<< none >>";
+
+            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{commandText}]");
         }
     }
 }
