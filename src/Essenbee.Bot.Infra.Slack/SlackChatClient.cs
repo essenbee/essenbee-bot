@@ -125,10 +125,15 @@ namespace Essenbee.Bot.Infra.Slack
 
         private void ProcessCommand(CommandEventArgs e)
         {
-            var user = e?.User;
-            var commandText = e?.FullCommandText ?? "<< none >>";
+            var user = e?.UserName ?? "<unknown>";
+            var command = e?.Command ?? "<< none >>";
+            var args = e?.ArgsAsString ?? string.Empty;
+            var channel = e?.Channel ?? string.Empty;
 
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{commandText}]");
+            var echo = $"[{user}] invoked the command [{command}] with args [{args}] - this is just a test!";
+
+            PostMessage(channel, echo);
+
         }
     }
 }

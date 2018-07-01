@@ -44,7 +44,10 @@ namespace Essenbee.Bot.Core
                 Message = "Hi, this is a timed message from CoreBot!"
             };
 
-            _autoMessaging.PublishMessage(testMsg, ItemStatus.Active);
+            _autoMessaging.PublishMessage(testMsg); // Draft message by default
+
+            // Activate the message
+            testMsg.Status = ItemStatus.Active;
         }
 
         private void BeginLoop()

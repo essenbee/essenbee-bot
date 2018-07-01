@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Core
             _clock = clock;
         }
 
-        public void PublishMessage(IAutoMessage message, ItemStatus status)
+        public void PublishMessage(IAutoMessage message, ItemStatus status = ItemStatus.Draft)
         {
             message.Init(DateTime.Now, status);
             PublishedMessages.Add(message);
