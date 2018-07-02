@@ -4,6 +4,7 @@ using System.Threading;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Essenbee.Bot.Core.Utilities;
+using Essenbee.Bot.Core.Commands;
 using static System.Console;
 
 namespace Essenbee.Bot.Core
@@ -21,11 +22,16 @@ namespace Essenbee.Bot.Core
         {
             ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
             _autoMessaging = new AutoMessaging(new SystemClock());
+
+            foreach(var chatClient in connectedClients)
+            {
+                chatClient.OnChatCommandReceived += OnCommandReceived;
+            }
         }
 
         public void Start()
         {
-            Console.CancelKeyPress += OnCtrlC;
+            CancelKeyPress += OnCtrlC;
 
             WriteLine();
             WriteLine("Press [Ctrl]+C to exit.");
@@ -77,6 +83,25 @@ namespace Essenbee.Bot.Core
                 }
 
                 if (_endProgram) break;
+            }
+        }
+
+        private void OnCommandReceived(object sender, ChatCommandEventArgs e)
+        {
+            if (e.Command.Equals("news"))
+            {
+                foreach (var chatClient in ConnectedClients)
+                {
+                    var cmd = new NewsCommand(chatClient);
+                    cmd.Execute(e);
+                }
+            }
+            else
+            {
+                foreach (var chatClient in ConnectedClients)
+                {
+                    chatClient.PostMessage(e.Channel, $"The command {e.Command} has not been implemented.");
+                }
             }
         }
 

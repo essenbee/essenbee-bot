@@ -13,6 +13,8 @@ namespace Essenbee.Bot.Infra.Slack
         private  bool _shutdown = false;
         private bool _isReady = false;
 
+        public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
+        
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
 
         public SlackChatClient(string apiKey)
@@ -128,12 +130,10 @@ namespace Essenbee.Bot.Infra.Slack
             var user = e?.UserName ?? "<unknown>";
             var command = e?.Command ?? "<< none >>";
             var args = e?.ArgsAsString ?? string.Empty;
+            var argsList = e?.ArgsAsList ?? new List<string>();
             var channel = e?.Channel ?? string.Empty;
 
-            var echo = $"[{user}] invoked the command [{command}] with args [{args}] - this is just a test!";
-
-            PostMessage(channel, echo);
-
+            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, channel, user));
         }
     }
 }

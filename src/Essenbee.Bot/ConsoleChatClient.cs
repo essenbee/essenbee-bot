@@ -6,6 +6,8 @@ namespace Essenbee.Bot
 {
     public class ConsoleChatClient : IChatClient
     {
+        public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
+
         public IDictionary<string, string> Channels
         {
             get => new Dictionary<string, string> { {"console", "0"} };
