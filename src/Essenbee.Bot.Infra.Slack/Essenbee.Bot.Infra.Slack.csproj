@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SlackLibCore" Version="1.0.7" />
+    <PackageReference Include="SlackLibCore" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>
