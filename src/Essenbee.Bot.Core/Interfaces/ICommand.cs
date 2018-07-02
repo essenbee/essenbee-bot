@@ -3,11 +3,11 @@
     public interface ICommand
     {
         ItemStatus Status { get; set; }
-        string CommandName { get; set; }
-        string HelpText { get; set; }
+        string CommandName { get; }
+        string HelpText { get; }
 
         bool ShoudExecute();
 
-        void Execute(ChatCommandEventArgs e);
+        void Execute(IChatClient chatClient, ChatCommandEventArgs e);
     }
 }

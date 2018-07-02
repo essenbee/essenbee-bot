@@ -6,6 +6,7 @@ using Essenbee.Bot.Core.Messaging;
 using Essenbee.Bot.Core.Utilities;
 using Essenbee.Bot.Core.Commands;
 using static System.Console;
+using System.Linq;
 
 namespace Essenbee.Bot.Core
 {
@@ -14,6 +15,7 @@ namespace Essenbee.Bot.Core
         public List<IChatClient> ConnectedClients { get; }
 
         public static readonly string DefaultChannel = "general";
+        public static readonly Dictionary<string, ICommand> _CommandsAvailable = new Dictionary<string, ICommand>();
 
         private bool _endProgram = false;
         private readonly AutoMessaging _autoMessaging;
@@ -23,7 +25,7 @@ namespace Essenbee.Bot.Core
             ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
             _autoMessaging = new AutoMessaging(new SystemClock());
 
-            foreach(var chatClient in connectedClients)
+            foreach (var chatClient in connectedClients)
             {
                 chatClient.OnChatCommandReceived += OnCommandReceived;
             }
@@ -37,6 +39,7 @@ namespace Essenbee.Bot.Core
             WriteLine("Press [Ctrl]+C to exit.");
             WriteLine();
 
+            LoadCommands();
             PublishTimerTriggeredMessages();
             BeginLoop();
         }
@@ -86,19 +89,35 @@ namespace Essenbee.Bot.Core
             }
         }
 
+        private void LoadCommands()
+        {
+            if (_CommandsAvailable.Count > 0)
+            {
+                return;
+            }
+
+            var commandTypes = GetType().Assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(ICommand)));
+
+            foreach (var type in commandTypes)
+            {
+                if (type.Name == "ICommand") continue;
+
+                var cmd = Activator.CreateInstance(type) as ICommand;
+                cmd.Status = ItemStatus.Active;
+                _CommandsAvailable.Add(cmd.CommandName, cmd);
+            }
+        }
+
         private void OnCommandReceived(object sender, ChatCommandEventArgs e)
         {
-            if (e.Command.Equals("news"))
+            foreach (var chatClient in ConnectedClients)
             {
-                foreach (var chatClient in ConnectedClients)
+                // Check command name against available commands ...
+                if (_CommandsAvailable.TryGetValue(e.Command, out ICommand cmd))
                 {
-                    var cmd = new NewsCommand(chatClient);
-                    cmd.Execute(e);
+                    cmd.Execute(chatClient, e);
                 }
-            }
-            else
-            {
-                foreach (var chatClient in ConnectedClients)
+                else
                 {
                     chatClient.PostMessage(e.Channel, $"The command {e.Command} has not been implemented.");
                 }

@@ -1,26 +1,23 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
-using System;
 using System.Net;
 
 namespace Essenbee.Bot.Core.Commands
 {
     class NewsCommand : ICommand
-
     {
-        private IChatClient _chatClient;
+        public ItemStatus Status { get; set; } = ItemStatus.Draft;
+        public string CommandName { get => "news"; }
+        public string HelpText { get; }
 
-        public ItemStatus Status { get; set; }
-        public string CommandName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string HelpText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public NewsCommand(IChatClient chatClient)
+        public NewsCommand()
         {
-            _chatClient = chatClient;
+            HelpText = @"!news with no agrument will display Home news from Sky News. valid arguments are: 
+                            space, tech, uk, us, world, business, politics, entertainment, sport or strange";
         }
 
-        public void Execute(ChatCommandEventArgs e)
+        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (!ShoudExecute()) return;
+            if (Status != ItemStatus.Active) return;
 
             var text = string.Empty;
             var newsXML = string.Empty;
@@ -30,6 +27,9 @@ namespace Essenbee.Bot.Core.Commands
 
             switch (arg0)
             {
+                case "space":
+                    newsXML = webClient.DownloadString("http://spaceflightnow.com/feed");
+                    break;
                 case "tech":
                     newsXML = webClient.DownloadString("http://feeds.skynews.com/feeds/rss/technology");
                     break;
@@ -50,6 +50,10 @@ namespace Essenbee.Bot.Core.Commands
                     break;
                 case "entertainment":
                     newsXML = webClient.DownloadString("http://feeds.skynews.com/feeds/rss/entertainment");
+                    break;
+                case "sport":
+                case "sports":
+                    newsXML = webClient.DownloadString("http://feeds.bbci.co.uk/sport/rss.xml?edition=uk");
                     break;
                 case "strange":
                     newsXML = webClient.DownloadString("http://feeds.skynews.com/feeds/rss/strange");
@@ -76,7 +80,7 @@ namespace Essenbee.Bot.Core.Commands
                     xmlNode.SelectSingleNode("link").InnerText + "\r\n";
             }
 
-            _chatClient.PostMessage(e.Channel, text);
+            chatClient.PostMessage(e.Channel, text);
         }
 
         public bool ShoudExecute()
