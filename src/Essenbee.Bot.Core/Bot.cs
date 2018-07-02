@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core
     public class Bot
     {
         public List<IChatClient> ConnectedClients { get; }
+        public static string ProjectAnswerKey;
 
         public static readonly string DefaultChannel = "general";
         public static readonly Dictionary<string, ICommand> _CommandsAvailable = new Dictionary<string, ICommand>();
@@ -42,6 +43,11 @@ namespace Essenbee.Bot.Core
             LoadCommands();
             PublishTimerTriggeredMessages();
             BeginLoop();
+        }
+
+        public void SetProjectAnswerKey(string key)
+        {
+            ProjectAnswerKey = key;
         }
 
         private void PublishTimerTriggeredMessages()

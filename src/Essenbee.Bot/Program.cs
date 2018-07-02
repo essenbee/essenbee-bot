@@ -46,6 +46,7 @@ namespace Essenbee.Bot
                 var secrets = services.GetService<UserSecretsProvider>().Secrets;
 
                 var bot = new Core.Bot(ConnectChatClients(secrets));
+                bot.SetProjectAnswerKey(secrets.ProjectAnswerKey);
 
                 WriteLine("CoreBot is getting ready....");
                 bot.Start();
