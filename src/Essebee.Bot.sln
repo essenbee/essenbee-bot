@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essenbee.Bot", "Essenbee.Bot\Essenbee.Bot.csproj", "{E1AD2A38-0CC5-47F5-AC65-77EA8A83F935}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot", "Essenbee.Bot\Essenbee.Bot.csproj", "{E1AD2A38-0CC5-47F5-AC65-77EA8A83F935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essenbee.Bot.Core", "Essenbee.Bot.Core\Essenbee.Bot.Core.csproj", "{307D6112-E6CE-44CC-98E8-843D915D0EBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot.Core", "Essenbee.Bot.Core\Essenbee.Bot.Core.csproj", "{307D6112-E6CE-44CC-98E8-843D915D0EBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essenbee.Bot.Infra.Slack", "Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj", "{A35AD56B-8607-4E46-AD7B-745E9BAC9715}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot.Infra.Slack", "Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj", "{A35AD56B-8607-4E46-AD7B-745E9BAC9715}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{89AAA69A-63F0-4EF4-BA71-F17FB79C4F07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{89AAA69A-63F0-4EF4-BA71-F17FB79C4F07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essenbee.Bot.Web", "Essenbee.Bot.Web\Essenbee.Bot.Web.csproj", "{D52EA832-5840-479B-8512-C3D0DEE58538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{89AAA69A-63F0-4EF4-BA71-F17FB79C4F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89AAA69A-63F0-4EF4-BA71-F17FB79C4F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89AAA69A-63F0-4EF4-BA71-F17FB79C4F07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D52EA832-5840-479B-8512-C3D0DEE58538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D52EA832-5840-479B-8512-C3D0DEE58538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D52EA832-5840-479B-8512-C3D0DEE58538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D52EA832-5840-479B-8512-C3D0DEE58538}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
