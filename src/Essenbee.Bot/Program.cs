@@ -56,6 +56,7 @@ namespace Essenbee.Bot
             }
         }
 
+        // ToDo: Remove dependency on the SlackChatClient here ...
         private static List<IChatClient> ConnectChatClients(UserSecrets secrets)
         {
             var connectedClients = new List<IChatClient>

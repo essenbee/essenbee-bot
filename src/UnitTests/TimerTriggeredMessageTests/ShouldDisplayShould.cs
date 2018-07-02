@@ -112,5 +112,45 @@ namespace UnitTests.TimerTriggeredMessageTests
             // Act and Assert
             Assert.IsTrue(testMsg.ShouldDisplay(fakeClock.Now.AddMinutes(2 * Delay)));
         }
+
+        [TestMethod]
+        public void ReturnFalse_IfDraft()
+        {
+            //Arrange
+            var fakeClock = A.Fake<IClock>();
+
+            A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
+
+            var testMsg = new TimerTriggeredMessage
+            {
+                Delay = Delay,
+                Message = "Hi, this is a timed message from CoreBot!"
+            };
+
+            testMsg.Init(fakeClock.Now, ItemStatus.Draft);
+
+            // Act and Assert
+            Assert.IsFalse(testMsg.ShouldDisplay(fakeClock.Now.AddMinutes(Delay)));
+        }
+
+        [TestMethod]
+        public void ReturnFalse_IfDisabled()
+        {
+            //Arrange
+            var fakeClock = A.Fake<IClock>();
+
+            A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
+
+            var testMsg = new TimerTriggeredMessage
+            {
+                Delay = Delay,
+                Message = "Hi, this is a timed message from CoreBot!"
+            };
+
+            testMsg.Init(fakeClock.Now, ItemStatus.Disabled);
+
+            // Act and Assert
+            Assert.IsFalse(testMsg.ShouldDisplay(fakeClock.Now.AddMinutes(Delay)));
+        }
     }
 }
