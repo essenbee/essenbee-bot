@@ -11,8 +11,8 @@ namespace Essenbee.Bot.Core.Commands
 
         public NewsCommand()
         {
-            HelpText = @"!news with no agrument will display Home news from Sky News. valid arguments are: 
-                            space, tech, uk, us, world, business, politics, entertainment, sport or strange";
+            HelpText = @"The command !news with no argument will display Home news from Sky News. Valid arguments are: " +
+                        "space, tech, uk, us, world, business, politics, entertainment, sport or strange.";
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
