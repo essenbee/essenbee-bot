@@ -156,15 +156,15 @@ namespace Essenbee.Bot.Core.Commands
 
             if (answerResult.Facts.ContractualRules != null)
             {
-                text = answerResult.Facts.ContractualRules[0].Text;
-                url = answerResult.Facts.ContractualRules[0].Url;
+                text = answerResult.Facts.ContractualRules[0]?.Text ?? string.Empty;
+                url = answerResult.Facts.ContractualRules[0]?.Url ?? string.Empty;
 
                 retVal = $"\n{text}\t{url}";
             }
             else if (answerResult.Facts.Attributions != null)
             {
-                text = answerResult.Facts.Attributions[0].ProviderDisplayName;
-                url = answerResult.Facts.Attributions[0].SeeMoreUrl;
+                text = answerResult.Facts.Attributions[0]?.ProviderDisplayName ?? string.Empty;
+                url = answerResult.Facts.Attributions[0]?.SeeMoreUrl ?? string.Empty;
 
                 retVal = $"\n{text}\t{url}";
             }
@@ -177,6 +177,7 @@ namespace Essenbee.Bot.Core.Commands
             var text = string.Empty;
             var url = string.Empty;
             var licence = string.Empty;
+            var licenceUrl = string.Empty;
 
             if (answerResult.Entities.Value[0].ContractualRules != null)
             {
@@ -186,16 +187,17 @@ namespace Essenbee.Bot.Core.Commands
                     if (rule.Type.Equals("ContractualRules/LicenseAttribution"))
                     {
                         licence = rule.LicenseNotice;
+                        licenceUrl = rule.License?.Url ?? string.Empty;
                     }
 
                     if (rule.Type.Equals("ContractualRules/LinkAttribution"))
                     {
-                        text = rule.Text;
-                        url = rule.Url;
+                        text = rule.Text ?? string.Empty;
+                        url = rule.Url ?? string.Empty;
                     }
                 }
 
-                return $"\n{text}\t{url}\t{licence}";
+                return $"\n{text}\t{url}\t{licence} {(licence != string.Empty ? licenceUrl : string.Empty)}";
             }
 
             return string.Empty;
