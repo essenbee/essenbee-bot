@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -12,15 +13,24 @@ namespace Essenbee.Bot.Core.Commands
     {
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName => "ask";
-        public string HelpText => "The !ask command uses the experimental Project Answer to try and answer questions.";
+        public string HelpText => "The !ask command uses the experimental Project Answer Search to try to answer your questions.";
 
+        // ToDo: Move to configuration
         const string uriBase = "https://api.labs.cognitive.microsoft.com/answerSearch/v7.0/search";
         // Used to return news search results including relevant headers
         struct SearchResult
         {
+            public HttpStatusCode statusCode;
             public String jsonResult;
             public Dictionary<String, String> relevantHeaders;
         }
+
+        private enum AnswerType
+        {
+            Fact,
+            Entity,
+            Webpage
+        };
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
@@ -39,21 +49,45 @@ namespace Essenbee.Bot.Core.Commands
             }
 
             var searchFor = searchTerm.ToString().Trim();
+            var answerResponse = "I am sorry, but I do not know the answer ...";
 
             var result = BingLocalSearch(searchFor);
-            var answerResult = JsonConvert.DeserializeObject<Answer>(result.jsonResult);
 
-            if (answerResult.WebPages.Value.Length > 0)
+            if (result.statusCode == (HttpStatusCode)429) // Too Many Requests
             {
-                var answer = answerResult.WebPages.Value[0].Snippet;
-                var url = answerResult.WebPages.Value[0].Url;
+                answerResponse = "I am sorry, the !ask command is currently on cooldown. Please try again in a short while.";
+            }
 
-                chatClient.PostMessage(e.Channel, $"{answer} (Source: {url})");
-            }
-            else
+            if (result.statusCode == HttpStatusCode.OK)
             {
-                chatClient.PostMessage(e.Channel, "I am sorry, but I do not know the answer ...");
+                var answerResult = JsonConvert.DeserializeObject<Answer>(result.jsonResult);
+
+                if (answerResult?.Facts?.Value?.Length > 0)
+                {
+                    var answer = answerResult.Facts.Value[0].Description;
+                    answer += GetDataAttribution(AnswerType.Fact, answerResult);
+                    answerResponse = answer;
+                }
+                else if (answerResult?.Entities?.Value?.Length > 0)
+                {
+                    var answer = answerResult.Entities.Value[0].Description;
+                    answer += GetDataAttribution(AnswerType.Entity, answerResult);
+                    answerResponse = answer;
+                }
+                else if (answerResult?.WebPages?.Value?.Length > 0)
+                {
+                    var page = answerResult.WebPages.Value.FirstOrDefault(p => p.IsFamilyFriendly);
+
+                    if (page != null)
+                    {
+                        var answer = page.Snippet;
+                        var url = page.Url;
+                        answerResponse = $"{answer} (Source: {url})";
+                    }
+                }
             }
+
+            chatClient.PostMessage(e.Channel, answerResponse);
         }
 
         public bool ShoudExecute()
@@ -71,10 +105,19 @@ namespace Essenbee.Bot.Core.Commands
             request.Headers["Ocp-Apim-Subscription-Key"] = Bot.ProjectAnswerKey;
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponseAsync().Result;
-            string json = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
             // Create result object for return
-            var searchResult = new SearchResult();
+            var searchResult = new SearchResult
+            {
+                statusCode = response.StatusCode
+            };
+
+            if (response.StatusCode == (HttpStatusCode)429) // Too Many Requests
+            {
+                return searchResult;
+            }
+
+            var json = new StreamReader(response.GetResponseStream()).ReadToEnd();
             searchResult.jsonResult = json;
             searchResult.relevantHeaders = new Dictionary<String, String>();
 
@@ -88,67 +131,74 @@ namespace Essenbee.Bot.Core.Commands
             return searchResult;
         }
 
-        private string JsonPrettyPrint(string json)
+        private string GetDataAttribution(AnswerType type, Answer answerResult)
         {
-            if (string.IsNullOrEmpty(json))
-                return string.Empty;
+            var retVal = string.Empty;
 
-            json = json.Replace(Environment.NewLine, "").Replace("\t", "");
-
-            var sb = new StringBuilder();
-            bool quote = false;
-            bool ignore = false;
-            int offset = 0;
-            int indentLength = 3;
-
-            foreach (char ch in json)
+            if (type == AnswerType.Fact)
             {
-                switch (ch)
-                {
-                    case '"':
-                        if (!ignore) quote = !quote;
-                        break;
-                    case '\'':
-                        if (quote) ignore = !ignore;
-                        break;
-                }
-
-                if (quote)
-                    sb.Append(ch);
-                else
-                {
-                    switch (ch)
-                    {
-                        case '{':
-                        case '[':
-                            sb.Append(ch);
-                            sb.Append(Environment.NewLine);
-                            sb.Append(new string(' ', ++offset * indentLength));
-                            break;
-                        case '}':
-                        case ']':
-                            sb.Append(Environment.NewLine);
-                            sb.Append(new string(' ', --offset * indentLength));
-                            sb.Append(ch);
-                            break;
-                        case ',':
-                            sb.Append(ch);
-                            sb.Append(Environment.NewLine);
-                            sb.Append(new string(' ', offset * indentLength));
-                            break;
-                        case ':':
-                            sb.Append(ch);
-                            sb.Append(' ');
-                            break;
-                        default:
-                            if (ch != ' ') sb.Append(ch);
-                            break;
-                    }
-                }
+                retVal = GetFactAttribution(answerResult);
             }
 
-            return sb.ToString().Trim();
+            if (type == AnswerType.Entity)
+            {
+                retVal = GetEntityAttribution(answerResult);
+            }
+
+            return retVal;
         }
 
+        private string GetFactAttribution(Answer answerResult)
+        {
+            var text = string.Empty;
+            var url = string.Empty;
+            var retVal = string.Empty;
+
+            if (answerResult.Facts.ContractualRules != null)
+            {
+                text = answerResult.Facts.ContractualRules[0].Text;
+                url = answerResult.Facts.ContractualRules[0].Url;
+
+                retVal = $"\n{text}\t{url}";
+            }
+            else if (answerResult.Facts.Attributions != null)
+            {
+                text = answerResult.Facts.Attributions[0].ProviderDisplayName;
+                url = answerResult.Facts.Attributions[0].SeeMoreUrl;
+
+                retVal = $"\n{text}\t{url}";
+            }
+
+            return retVal;
+        }
+
+        private string GetEntityAttribution(Answer answerResult)
+        {
+            var text = string.Empty;
+            var url = string.Empty;
+            var licence = string.Empty;
+
+            if (answerResult.Entities.Value[0].ContractualRules != null)
+            {
+                foreach (var rule in answerResult.Entities.Value[0].ContractualRules
+                    .Where(r => r.TargetPropertyName.Equals("description")))
+                {
+                    if (rule.Type.Equals("ContractualRules/LicenseAttribution"))
+                    {
+                        licence = rule.LicenseNotice;
+                    }
+
+                    if (rule.Type.Equals("ContractualRules/LinkAttribution"))
+                    {
+                        text = rule.Text;
+                        url = rule.Url;
+                    }
+                }
+
+                return $"\n{text}\t{url}\t{licence}";
+            }
+
+            return string.Empty;
+        }
     }
 }
