@@ -49,14 +49,16 @@ namespace Essenbee.Bot.Infra.Slack
                 var msgArgs = new Chat.PostMessageArguments
                 {
                     channel = theChannel,
-                    text = msg
+                    text = msg,
+                    unfurl_links = false,
+                    unfurl_media = false,
                 };
 
                 _slackClient.Chat.PostMessage(msgArgs);
             }
             else
             {
-                Console.WriteLine("Slack Chat Client is not connected to the Slack service!");
+                WriteLine("Slack Chat Client is not connected to the Slack service!");
             }
         }
 
