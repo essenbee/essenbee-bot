@@ -101,7 +101,13 @@ namespace Essenbee.Bot.Core.Commands
 
                         var tableBuilder = ConsoleTableBuilder.From(table);
                         answerResponse = "```\n" + tableBuilder.Export().ToString() + "\n```";
-                        answerResponse += $"\n*{answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Text}*: {answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Url}";
+
+                        if (answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl != null)
+                        {
+                            answerResponse += $"\n*{answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Text}*: {answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Url}";
+                        }
+
+                        answerResponse += GetFactAttribution(answerResult);
                     }
                     else
                     {
