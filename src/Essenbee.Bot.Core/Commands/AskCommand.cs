@@ -73,7 +73,7 @@ namespace Essenbee.Bot.Core.Commands
                 if (answerResult?.Facts?.Value?.Length > 0)
                 {
                     // In some cases, facts can be returned in a tabular format ...
-                    if (answerResult.Facts.Value[0].RichCaption != null && 
+                    if (answerResult.Facts.Value[0].RichCaption != null &&
                         answerResult.Facts.Value[0].RichCaption.Type == "StructuredValue/TabularData")
                     {
                         var tablularHeaders = answerResult.Facts.Value[0].RichCaption.Header;
@@ -147,6 +147,7 @@ namespace Essenbee.Bot.Core.Commands
                         var answer = page.Snippet;
                         var url = page.Url;
                         answerResponse = $"{answer} (*Source*: {url})";
+                        answerResponse += GetWebpageAttribution(page);
                     }
                 }
             }
@@ -257,5 +258,25 @@ namespace Essenbee.Bot.Core.Commands
 
             return string.Empty;
         }
+
+        private string GetWebpageAttribution(WebPagesValue page)
+        {
+            var text = string.Empty;
+            var licence = string.Empty;
+            var licenceUrl = string.Empty;
+            var retVal = string.Empty;
+
+            if (page.SnippetAttribution != null)
+            {
+                text = page.SnippetAttribution.LicenseNotice ?? string.Empty;
+                licence = page.SnippetAttribution?.License.Name ?? string.Empty;
+                licenceUrl = page.SnippetAttribution?.License.Url ?? string.Empty;
+
+                return $"\n\n{text}\t{licence} {(licence != string.Empty ? licenceUrl : string.Empty)}";
+            }
+
+            return retVal;
+        }
     }
 }
+
