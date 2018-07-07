@@ -76,31 +76,7 @@ namespace Essenbee.Bot.Core.Commands
                     if (answerResult.Facts.Value[0].RichCaption != null &&
                         answerResult.Facts.Value[0].RichCaption.Type == "StructuredValue/TabularData")
                     {
-                        var tablularHeaders = answerResult.Facts.Value[0].RichCaption.Header;
-                        var tabularData = answerResult.Facts.Value[0].RichCaption.Rows;
-
-                        var table = new DataTable();
-
-                        foreach (var header in tablularHeaders)
-                        {
-                            if (string.IsNullOrWhiteSpace(header))
-                            {
-                                table.Columns.Add(" ");
-                            }
-                            else
-                            {
-                                table.Columns.Add(header);
-                            }
-                        }
-
-                        foreach (var row in tabularData)
-                        {
-                            var cells = row.Cells.Select(r => r.Text).ToArray();
-                            table.Rows.Add(cells);
-                        }
-
-                        var tableBuilder = ConsoleTableBuilder.From(table);
-                        answerResponse = "```\n" + tableBuilder.Export().ToString() + "\n```";
+                        answerResponse = BuildTabularData(answerResult);
 
                         if (answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl != null)
                         {
@@ -276,6 +252,38 @@ namespace Essenbee.Bot.Core.Commands
             }
 
             return retVal;
+        }
+
+        private string BuildTabularData(Answer answerResult)
+        {
+            var answerResponse = string.Empty;
+            var tablularHeaders = answerResult.Facts.Value[0].RichCaption.Header;
+            var tabularData = answerResult.Facts.Value[0].RichCaption.Rows;
+
+            var table = new DataTable();
+
+            foreach (var header in tablularHeaders)
+            {
+                if (string.IsNullOrWhiteSpace(header)) 
+                {
+                    table.Columns.Add(" ");
+                }
+                else
+                {
+                    table.Columns.Add(header);
+                }
+            }
+
+            foreach (var row in tabularData)
+            {
+                var cells = row.Cells.Select(r => r.Text).ToArray();
+                table.Rows.Add(cells);
+            }
+
+            var tableBuilder = ConsoleTableBuilder.From(table);
+            answerResponse = "```\n" + tableBuilder.Export().ToString() + "\n```";
+
+            return answerResponse;
         }
     }
 }
