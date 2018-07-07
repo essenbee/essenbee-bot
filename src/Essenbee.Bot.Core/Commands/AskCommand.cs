@@ -88,7 +88,7 @@ namespace Essenbee.Bot.Core.Commands
 
                     if (disambiguations.Any())
                     {
-                        answerResponse += "\n\nDisambiguation: ";
+                        answerResponse += "\n\n*Disambiguation*: ";
                         foreach (var hint in disambiguations)
                         {
                             answerResponse += hint.EntityPresentationInfo.EntityTypeHints[0] + "; ";
@@ -103,7 +103,7 @@ namespace Essenbee.Bot.Core.Commands
                     {
                         var answer = page.Snippet;
                         var url = page.Url;
-                        answerResponse = $"{answer} (Source: {url})";
+                        answerResponse = $"{answer} (*Source*: {url})";
                     }
                 }
             }
@@ -178,7 +178,7 @@ namespace Essenbee.Bot.Core.Commands
                 text = answerResult.Facts.Attributions[0]?.ProviderDisplayName ?? string.Empty;
                 url = answerResult.Facts.Attributions[0]?.SeeMoreUrl ?? string.Empty;
 
-                retVal = $"\n\n{text}\tSee more: {url}";
+                retVal = $"\n\n{text}\t*See more*: {url}";
             }
 
             return retVal;
