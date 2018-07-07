@@ -22,8 +22,29 @@ namespace Essenbee.Bot.Core.Commands
         [JsonProperty("facts")]
         public Facts Facts { get; set; }
 
+        [JsonProperty("places")]
+        public Places Places { get; set; }
+
         [JsonProperty("rankingResponse")]
         public RankingResponse RankingResponse { get; set; }
+    }
+
+    public partial class Places
+    {
+        [JsonProperty("value")]
+        public PlacesValue[] Value { get; set; }
+    }
+
+    public partial class PlacesValue
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("_type")]
+        public string Type { get; set; }
+
+        [JsonProperty("entityPresentationInfo")]
+        public EntityPresentationInfo EntityPresentationInfo { get; set; }
     }
 
     public partial class Entities
@@ -371,7 +392,7 @@ namespace Essenbee.Bot.Core.Commands
         public string LicenseNotice { get; set; }
     }
 
-    public enum AnswerType { Entities, Facts, WebPages };
+    public enum AnswerType { Entities, Facts, WebPages, Places };
 
     public enum Language { En };
 
