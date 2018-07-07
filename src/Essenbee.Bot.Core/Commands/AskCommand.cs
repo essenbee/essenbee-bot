@@ -19,6 +19,7 @@ namespace Essenbee.Bot.Core.Commands
 
         // ToDo: Move to configuration
         const string uriBase = "https://api.labs.cognitive.microsoft.com/answerSearch/v7.0/search";
+
         // Used to return news search results including relevant headers
         struct SearchResult
         {
@@ -71,6 +72,7 @@ namespace Essenbee.Bot.Core.Commands
 
                 if (answerResult?.Facts?.Value?.Length > 0)
                 {
+                    // In some cases, facts can be returned in a tabular format ...
                     if (answerResult.Facts.Value[0].RichCaption != null && 
                         answerResult.Facts.Value[0].RichCaption.Type == "StructuredValue/TabularData")
                     {
@@ -103,7 +105,7 @@ namespace Essenbee.Bot.Core.Commands
                     }
                     else
                     {
-                        var answer = answerResult.Facts.Value[0].Description;
+                        var answer = answerResult.Facts.Value[0].Description ?? "See link below:";
                         answer += GetFactAttribution(answerResult);
                         answerResponse = answer;
                     }
