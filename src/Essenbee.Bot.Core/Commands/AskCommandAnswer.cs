@@ -180,6 +180,45 @@ namespace Essenbee.Bot.Core.Commands
 
         [JsonProperty("subjectName")]
         public string SubjectName { get; set; }
+
+        [JsonProperty("richCaption")]
+        public FactsRichCaption RichCaption { get; set; }
+    }
+
+    public partial class FactsRichCaption
+    {
+        [JsonProperty("_type")]
+        public string Type { get; set; }
+
+        [JsonProperty("header")]
+        public string[] Header { get; set; }
+
+        [JsonProperty("rows")]
+        public FactsRow[] Rows { get; set; }
+
+        [JsonProperty("seeMoreUrl")]
+        public SeeMoreUrl SeeMoreUrl { get; set; }
+    }
+
+    public partial class FactsRow
+    {
+        [JsonProperty("cells")]
+        public FactsCell[] Cells { get; set; }
+    }
+
+    public partial class FactsCell
+    {
+        [JsonProperty("text")]
+        public string Text { get; set; }
+    }
+
+    public partial class SeeMoreUrl
+    {
+        [JsonProperty("text")]
+        public string Text { get; set; }
+
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
 
     public partial class QueryContext

@@ -1,7 +1,9 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using ConsoleTableExt;
+using Essenbee.Bot.Core.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -69,9 +71,42 @@ namespace Essenbee.Bot.Core.Commands
 
                 if (answerResult?.Facts?.Value?.Length > 0)
                 {
-                    var answer = answerResult.Facts.Value[0].Description;
-                    answer += GetFactAttribution(answerResult);
-                    answerResponse = answer;
+                    if (answerResult.Facts.Value[0].RichCaption != null && 
+                        answerResult.Facts.Value[0].RichCaption.Type == "StructuredValue/TabularData")
+                    {
+                        var tablularHeaders = answerResult.Facts.Value[0].RichCaption.Header;
+                        var tabularData = answerResult.Facts.Value[0].RichCaption.Rows;
+
+                        var table = new DataTable();
+
+                        foreach (var header in tablularHeaders)
+                        {
+                            if (string.IsNullOrWhiteSpace(header))
+                            {
+                                table.Columns.Add(" ");
+                            }
+                            else
+                            {
+                                table.Columns.Add(header);
+                            }
+                        }
+
+                        foreach (var row in tabularData)
+                        {
+                            var cells = row.Cells.Select(r => r.Text).ToArray();
+                            table.Rows.Add(cells);
+                        }
+
+                        var tableBuilder = ConsoleTableBuilder.From(table);
+                        answerResponse = "```\n" + tableBuilder.Export().ToString() + "\n```";
+                        answerResponse += $"\n*{answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Text}*: {answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Url}";
+                    }
+                    else
+                    {
+                        var answer = answerResult.Facts.Value[0].Description;
+                        answer += GetFactAttribution(answerResult);
+                        answerResponse = answer;
+                    }
                 }
                 else if (answerResult?.Entities?.Value?.Length > 0)
                 {
