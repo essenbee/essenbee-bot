@@ -62,7 +62,7 @@ namespace Essenbee.Bot.Core
             _autoMessaging.PublishMessage(testMsg); // Draft message by default
 
             // Activate the message
-            testMsg.Status = ItemStatus.Active;
+            testMsg.Status = ItemStatus.Disabled;
         }
 
         private void BeginLoop()
