@@ -21,7 +21,7 @@ namespace Essenbee.Bot.Core.Commands
         struct SearchResult
         {
             public HttpStatusCode statusCode;
-            public string RetryAfter;
+            public string retryAfter;
             public string jsonResult;
             public Dictionary<string, string> relevantHeaders;
         }
@@ -49,12 +49,23 @@ namespace Essenbee.Bot.Core.Commands
 
             if (result.statusCode == (HttpStatusCode)429) // Too Many Requests
             {
-                answerResponse = $"I am sorry, the !ask command is currently on cooldown. Please try again in {result.RetryAfter} seconds.";
+                if (string.IsNullOrWhiteSpace(result.retryAfter))
+                {
+                    result.retryAfter = "several";
+                }
+
+                answerResponse = $"I am sorry, the !ask command is currently on cooldown. Please try again in {result.retryAfter} seconds.";
             }
 
             if (result.statusCode == HttpStatusCode.OK)
             {
                 var answerResult = JsonConvert.DeserializeObject<Answer>(result.jsonResult);
+
+                // If the query is for a fact such as a date or identifiable knowledge, the response can contain 
+                // facts answers. Fact answers contain relevant results extracted from paragraphs in web documents.
+                // If the query requests information about a person, place or thing, the response can contain an 
+                // entities answer. Queries always return webpages, and the presence of facts and/or entities is 
+                // query -dependent.
 
                 if (answerResult?.Facts?.Value?.Length > 0)
                 {
@@ -64,9 +75,25 @@ namespace Essenbee.Bot.Core.Commands
                 }
                 else if (answerResult?.Entities?.Value?.Length > 0)
                 {
-                    var answer = answerResult.Entities.Value[0].Description;
-                    answer += GetEntityAttribution(answerResult);
-                    answerResponse = answer;
+                    var dominantEntity = answerResult.Entities.Value.FirstOrDefault(x => x.EntityPresentationInfo?.EntityScenario == "DominantEntity");
+
+                    if (dominantEntity != null)
+                    {
+                        var answer = dominantEntity.Description;
+                        answer += GetEntityAttribution(answerResult);
+                        answerResponse = answer;
+                    }
+
+                    var disambiguations = answerResult.Entities.Value.Where(x => x.EntityPresentationInfo?.EntityScenario == "DisambiguationItem");
+
+                    if (disambiguations.Any())
+                    {
+                        answerResponse += "\n\nDisambiguation: ";
+                        foreach (var hint in disambiguations)
+                        {
+                            answerResponse += hint.EntityPresentationInfo.EntityTypeHints[0] + "; ";
+                        }
+                    }
                 }
                 else if (answerResult?.WebPages?.Value?.Length > 0)
                 {
@@ -103,7 +130,8 @@ namespace Essenbee.Bot.Core.Commands
             // Create result object for return
             var searchResult = new SearchResult
             {
-                statusCode = response.StatusCode
+                statusCode = response.StatusCode,
+                retryAfter = string.Empty,
             };
 
             if (response.StatusCode == (HttpStatusCode)429) // Too Many Requests
@@ -112,7 +140,7 @@ namespace Essenbee.Bot.Core.Commands
                 var retryAfter = headers.GetValues("Retry-After");
                 if (retryAfter.Length > 0)
                 {
-                    searchResult.RetryAfter = retryAfter.First();
+                    searchResult.retryAfter = retryAfter.First();
                 }
 
                 return searchResult;
@@ -143,14 +171,14 @@ namespace Essenbee.Bot.Core.Commands
                 text = answerResult.Facts.ContractualRules[0]?.Text ?? string.Empty;
                 url = answerResult.Facts.ContractualRules[0]?.Url ?? string.Empty;
 
-                retVal = $"\n{text}\t{url}";
+                retVal = $"\n\n{text}\t{url}";
             }
             else if (answerResult.Facts.Attributions != null)
             {
                 text = answerResult.Facts.Attributions[0]?.ProviderDisplayName ?? string.Empty;
                 url = answerResult.Facts.Attributions[0]?.SeeMoreUrl ?? string.Empty;
 
-                retVal = $"\n{text}\t{url}";
+                retVal = $"\n\n{text}\tSee more: {url}";
             }
 
             return retVal;
@@ -181,7 +209,7 @@ namespace Essenbee.Bot.Core.Commands
                     }
                 }
 
-                return $"\n{text}\t{url}\t{licence} {(licence != string.Empty ? licenceUrl : string.Empty)}";
+                return $"\n\n{text}\t{url}\t{licence} {(licence != string.Empty ? licenceUrl : string.Empty)}";
             }
 
             return string.Empty;
