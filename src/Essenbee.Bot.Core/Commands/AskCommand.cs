@@ -21,16 +21,10 @@ namespace Essenbee.Bot.Core.Commands
         struct SearchResult
         {
             public HttpStatusCode statusCode;
-            public String jsonResult;
-            public Dictionary<String, String> relevantHeaders;
+            public string RetryAfter;
+            public string jsonResult;
+            public Dictionary<string, string> relevantHeaders;
         }
-
-        private enum AnswerType
-        {
-            Fact,
-            Entity,
-            Webpage
-        };
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
@@ -55,7 +49,7 @@ namespace Essenbee.Bot.Core.Commands
 
             if (result.statusCode == (HttpStatusCode)429) // Too Many Requests
             {
-                answerResponse = "I am sorry, the !ask command is currently on cooldown. Please try again in a short while.";
+                answerResponse = $"I am sorry, the !ask command is currently on cooldown. Please try again in {result.RetryAfter} seconds.";
             }
 
             if (result.statusCode == HttpStatusCode.OK)
@@ -65,13 +59,13 @@ namespace Essenbee.Bot.Core.Commands
                 if (answerResult?.Facts?.Value?.Length > 0)
                 {
                     var answer = answerResult.Facts.Value[0].Description;
-                    answer += GetDataAttribution(AnswerType.Fact, answerResult);
+                    answer += GetFactAttribution(answerResult);
                     answerResponse = answer;
                 }
                 else if (answerResult?.Entities?.Value?.Length > 0)
                 {
                     var answer = answerResult.Entities.Value[0].Description;
-                    answer += GetDataAttribution(AnswerType.Entity, answerResult);
+                    answer += GetEntityAttribution(answerResult);
                     answerResponse = answer;
                 }
                 else if (answerResult?.WebPages?.Value?.Length > 0)
@@ -114,6 +108,13 @@ namespace Essenbee.Bot.Core.Commands
 
             if (response.StatusCode == (HttpStatusCode)429) // Too Many Requests
             {
+                var headers = response.Headers;
+                var retryAfter = headers.GetValues("Retry-After");
+                if (retryAfter.Length > 0)
+                {
+                    searchResult.RetryAfter = retryAfter.First();
+                }
+
                 return searchResult;
             }
 
@@ -129,23 +130,6 @@ namespace Essenbee.Bot.Core.Commands
             }
 
             return searchResult;
-        }
-
-        private string GetDataAttribution(AnswerType type, Answer answerResult)
-        {
-            var retVal = string.Empty;
-
-            if (type == AnswerType.Fact)
-            {
-                retVal = GetFactAttribution(answerResult);
-            }
-
-            if (type == AnswerType.Entity)
-            {
-                retVal = GetEntityAttribution(answerResult);
-            }
-
-            return retVal;
         }
 
         private string GetFactAttribution(Answer answerResult)
