@@ -68,51 +68,15 @@ namespace Essenbee.Bot.Core.Commands
                 // facts answers. Fact answers contain relevant results extracted from paragraphs in web documents.
                 // If the query requests information about a person, place or thing, the response can contain an 
                 // entities answer. Queries always return webpages, and the presence of facts and/or entities is 
-                // query -dependent.
+                // query-dependent.
 
                 if (answerResult?.Facts?.Value?.Length > 0)
                 {
-                    // In some cases, facts can be returned in a tabular format ...
-                    if (answerResult.Facts.Value[0].RichCaption != null &&
-                        answerResult.Facts.Value[0].RichCaption.Type == "StructuredValue/TabularData")
-                    {
-                        answerResponse = BuildTabularData(answerResult);
-
-                        if (answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl != null)
-                        {
-                            answerResponse += $"\n*{answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Text}*: {answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Url}";
-                        }
-
-                        answerResponse += GetFactAttribution(answerResult);
-                    }
-                    else
-                    {
-                        var answer = answerResult.Facts.Value[0].Description ?? "See link below:";
-                        answer += GetFactAttribution(answerResult);
-                        answerResponse = answer;
-                    }
+                    answerResponse = GetFact(answerResult);
                 }
                 else if (answerResult?.Entities?.Value?.Length > 0)
                 {
-                    var dominantEntity = answerResult.Entities.Value.FirstOrDefault(x => x.EntityPresentationInfo?.EntityScenario == "DominantEntity");
-
-                    if (dominantEntity != null)
-                    {
-                        var answer = dominantEntity.Description;
-                        answer += GetEntityAttribution(answerResult);
-                        answerResponse = answer;
-                    }
-
-                    var disambiguations = answerResult.Entities.Value.Where(x => x.EntityPresentationInfo?.EntityScenario == "DisambiguationItem");
-
-                    if (disambiguations.Any())
-                    {
-                        answerResponse += "\n\n*Disambiguation*: ";
-                        foreach (var hint in disambiguations)
-                        {
-                            answerResponse += hint.EntityPresentationInfo.EntityTypeHints[0] + "; ";
-                        }
-                    }
+                    answerResponse = GetEntity(answerResponse, answerResult);
                 }
                 else if (answerResult?.WebPages?.Value?.Length > 0)
                 {
@@ -139,7 +103,7 @@ namespace Essenbee.Bot.Core.Commands
         private SearchResult BingLocalSearch(string searchQuery)
         {
             // Construct the URI of the search request
-            var uriQuery = uriBase + "?q=" + Uri.EscapeDataString(searchQuery) + "&mkt=en-us";
+            var uriQuery = uriBase + "?q=" + Uri.EscapeDataString(searchQuery) + "&mkt=en-us&safeSearch=Strict";
 
             // Send the Web request and get the response.
             var request = HttpWebRequest.Create(uriQuery);
@@ -180,6 +144,32 @@ namespace Essenbee.Bot.Core.Commands
             return searchResult;
         }
 
+        private string GetFact(Answer answerResult)
+        {
+            string answerResponse;
+            // In some cases, facts can be returned in a tabular format ...
+            if (answerResult.Facts.Value[0].RichCaption != null &&
+                answerResult.Facts.Value[0].RichCaption.Type == "StructuredValue/TabularData")
+            {
+                answerResponse = BuildTabularData(answerResult);
+
+                if (answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl != null)
+                {
+                    answerResponse += $"\n*{answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Text}*: {answerResult.Facts.Value[0].RichCaption?.SeeMoreUrl?.Url}";
+                }
+
+                answerResponse += GetFactAttribution(answerResult);
+            }
+            else
+            {
+                var answer = answerResult.Facts.Value[0].Description ?? "See link below:";
+                answer += GetFactAttribution(answerResult);
+                answerResponse = answer;
+            }
+
+            return answerResponse;
+        }
+
         private string GetFactAttribution(Answer answerResult)
         {
             var text = string.Empty;
@@ -202,6 +192,31 @@ namespace Essenbee.Bot.Core.Commands
             }
 
             return retVal;
+        }
+
+        private string GetEntity(string answerResponse, Answer answerResult)
+        {
+            var dominantEntity = answerResult.Entities.Value.FirstOrDefault(x => x.EntityPresentationInfo?.EntityScenario == "DominantEntity");
+
+            if (dominantEntity != null)
+            {
+                var answer = dominantEntity.Description;
+                answer += GetEntityAttribution(answerResult);
+                answerResponse = answer;
+            }
+
+            var disambiguations = answerResult.Entities.Value.Where(x => x.EntityPresentationInfo?.EntityScenario == "DisambiguationItem");
+
+            if (disambiguations.Any())
+            {
+                answerResponse += "\n\n*Disambiguation*: ";
+                foreach (var hint in disambiguations)
+                {
+                    answerResponse += hint.EntityPresentationInfo.EntityTypeHints[0] + "; ";
+                }
+            }
+
+            return answerResponse;
         }
 
         private string GetEntityAttribution(Answer answerResult)
