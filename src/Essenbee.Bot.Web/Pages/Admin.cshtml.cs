@@ -4,6 +4,7 @@ using System.Threading;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Infra.Slack;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 
@@ -13,6 +14,9 @@ namespace Essenbee.Bot.Web.Pages
     {
         private readonly IConfiguration _config;
 
+        [BindProperty]
+        public bool IsRunning { get; set; } = false;
+
         public AdminModel(IConfiguration config)
         {
             _config = config;
@@ -20,18 +24,29 @@ namespace Essenbee.Bot.Web.Pages
 
         public void OnGet()
         {
+            var runningJobs = JobStorage.Current.GetMonitoringApi()
+                .ProcessingJobs(0, int.MaxValue).ToList();
+
+            IsRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             var runningJobs = JobStorage.Current.GetMonitoringApi()
                 .ProcessingJobs(0, int.MaxValue).ToList();
 
             var alreadyRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
             if (!alreadyRunning)
-            { 
+            {
                 BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
+                IsRunning = true;
             }
+            else
+            {
+                IsRunning = false;
+            }
+
+            return Page();
         }
     }
 }

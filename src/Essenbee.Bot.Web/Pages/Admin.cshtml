@@ -6,6 +6,19 @@
 
 <h2>Admin</h2>
 
+@if (Model.IsRunning)
+{
+    <div>
+        <p>The Bot is running!</p>
+    </div>
+}
+else
+{
+    <div>
+        <p>The Bot is not running</p>
+    </div>
+}
+
 <form method="post">
     <input type="submit" value="Start">
 </form>
