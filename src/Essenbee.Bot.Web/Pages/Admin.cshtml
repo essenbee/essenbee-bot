@@ -4,21 +4,30 @@
     ViewData["Title"] = "Admin";
 }
 
-<h2>Admin</h2>
+<h2>Bot Administration</h2>
+
+@{
+    var text = "Start Bot";
+}
 
 @if (Model.IsRunning)
 {
+    text = "Stop Bot";
     <div>
-        <p>The Bot is running!</p>
+        <span class="btn btn-success">The Bot is running!</span>
     </div>
 }
 else
 {
+    text = "Start Bot";
     <div>
-        <p>The Bot is not running</p>
+        <span class="btn btn-danger">The Bot is not running</span>
     </div>
 }
 
-<form method="post">
-    <input type="submit" value="Start">
-</form>
+<br />
+<div>
+    <form method="post">
+        <input class="btn btn-primary" type="submit" value="@text">
+    </form>
+</div>

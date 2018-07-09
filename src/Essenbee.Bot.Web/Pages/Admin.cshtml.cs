@@ -35,15 +35,30 @@ namespace Essenbee.Bot.Web.Pages
             var runningJobs = JobStorage.Current.GetMonitoringApi()
                 .ProcessingJobs(0, int.MaxValue).ToList();
 
+            var botWorkerJobs = runningJobs.Where(o => o.Value.Job.Type == typeof(BotWorker)).ToList();
             var alreadyRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
-            if (!alreadyRunning)
+
+            if (botWorkerJobs.Any())
             {
-                BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
-                IsRunning = true;
+                var jobInstanceIdsToDelete = new List<string>();
+
+                foreach (var botWorkerJob in botWorkerJobs)
+                {
+                    jobInstanceIdsToDelete.Add(botWorkerJob.Key);
+                }
+
+                foreach (var id in jobInstanceIdsToDelete)
+                {
+                    BackgroundJob.Delete(id);
+                    RecurringJob.RemoveIfExists(id);
+                }
+
+                IsRunning = false;
             }
             else
             {
-                IsRunning = false;
+                BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
+                IsRunning = true;
             }
 
             return Page();
