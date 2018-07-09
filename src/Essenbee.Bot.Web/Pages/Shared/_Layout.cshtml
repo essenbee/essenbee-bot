@@ -25,6 +25,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
                 <a asp-page="/Index" class="navbar-brand">Essenbee.Bot.Web</a>
             </div>
@@ -33,6 +35,8 @@
                     <li><a asp-page="/Index">Home</a></li>
                     <li><a asp-page="/About">About</a></li>
                     <li><a asp-page="/Contact">Contact</a></li>
+                    <li><a asp-page="/Admin">Admin</a></li>
+                    <li><a href="~/Hangfire">Hangfire Dashboard</a></li>
                 </ul>
             </div>
         </div>
@@ -44,7 +48,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - Essenbee.Bot.Web</p>
+            <p>&copy; @DateTime.Now.Year - CoreBot User Interface</p>
         </footer>
     </div>
 

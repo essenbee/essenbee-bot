@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,8 +30,11 @@ namespace Essenbee.Bot.Web
             // Secrets are accessible via Configuration
             var slackApiKey = Configuration["UserSecrets:SlackApiKey"];
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddHangfire(x => x.UseSqlServerStorage(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EssenbeeBot;Integrated Security=True;MultipleActiveResultSets=true"));
 
+            services.AddSingleton<Core.Bot>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +53,9 @@ namespace Essenbee.Bot.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
 
             app.UseMvc();
         }

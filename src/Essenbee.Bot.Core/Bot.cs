@@ -4,7 +4,6 @@ using System.Threading;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Essenbee.Bot.Core.Utilities;
-using Essenbee.Bot.Core.Commands;
 using static System.Console;
 using System.Linq;
 
@@ -12,7 +11,7 @@ namespace Essenbee.Bot.Core
 {
     public class Bot
     {
-        public List<IChatClient> ConnectedClients { get; }
+        public List<IChatClient> ConnectedClients { get; set; }
         public static string ProjectAnswerKey;
 
         public static readonly string DefaultChannel = "general";
@@ -20,6 +19,11 @@ namespace Essenbee.Bot.Core
 
         private bool _endProgram = false;
         private readonly AutoMessaging _autoMessaging;
+
+        public Bot()
+        {
+            _autoMessaging = new AutoMessaging(new SystemClock());
+        }
 
         public Bot(List<IChatClient> connectedClients)
         {
@@ -32,8 +36,18 @@ namespace Essenbee.Bot.Core
             }
         }
 
+        public void SetChatClients(List<IChatClient> connectedClients)
+        {
+            ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
+        }
+
         public void Start()
         {
+            foreach (var chatClient in ConnectedClients)
+            {
+                chatClient.OnChatCommandReceived += OnCommandReceived;
+            }
+
             CancelKeyPress += OnCtrlC;
 
             WriteLine();
