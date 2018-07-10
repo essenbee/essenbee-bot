@@ -34,11 +34,6 @@ namespace Essenbee.Bot.Core
         {
             ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
             _autoMessaging = new AutoMessaging(new SystemClock());
-
-            foreach (var chatClient in connectedClients)
-            {
-                chatClient.OnChatCommandReceived += OnCommandReceived;
-            }
         }
 
         public void SetChatClients(List<IChatClient> connectedClients)
