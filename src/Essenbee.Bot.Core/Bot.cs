@@ -11,7 +11,12 @@ namespace Essenbee.Bot.Core
 {
     public class Bot
     {
-        public List<IChatClient> ConnectedClients { get; set; }
+        public List<IChatClient> ConnectedClients { get; set; } = new List<IChatClient>();
+
+        // ToDo: Get these from a datastore
+        public List<TimerTriggeredMessage> TimerTriggeredMessages { get; set; } = new List<TimerTriggeredMessage>();
+        public string StartupMessage { get; set; } = string.Empty;
+
         public static string ProjectAnswerKey;
 
         public static readonly string DefaultChannel = "general";
@@ -50,13 +55,27 @@ namespace Essenbee.Bot.Core
 
             CancelKeyPress += OnCtrlC;
 
-            WriteLine();
-            WriteLine("Press [Ctrl]+C to exit.");
-            WriteLine();
-
             LoadCommands();
             PublishTimerTriggeredMessages();
+
+            ShowStartupMessage();
+
             BeginLoop();
+        }
+
+        private void ShowStartupMessage()
+        {
+            if (!string.IsNullOrWhiteSpace(StartupMessage))
+            {
+                foreach (var client in ConnectedClients)
+                {
+                    foreach (var channel in client.Channels)
+                    {
+                        client.PostMessage(channel.Key,
+                            $"{DateTime.Now.ToShortTimeString()} - {StartupMessage}");
+                    }
+                }
+            }
         }
 
         public void SetProjectAnswerKey(string key)
@@ -66,17 +85,10 @@ namespace Essenbee.Bot.Core
 
         private void PublishTimerTriggeredMessages()
         {
-            // ToDo: Eventally, we will want to get these messages from a datastore ...
-            var testMsg = new TimerTriggeredMessage
+            foreach (var msg in TimerTriggeredMessages)
             {
-                Delay = 1, // Minutes
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
-
-            _autoMessaging.PublishMessage(testMsg); // Draft message by default
-
-            // Activate the message
-            testMsg.Status = ItemStatus.Disabled;
+                _autoMessaging.PublishMessage(msg);
+            }
         }
 
         private void BeginLoop()
