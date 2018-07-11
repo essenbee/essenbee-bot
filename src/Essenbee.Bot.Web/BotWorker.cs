@@ -12,11 +12,15 @@ namespace Essenbee.Bot.Web
     {
         private readonly Core.Bot _bot;
         private readonly IConfiguration _config;
+        private readonly IRepository _repository;
 
-        public BotWorker(Core.Bot bot, IConfiguration config)
+        public BotWorker(Core.Bot bot, IConfiguration config, IRepository repository)
         {
             _bot = bot;
             _config = config;
+            _repository = repository;
+
+            bot.SetRepository(_repository);
             bot.ConnectedClients = ConnectChatClients();
             bot.SetProjectAnswerKey(_config["UserSecrets:ProjectAnswerKey"]);
         }
@@ -36,7 +40,7 @@ namespace Essenbee.Bot.Web
                 new SlackChatClient(slackApiKey),
             };
 
-            Thread.Sleep(5000);
+            Thread.Sleep(2000);
 
             return connectedClients;
         }

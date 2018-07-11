@@ -6,6 +6,7 @@ using Essenbee.Bot.Core.Messaging;
 using Essenbee.Bot.Core.Utilities;
 using static System.Console;
 using System.Linq;
+using Essenbee.Bot.Core.Data;
 
 namespace Essenbee.Bot.Core
 {
@@ -23,6 +24,7 @@ namespace Essenbee.Bot.Core
         public static readonly Dictionary<string, ICommand> _CommandsAvailable = new Dictionary<string, ICommand>();
 
         private bool _endProgram = false;
+        private IRepository _repository;
         private readonly AutoMessaging _autoMessaging;
 
         public Bot()
@@ -34,6 +36,11 @@ namespace Essenbee.Bot.Core
         {
             ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
             _autoMessaging = new AutoMessaging(new SystemClock());
+        }
+
+        public void SetRepository(IRepository repository)
+        {
+            _repository = repository;
         }
 
         public void SetChatClients(List<IChatClient> connectedClients)
@@ -60,16 +67,17 @@ namespace Essenbee.Bot.Core
 
         private void ShowStartupMessage()
         {
-            if (!string.IsNullOrWhiteSpace(StartupMessage))
+            if (_repository != null)
             {
-                foreach (var client in ConnectedClients)
-                {
-                    foreach (var channel in client.Channels)
-                    {
-                        client.PostMessage(channel.Key,
-                            $"{DateTime.Now.ToShortTimeString()} - {StartupMessage}");
-                    }
-                }
+                //var startupMessage = _repository.Single<StartupMessage>();
+                //foreach (var client in ConnectedClients)
+                //{
+                //    foreach (var channel in client.Channels)
+                //    {
+                //        client.PostMessage(channel.Key,
+                //            $"{DateTime.Now.ToShortTimeString()} - {startupMessage.Message}");
+                //    }
+                //}
             }
         }
 
@@ -80,9 +88,16 @@ namespace Essenbee.Bot.Core
 
         private void PublishTimerTriggeredMessages()
         {
-            foreach (var msg in TimerTriggeredMessages)
+            if (_repository != null)
             {
-                _autoMessaging.PublishMessage(msg);
+                var timerTriggeredMessages = _repository.List<TimedMessage>();
+
+                foreach (var msg in timerTriggeredMessages)
+                {
+                    var ttm = new TimerTriggeredMessage(msg.Message, msg.Delay);
+                    ttm.Init(DateTime.Now, msg.Status);
+                    _autoMessaging.PublishMessage(ttm);
+                }
             }
         }
 

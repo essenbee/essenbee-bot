@@ -1,3 +1,4 @@
+using Essenbee.Bot.Core.Interfaces;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,8 +35,9 @@ namespace Essenbee.Bot.Web
             var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EssenbeeBot;Integrated Security=True;MultipleActiveResultSets=true";
 
             services.AddHangfire(x => x.UseSqlServerStorage(connStr));
-            services.AddDbContext<AppDataContext>(options => options.UseSqlServer(connStr));
 
+            IRepository repository = DataStore.Setup(connStr);
+            services.AddSingleton(repository);
             services.AddSingleton<Core.Bot>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

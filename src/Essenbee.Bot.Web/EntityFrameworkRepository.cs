@@ -1,7 +1,6 @@
 ﻿using Essenbee.Bot.Core.Data;
 using Essenbee.Bot.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
