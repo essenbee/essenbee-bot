@@ -1,0 +1,37 @@
+﻿@page
+@model Essenbee.Bot.Web.Pages.TimedMessage.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TimedMessage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TimedMessage.Delay)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimedMessage.Delay)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TimedMessage.Message)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimedMessage.Message)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TimedMessage.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TimedMessage.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.TimedMessage.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

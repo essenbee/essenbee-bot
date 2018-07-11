@@ -1,6 +1,8 @@
-﻿using Essenbee.Bot.Core.Data;
+﻿using Essenbee.Bot.Core;
+using Essenbee.Bot.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Essenbee.Bot.Web
 {
@@ -25,6 +27,23 @@ namespace Essenbee.Bot.Web
                 new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["UserSecrets:DatabaseConnectionString"];
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<TimedMessage>()
+                .Property(e => e.Status)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (ItemStatus)Enum.Parse(typeof(ItemStatus), v));
+
+            modelBuilder
+                .Entity<StartupMessage>()
+                .Property(e => e.Status)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (ItemStatus)Enum.Parse(typeof(ItemStatus), v));
         }
     }
 }
