@@ -14,10 +14,6 @@ namespace Essenbee.Bot.Core
     {
         public List<IChatClient> ConnectedClients { get; set; } = new List<IChatClient>();
 
-        // ToDo: Get these from a datastore
-        public List<TimerTriggeredMessage> TimerTriggeredMessages { get; set; } = new List<TimerTriggeredMessage>();
-        public string StartupMessage { get; set; } = string.Empty;
-
         public static string ProjectAnswerKey;
 
         public static readonly string DefaultChannel = "general";

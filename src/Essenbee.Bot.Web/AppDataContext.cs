@@ -28,22 +28,5 @@ namespace Essenbee.Bot.Web
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<TimedMessage>()
-                .Property(e => e.Status)
-                .HasConversion(
-                    v => v.ToString(),
-                    v => (ItemStatus)Enum.Parse(typeof(ItemStatus), v));
-
-            modelBuilder
-                .Entity<StartupMessage>()
-                .Property(e => e.Status)
-                .HasConversion(
-                    v => v.ToString(),
-                    v => (ItemStatus)Enum.Parse(typeof(ItemStatus), v));
-        }
     }
 }

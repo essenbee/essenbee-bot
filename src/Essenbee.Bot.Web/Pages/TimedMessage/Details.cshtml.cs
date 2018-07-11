@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Essenbee.Bot.Core.Data;
 using Essenbee.Bot.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace Essenbee.Bot.Web.Pages.TimedMessage
 {
@@ -15,6 +17,9 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
             _repository = repository;
         }
 
+        [BindProperty]
+        public List<SelectListItem> Statuses { get; set; }
+
         public Core.Data.TimedMessage TimedMessage { get; set; }
 
         public IActionResult OnGet(Guid? id)
@@ -23,6 +28,13 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
             {
                 return NotFound();
             }
+
+            Statuses = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Active", Value = "0"},
+                new SelectListItem {Text = "Draft", Value = "2"},
+                new SelectListItem {Text = "Disabled", Value = "2"}
+            };
 
             TimedMessage = _repository.Single<Core.Data.TimedMessage>(DataItemPolicy<Core.Data.TimedMessage>.ById(id.Value));
 

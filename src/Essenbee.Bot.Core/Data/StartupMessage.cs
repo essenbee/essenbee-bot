@@ -12,7 +12,7 @@
             Status = status;
         }
 
-        public string Message { get; protected set; }
-        public ItemStatus Status { get; protected set; }
+        public string Message { get; set; }
+        public ItemStatus Status { get; set; }
     }
 }

@@ -13,8 +13,8 @@
             Status = status;
         }
 
-        public int Delay { get; protected set; }
-        public string Message { get; protected set; }
-        public ItemStatus Status { get; protected set; }
+        public int Delay { get; set; }
+        public string Message { get; set; }
+        public ItemStatus Status { get; set; }
     }
 }
