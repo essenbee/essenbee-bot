@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,7 +31,10 @@ namespace Essenbee.Bot.Web
             // Secrets are accessible via Configuration
             var slackApiKey = Configuration["UserSecrets:SlackApiKey"];
 
-            services.AddHangfire(x => x.UseSqlServerStorage(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EssenbeeBot;Integrated Security=True;MultipleActiveResultSets=true"));
+            var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EssenbeeBot;Integrated Security=True;MultipleActiveResultSets=true";
+
+            services.AddHangfire(x => x.UseSqlServerStorage(connStr));
+            services.AddDbContext<AppDataContext>(options => options.UseSqlServer(connStr));
 
             services.AddSingleton<Core.Bot>();
 
