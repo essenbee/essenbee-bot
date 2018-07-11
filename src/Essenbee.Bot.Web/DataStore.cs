@@ -5,7 +5,7 @@ namespace Essenbee.Bot.Web
 {
     public static class DataStore
     {
-        public static IRepository Setup(string connectionString)
+        public static IRepository SetupSqlServer(string connectionString)
         {
             DbContextOptions<AppDataContext> options = new DbContextOptionsBuilder<AppDataContext>()
                 .UseSqlServer(connectionString)

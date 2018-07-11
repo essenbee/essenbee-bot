@@ -32,11 +32,11 @@ namespace Essenbee.Bot.Web
             // Secrets are accessible via Configuration
             var slackApiKey = Configuration["UserSecrets:SlackApiKey"];
 
-            var connStr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EssenbeeBot;Integrated Security=True;MultipleActiveResultSets=true";
+            var connStr = Configuration["UserSecrets:DatabaseConnectionString"]; ;
 
             services.AddHangfire(x => x.UseSqlServerStorage(connStr));
 
-            IRepository repository = DataStore.Setup(connStr);
+            IRepository repository = DataStore.SetupSqlServer(connStr);
             services.AddSingleton(repository);
             services.AddSingleton<Core.Bot>();
 
