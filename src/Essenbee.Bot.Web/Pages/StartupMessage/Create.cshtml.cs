@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Essenbee.Bot.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Essenbee.Bot.Web.Pages.StartupMessage
 {
@@ -24,6 +25,8 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                 new SelectListItem {Text = "Disabled", Value = "2"}
             };
 
+            StartupMessage = _repository.List<Core.Data.StartupMessage>().FirstOrDefault();
+
             return Page();
         }
 
@@ -40,9 +43,14 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                 return Page();
             }
 
-            _repository.Create<Core.Data.StartupMessage>(StartupMessage);
+            if (StartupMessage is null)
+            {
+                _repository.Create<Core.Data.StartupMessage>(StartupMessage);
 
-            return RedirectToPage("/Admin");
+                return RedirectToPage("/Admin");
+            }
+
+            return Page();
         }
     }
 }
