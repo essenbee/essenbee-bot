@@ -20,11 +20,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new TimerTriggeredMessage
-            {
-                Delay = Delay,
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
+            var testMsg = new TimerTriggeredMessage("Hi, this is a timed message from CoreBot!", Delay);
 
             testMsg.Init(fakeClock.Now, ItemStatus.Active);
             
@@ -40,11 +36,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new TimerTriggeredMessage
-            {
-                Delay = Delay,
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
+            var testMsg = new TimerTriggeredMessage("Hi, this is a timed message from CoreBot!", Delay);
 
             testMsg.Init(fakeClock.Now, ItemStatus.Active);
 
@@ -60,11 +52,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new TimerTriggeredMessage
-            {
-                Delay = Delay,
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
+            var testMsg = new TimerTriggeredMessage("Hi, this is a timed message from CoreBot!", Delay);
 
             testMsg.Init(fakeClock.Now, ItemStatus.Active);
 
@@ -80,11 +68,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new TimerTriggeredMessage
-            {
-                Delay = Delay,
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
+            var testMsg = new TimerTriggeredMessage("Hi, this is a timed message from CoreBot!", Delay);
 
             testMsg.Init(fakeClock.Now, ItemStatus.Active);
             testMsg.GetMessage(fakeClock.Now.AddMinutes(Delay)); // Will reset the timer
@@ -101,11 +85,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new TimerTriggeredMessage
-            {
-                Delay = Delay,
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
+            var testMsg = new TimerTriggeredMessage("Hi, this is a timed message from CoreBot!", Delay);
 
             testMsg.GetMessage(fakeClock.Now.AddMinutes(1));
 
@@ -121,11 +101,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new TimerTriggeredMessage
-            {
-                Delay = Delay,
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
+            var testMsg = new TimerTriggeredMessage("Hi, this is a timed message from CoreBot!", Delay);
 
             testMsg.Init(fakeClock.Now, ItemStatus.Draft);
 
@@ -141,11 +117,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.Now).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new TimerTriggeredMessage
-            {
-                Delay = Delay,
-                Message = "Hi, this is a timed message from CoreBot!"
-            };
+            var testMsg = new TimerTriggeredMessage("Hi, this is a timed message from CoreBot!", Delay);
 
             testMsg.Init(fakeClock.Now, ItemStatus.Disabled);
 

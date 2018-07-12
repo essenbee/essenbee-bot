@@ -1,0 +1,38 @@
+﻿@model Essenbee.Bot.Web.Pages.AdminModel
+
+@{
+    var text = "Start Bot";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Bot Control</h3>
+    </div>
+
+    <div class="panel-body">
+        <div>
+            @if (Model.IsRunning)
+            {
+                text = "Stop Bot";
+                <div class="text-center">
+                    <span class="btn btn-success">The Bot is running!</span>
+                </div>
+            }
+            else
+            {
+                text = "Start Bot";
+                <div class="text-center">
+                    <span class="btn btn-danger">The Bot is not running</span>
+                </div>
+            }
+
+            <br />
+            <div class="text-center">
+                <form method="post">
+                    <input class="btn btn-primary" type="submit" value="@text">
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
