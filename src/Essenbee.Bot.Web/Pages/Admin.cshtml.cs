@@ -65,6 +65,9 @@ namespace Essenbee.Bot.Web.Pages
                 IsRunning = true;
             }
 
+            TimedMessages = _repository.List<Core.Data.TimedMessage>();
+            StartupMessage = _repository.List<Core.Data.StartupMessage>();
+
             return Page();
         }
 
