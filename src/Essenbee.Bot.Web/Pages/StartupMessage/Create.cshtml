@@ -1,0 +1,39 @@
+﻿@page
+@model Essenbee.Bot.Web.Pages.StartupMessage.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Startup Message</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StartupMessage.Message" class="control-label"></label>
+                <input asp-for="StartupMessage.Message" class="form-control" />
+                <span asp-validation-for="StartupMessage.Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartupMessage.Status" class="control-label"></label>
+                <select asp-for="StartupMessage.Status" asp-items="@Model.Statuses" class="form-control"></select>
+                <span asp-validation-for="StartupMessage.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="/Admin">Back to Admin</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

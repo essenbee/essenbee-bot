@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Web.Pages
         [BindProperty]
         public bool IsRunning { get; set; } = false;
         public IList<Core.Data.TimedMessage> TimedMessages { get; set; }
+        public IList<Core.Data.StartupMessage> StartupMessage { get; set; }
 
         public AdminModel(IConfiguration config, IRepository repository)
         {
@@ -28,6 +29,7 @@ namespace Essenbee.Bot.Web.Pages
             var runningJobs = GetRunningJobs();
             IsRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
             TimedMessages = _repository.List<Core.Data.TimedMessage>();
+            StartupMessage = _repository.List<Core.Data.StartupMessage>();
 
             return Page();
         }

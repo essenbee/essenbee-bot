@@ -65,15 +65,19 @@ namespace Essenbee.Bot.Core
         {
             if (_repository != null)
             {
-                //var startupMessage = _repository.Single<StartupMessage>();
-                //foreach (var client in ConnectedClients)
-                //{
-                //    foreach (var channel in client.Channels)
-                //    {
-                //        client.PostMessage(channel.Key,
-                //            $"{DateTime.Now.ToShortTimeString()} - {startupMessage.Message}");
-                //    }
-                //}
+                var startupMessage = _repository.List<StartupMessage>().FirstOrDefault(m => m.Status == ItemStatus.Active);
+
+                if (startupMessage != null)
+                {
+                    foreach (var client in ConnectedClients)
+                    {
+                        foreach (var channel in client.Channels)
+                        {
+                            client.PostMessage(channel.Key,
+                                $"{DateTime.Now.ToShortTimeString()} - {startupMessage.Message}");
+                        }
+                    }
+                }
             }
         }
 
