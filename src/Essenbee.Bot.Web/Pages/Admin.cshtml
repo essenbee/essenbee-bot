@@ -6,8 +6,136 @@
 
 <h2>Bot Administration</h2>
 
-@await Html.PartialAsync("_BotControl", Model)
+@{
+    var text = "Start Bot";
+}
 
-@await Html.PartialAsync("_StartupMessage", Model)
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Bot Control</h3>
+    </div>
 
-@await Html.PartialAsync("_TimedMessages", Model)
+    <div class="panel-body">
+        <div>
+            @if (Model.IsRunning)
+            {
+                text = "Stop Bot";
+                <div class="text-center">
+                    <span class="btn btn-success">The Bot is running!</span>
+                </div>
+            }
+            else
+            {
+                text = "Start Bot";
+                <div class="text-center">
+                    <span class="btn btn-danger">The Bot is not running</span>
+                </div>
+            }
+
+            <br />
+            <div class="text-center">
+                <form method="post">
+                    <input class="btn btn-primary" type="submit" value="@text">
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Startup Message</h3>
+    </div>
+
+    <div class="panel-body">
+        @if (!Model.StartupMessage.Any())
+        {
+            <p>
+                <a asp-page="StartupMessage/Create">Create Startup Message</a>
+            </p>
+        }
+        @if (Model.StartupMessage.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartupMessage[0].Message)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartupMessage[0].Status)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.StartupMessage[0].Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.StartupMessage[0].Status)
+                        </td>
+                        <td>
+                            <a asp-page="./StartupMessage/Edit" asp-route-id="@Model.StartupMessage[0].Id">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Timed Messages</h3>
+    </div>
+
+    <div class="panel-body">
+
+        <p>
+            <a asp-page="TimedMessage/Create">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TimedMessages[0].Delay)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TimedMessages[0].Message)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TimedMessages[0].Status)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TimedMessages)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Delay)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            <a asp-page="./TimedMessage/Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-page="./TimedMessage/Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-page="./TimedMessage/Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+</div>

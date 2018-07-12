@@ -15,7 +15,9 @@ namespace Essenbee.Bot.Web.Pages
 
         [BindProperty]
         public bool IsRunning { get; set; } = false;
+        [BindProperty]
         public IList<Core.Data.TimedMessage> TimedMessages { get; set; }
+        [BindProperty]
         public IList<Core.Data.StartupMessage> StartupMessage { get; set; }
 
         public AdminModel(IConfiguration config, IRepository repository)
