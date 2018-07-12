@@ -48,7 +48,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
                 _repository.Remove<Core.Data.TimedMessage>(TimedMessage);
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Admin");
         }
     }
 }

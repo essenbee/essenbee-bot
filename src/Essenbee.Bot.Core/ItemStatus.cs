@@ -2,8 +2,8 @@
 {
     public enum ItemStatus
     {
-        Active,
-        Draft,
-        Disabled,
+        Active = 0,
+        Draft = 1,
+        Disabled = 2,
     }
 }

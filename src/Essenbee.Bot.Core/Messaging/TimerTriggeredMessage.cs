@@ -17,6 +17,13 @@ namespace Essenbee.Bot.Core.Messaging
             Delay = delay;
         }
 
+        public TimerTriggeredMessage(string message, int delay, DateTime currentTime)
+        {
+            Message = message;
+            Delay = delay;
+            _lastRun = currentTime;
+        }
+
         public void Init(DateTime currentTime, ItemStatus status)
         {
             _lastRun = currentTime;

@@ -29,15 +29,14 @@ namespace Essenbee.Bot.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            // Secrets are accessible via Configuration
-            var slackApiKey = Configuration["UserSecrets:SlackApiKey"];
-
             var connStr = Configuration["UserSecrets:DatabaseConnectionString"]; ;
 
             services.AddHangfire(x => x.UseSqlServerStorage(connStr));
 
-            IRepository repository = DataStore.SetupSqlServer(connStr);
-            services.AddSingleton(repository);
+            services.AddDbContext<AppDataContext>(options =>
+                options.UseSqlServer(connStr));
+
+            services.AddScoped<IRepository, EntityFrameworkRepository>();
             services.AddSingleton<Core.Bot>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

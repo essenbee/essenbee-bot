@@ -57,7 +57,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
 
             _repository.Update<Core.Data.TimedMessage>(TimedMessage);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Admin");
         }
 
         private bool TimedMessageExists(Guid id)

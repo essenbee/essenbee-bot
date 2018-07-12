@@ -42,7 +42,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
 
             _repository.Create<Core.Data.TimedMessage>(TimedMessage);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Admin");
         }
     }
 }

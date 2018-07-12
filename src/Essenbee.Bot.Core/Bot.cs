@@ -90,9 +90,8 @@ namespace Essenbee.Bot.Core
 
                 foreach (var msg in timerTriggeredMessages)
                 {
-                    var ttm = new TimerTriggeredMessage(msg.Message, msg.Delay);
-                    ttm.Init(DateTime.Now, msg.Status);
-                    _autoMessaging.PublishMessage(ttm);
+                    var ttm = new TimerTriggeredMessage(msg.Message, msg.Delay, DateTime.Now);
+                    _autoMessaging.PublishMessage(ttm, msg.Status);
                 }
             }
         }

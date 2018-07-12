@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Essenbee.Bot.Core.Interfaces;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,19 +11,23 @@ namespace Essenbee.Bot.Web.Pages
     public class AdminModel : PageModel
     {
         private readonly IConfiguration _config;
+        private readonly IRepository _repository;
 
         [BindProperty]
         public bool IsRunning { get; set; } = false;
+        public IList<Core.Data.TimedMessage> TimedMessages { get; set; }
 
-        public AdminModel(IConfiguration config)
+        public AdminModel(IConfiguration config, IRepository repository)
         {
             _config = config;
+            _repository = repository;
         }
 
         public IActionResult OnGet()
         {
             var runningJobs = GetRunningJobs();
             IsRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
+            TimedMessages = _repository.List<Core.Data.TimedMessage>();
 
             return Page();
         }
