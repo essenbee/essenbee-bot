@@ -5,12 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
+using System.IO;
 
 namespace Essenbee.Bot.Web
 {
     public class Program
     {
-        public static IConfiguration Configuration { get; set; }
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 
         public static void Main(string[] args)
         {
