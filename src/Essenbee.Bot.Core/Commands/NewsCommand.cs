@@ -23,7 +23,7 @@ namespace Essenbee.Bot.Core.Commands
             var newsXML = string.Empty;
             var webClient = new WebClient();
 
-            var arg0 = e.ArgsAsList[0];
+            var arg0 = e.ArgsAsList.Count >0 ? e.ArgsAsList[0] : string.Empty;
 
             switch (arg0)
             {
