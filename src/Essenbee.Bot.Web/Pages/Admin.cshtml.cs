@@ -5,12 +5,13 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Essenbee.Bot.Web.Pages
 {
     public class AdminModel : PageModel
     {
-        private readonly IConfiguration _config;
+        private readonly IOptions<UserSecrets> _config;
         private readonly IRepository _repository;
 
         [BindProperty]
@@ -20,7 +21,7 @@ namespace Essenbee.Bot.Web.Pages
         [BindProperty]
         public IList<Core.Data.StartupMessage> StartupMessage { get; set; }
 
-        public AdminModel(IConfiguration config, IRepository repository)
+        public AdminModel(IOptions<UserSecrets> config, IRepository repository)
         {
             _config = config;
             _repository = repository;

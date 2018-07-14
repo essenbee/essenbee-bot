@@ -29,6 +29,7 @@ namespace Essenbee.Bot.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<UserSecrets>(Configuration.GetSection(nameof(UserSecrets)));
             var secrets = Configuration.GetSection(nameof(UserSecrets)).Get<UserSecrets>();
 
             services.AddHangfire(x => x.UseSqlServerStorage(secrets.DatabaseConnectionString));
