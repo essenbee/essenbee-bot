@@ -3,6 +3,8 @@ using Essenbee.Bot.Infra.Slack;
 using Hangfire;
 using Hangfire.Server;
 using Microsoft.Extensions.Options;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -24,10 +26,18 @@ namespace Essenbee.Bot.Web
             bot.ConnectedClients = ConnectChatClients();
             bot.SetProjectAnswerKey(_config.Value.ProjectAnswerKey);
         }
+
         [DisableConcurrentExecution(60)]
         public void Start()
         {
-            _bot.Start();
+            try
+            {
+                _bot.Start();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"BotWorker.Start(): {ex.Message} - {ex.StackTrace}");
+            }
         }
 
         private List<IChatClient> ConnectChatClients()

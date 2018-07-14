@@ -19,25 +19,36 @@ namespace Essenbee.Bot.Web
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                //.ReadFrom.Configuration(Configuration)
+                .ReadFrom.Configuration(Configuration)
                 .Enrich.FromLogContext()
-                .WriteTo.RollingFile(@"C:\logs\botlog-.txt",
+                .WriteTo.RollingFile(Configuration["LogFilePath"],
                                      fileSizeLimitBytes: 1_000_000,
                                      flushToDiskInterval: TimeSpan.FromSeconds(1),
                                      shared: true)
                 .CreateLogger();
 
-            Log.Information("Starting web host...");
-            var host = CreateWebHostBuilder(args).Build();
-
-            using (var scope = host.Services.CreateScope())
+            try
             {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<AppDataContext>();
-                context.Database.Migrate();
-            }
+                Log.Information("Starting web host...");
+                var host = CreateWebHostBuilder(args).Build();
 
-            host.Run();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    var context = services.GetRequiredService<AppDataContext>();
+                    context.Database.Migrate();
+                }
+
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly!");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args)

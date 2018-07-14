@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Essenbee.Bot.Core.Interfaces;
 using Hangfire;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace Essenbee.Bot.Web.Pages
 {
@@ -39,35 +41,42 @@ namespace Essenbee.Bot.Web.Pages
 
         public IActionResult OnPost()
         {
-            var runningJobs = GetRunningJobs();
-            var botWorkerJobs = runningJobs.Where(o => o.Value.Job.Type == typeof(BotWorker)).ToList();
-            var alreadyRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
-
-            if (botWorkerJobs.Any())
+            try
             {
-                var jobInstanceIdsToDelete = new List<string>();
+                var runningJobs = GetRunningJobs();
+                var botWorkerJobs = runningJobs.Where(o => o.Value.Job.Type == typeof(BotWorker)).ToList();
+                var alreadyRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
 
-                foreach (var botWorkerJob in botWorkerJobs)
+                if (botWorkerJobs.Any())
                 {
-                    jobInstanceIdsToDelete.Add(botWorkerJob.Key);
+                    var jobInstanceIdsToDelete = new List<string>();
+
+                    foreach (var botWorkerJob in botWorkerJobs)
+                    {
+                        jobInstanceIdsToDelete.Add(botWorkerJob.Key);
+                    }
+
+                    foreach (var id in jobInstanceIdsToDelete)
+                    {
+                        BackgroundJob.Delete(id);
+                        RecurringJob.RemoveIfExists(id);
+                    }
+
+                    IsRunning = false;
+                }
+                else
+                {
+                    BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
+                    IsRunning = true;
                 }
 
-                foreach (var id in jobInstanceIdsToDelete)
-                {
-                    BackgroundJob.Delete(id);
-                    RecurringJob.RemoveIfExists(id);
-                }
-
-                IsRunning = false;
+                TimedMessages = _repository.List<Core.Data.TimedMessage>();
+                StartupMessage = _repository.List<Core.Data.StartupMessage>();
             }
-            else
+            catch (Exception ex)
             {
-                BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
-                IsRunning = true;
+                Log.Error($"Admin.OnPost(): {ex.Message} - {ex.StackTrace}");
             }
-
-            TimedMessages = _repository.List<Core.Data.TimedMessage>();
-            StartupMessage = _repository.List<Core.Data.StartupMessage>();
 
             return Page();
         }
