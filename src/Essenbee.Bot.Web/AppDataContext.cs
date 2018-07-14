@@ -1,21 +1,22 @@
-﻿using Essenbee.Bot.Core;
-using Essenbee.Bot.Core.Data;
+﻿using Essenbee.Bot.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
+using Microsoft.Extensions.Options;
 
 namespace Essenbee.Bot.Web
 {
     public class AppDataContext : DbContext
     {
+        private readonly IOptions<UserSecrets> _config;
+
         public AppDataContext()
         {
 
         }
 
-        public AppDataContext(DbContextOptions<AppDataContext> options) : base(options)
+        public AppDataContext(IOptions<UserSecrets> config, DbContextOptions<AppDataContext> options) : base(options)
         {
-
+            _config = config;
         }
 
         public DbSet<StartupMessage> StartupMessages { get; set; }
@@ -23,8 +24,19 @@ namespace Essenbee.Bot.Web
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString =
-                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()["UserSecrets:DatabaseConnectionString"];
+            var connectionString = string.Empty;
+
+            if (_config is null)
+            {
+                connectionString = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .Build()["UserSecrets:DatabaseConnectionString"];
+            }
+            else
+            {
+                connectionString = _config.Value.DatabaseConnectionString;
+            }
+
             optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
         }
