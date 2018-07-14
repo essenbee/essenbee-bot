@@ -18,13 +18,13 @@ namespace Essenbee.Bot.Web
         public void Disconnect()
         {
             Console.WriteLine("Disconnecting from the Console service ...");
-            Log.Debug("Disconnecting from the Console service ...");
+            Log.Information("Disconnecting from the Console service ...");
         }
 
         public void PostMessage(string channel, string text)
         {
             Console.WriteLine(text);
-            Log.Debug(text);
+            Log.Information(text);
         }
     }
 }
