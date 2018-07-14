@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Essenbee.Bot.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System;
+using Serilog;
 
 namespace Essenbee.Bot.Web.Pages.TimedMessage
 {
@@ -40,7 +42,14 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
                 return Page();
             }
 
-            _repository.Create<Core.Data.TimedMessage>(TimedMessage);
+            try
+            {
+                _repository.Create<Core.Data.TimedMessage>(TimedMessage);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"TimedMessage.Create.OnPost(): {ex.Message} - {ex.StackTrace}");
+            }
 
             return RedirectToPage("/Admin");
         }

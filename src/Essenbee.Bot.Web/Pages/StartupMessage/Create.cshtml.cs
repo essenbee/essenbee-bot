@@ -4,6 +4,8 @@ using Essenbee.Bot.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using Serilog;
 
 namespace Essenbee.Bot.Web.Pages.StartupMessage
 {
@@ -25,7 +27,14 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                 new SelectListItem {Text = "Disabled", Value = "2"}
             };
 
-            StartupMessage = _repository.List<Core.Data.StartupMessage>().FirstOrDefault();
+            try
+            {
+                StartupMessage = _repository.List<Core.Data.StartupMessage>().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"StartupMessage.Create.OnGet(): {ex.Message} - {ex.StackTrace}");
+            }
 
             return Page();
         }
@@ -45,7 +54,14 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
 
             if (StartupMessage is null)
             {
-                _repository.Create<Core.Data.StartupMessage>(StartupMessage);
+                try
+                {
+                    _repository.Create<Core.Data.StartupMessage>(StartupMessage);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"StartupMessage.Create.OnPost(): {ex.Message} - {ex.StackTrace}");
+                }
 
                 return RedirectToPage("/Admin");
             }

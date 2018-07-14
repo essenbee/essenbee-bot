@@ -6,6 +6,7 @@ using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using Serilog;
 
 namespace Essenbee.Bot.Web.Pages.TimedMessage
 {
@@ -31,7 +32,14 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
                 return NotFound();
             }
 
-            TimedMessage = _repository.Single<Core.Data.TimedMessage>(DataItemPolicy<Core.Data.TimedMessage>.ById(id.Value));
+            try
+            {
+                TimedMessage = _repository.Single<Core.Data.TimedMessage>(DataItemPolicy<Core.Data.TimedMessage>.ById(id.Value));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"TimedMessage.Create.OnGet(): {ex.Message} - {ex.StackTrace}");
+            }
 
             if (TimedMessage == null)
             {
@@ -55,7 +63,14 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
                 return Page();
             }
 
-            _repository.Update<Core.Data.TimedMessage>(TimedMessage);
+            try
+            {
+                _repository.Update<Core.Data.TimedMessage>(TimedMessage);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"TimedMessage.Edit.OnPost(): {ex.Message} - {ex.StackTrace}");
+            }
 
             return RedirectToPage("/Admin");
         }

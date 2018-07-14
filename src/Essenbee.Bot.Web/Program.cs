@@ -54,6 +54,5 @@ namespace Essenbee.Bot.Web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args)
             .UseSerilog()
             .UseStartup<Startup>();
-
     }
 }

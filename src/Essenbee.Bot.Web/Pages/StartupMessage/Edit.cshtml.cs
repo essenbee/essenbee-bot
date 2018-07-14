@@ -6,6 +6,7 @@ using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using Serilog;
 
 namespace Essenbee.Bot.Web.Pages.StartupMessage
 {
@@ -31,7 +32,14 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                 return NotFound();
             }
 
-            StartupMessage = _repository.Single<Core.Data.StartupMessage>(DataItemPolicy<Core.Data.StartupMessage>.ById(id.Value));
+            try
+            {
+                StartupMessage = _repository.Single<Core.Data.StartupMessage>(DataItemPolicy<Core.Data.StartupMessage>.ById(id.Value));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"StartupMessage.Edit.OnGet(): {ex.Message} - {ex.StackTrace}");
+            }
 
             if (StartupMessage == null)
             {
@@ -55,7 +63,14 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                 return Page();
             }
 
-            _repository.Update<Core.Data.StartupMessage>(StartupMessage);
+            try
+            {
+                _repository.Update<Core.Data.StartupMessage>(StartupMessage);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"StartupMessage.Edit.OnPost(): {ex.Message} - {ex.StackTrace}");
+            }
 
             return RedirectToPage("/Admin");
         }

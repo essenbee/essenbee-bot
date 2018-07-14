@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Essenbee.Bot.Core.Interfaces;
+using Serilog;
 
 namespace Essenbee.Bot.Web
 {
@@ -17,11 +18,13 @@ namespace Essenbee.Bot.Web
         public void Disconnect()
         {
             Console.WriteLine("Disconnecting from the Console service ...");
+            Log.Debug("Disconnecting from the Console service ...");
         }
 
         public void PostMessage(string channel, string text)
         {
             Console.WriteLine(text);
+            Log.Debug(text);
         }
     }
 }
