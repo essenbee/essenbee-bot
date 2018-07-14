@@ -328,3 +328,4 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/src/Essenbee.Bot.Web/C;/logs/log--20180714.txt
