@@ -5,6 +5,7 @@ using Essenbee.Bot.Core.Data;
 using Essenbee.Bot.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using Serilog;
 
 namespace Essenbee.Bot.Web.Pages.TimedMessage
 {
@@ -36,7 +37,14 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
                 new SelectListItem {Text = "Disabled", Value = "2"}
             };
 
-            TimedMessage = _repository.Single<Core.Data.TimedMessage>(DataItemPolicy<Core.Data.TimedMessage>.ById(id.Value));
+            try
+            {
+                TimedMessage = _repository.Single<Core.Data.TimedMessage>(DataItemPolicy<Core.Data.TimedMessage>.ById(id.Value));
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"TimedMessage.Details.OnGet(): {ex.Message} - {ex.StackTrace}");
+            }
 
             if (TimedMessage == null)
             {
