@@ -2,7 +2,7 @@
 using Essenbee.Bot.Infra.Slack;
 using Hangfire;
 using Hangfire.Server;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -11,10 +11,10 @@ namespace Essenbee.Bot.Web
     public class BotWorker : Worker
     {
         private readonly Core.Bot _bot;
-        private readonly IConfiguration _config;
+        private readonly IOptions<UserSecrets> _config;
         private readonly IRepository _repository;
 
-        public BotWorker(Core.Bot bot, IConfiguration config, IRepository repository)
+        public BotWorker(Core.Bot bot, IOptions<UserSecrets> config, IRepository repository)
         {
             _bot = bot;
             _config = config;
@@ -22,9 +22,8 @@ namespace Essenbee.Bot.Web
 
             bot.SetRepository(_repository);
             bot.ConnectedClients = ConnectChatClients();
-            bot.SetProjectAnswerKey(_config["UserSecrets:ProjectAnswerKey"]);
+            bot.SetProjectAnswerKey(_config.Value.ProjectAnswerKey);
         }
-
         [DisableConcurrentExecution(60)]
         public void Start()
         {
@@ -33,7 +32,7 @@ namespace Essenbee.Bot.Web
 
         private List<IChatClient> ConnectChatClients()
         {
-            var slackApiKey = _config["UserSecrets:SlackApiKey"];
+            var slackApiKey = _config.Value.SlackApiKey;
             var connectedClients = new List<IChatClient>
             {
                 new ConsoleChatClient(),
