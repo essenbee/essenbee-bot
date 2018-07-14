@@ -29,12 +29,12 @@ namespace Essenbee.Bot.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connStr = Configuration["UserSecrets:DatabaseConnectionString"]; ;
+            var secrets = Configuration.GetSection(nameof(UserSecrets)).Get<UserSecrets>();
 
-            services.AddHangfire(x => x.UseSqlServerStorage(connStr));
+            services.AddHangfire(x => x.UseSqlServerStorage(secrets.DatabaseConnectionString));
 
             services.AddDbContext<AppDataContext>(options =>
-                options.UseSqlServer(connStr));
+                options.UseSqlServer(secrets.DatabaseConnectionString));
 
             services.AddScoped<IRepository, EntityFrameworkRepository>();
             services.AddSingleton<Core.Bot>();
