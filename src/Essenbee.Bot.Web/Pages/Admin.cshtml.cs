@@ -5,7 +5,6 @@ using Essenbee.Bot.Core.Interfaces;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Serilog;
 
@@ -31,10 +30,17 @@ namespace Essenbee.Bot.Web.Pages
 
         public IActionResult OnGet()
         {
-            var runningJobs = GetRunningJobs();
-            IsRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
-            TimedMessages = _repository.List<Core.Data.TimedMessage>();
-            StartupMessage = _repository.List<Core.Data.StartupMessage>();
+            try
+            {
+                var runningJobs = GetRunningJobs();
+                IsRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
+                TimedMessages = _repository.List<Core.Data.TimedMessage>();
+                StartupMessage = _repository.List<Core.Data.StartupMessage>();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Admin.OnGet(): {ex.Message} - {ex.StackTrace}");
+            }
 
             return Page();
         }
