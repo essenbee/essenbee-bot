@@ -207,12 +207,17 @@ namespace Essenbee.Bot.Core.Commands
 
             var disambiguations = answerResult.Entities.Value.Where(x => x.EntityPresentationInfo?.EntityScenario == "DisambiguationItem");
 
-            if (disambiguations.Any())
+            var hints = disambiguations.ToList();
+            if (hints.Any())
             {
                 answerResponse += "\n\n*Disambiguation*: ";
-                foreach (var hint in disambiguations)
+                foreach (var hint in hints)
                 {
-                    answerResponse += hint.EntityPresentationInfo.EntityTypeHints[0] + "; ";
+                    if (hint?.EntityPresentationInfo?.EntityTypeHints != null &&
+                        hint.EntityPresentationInfo.EntityTypeHints.Any())
+                    {
+                        answerResponse += hint.EntityPresentationInfo?.EntityTypeHints[0] + "; ";
+                    }
                 }
             }
 
