@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot.Infra.Slack", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{89AAA69A-63F0-4EF4-BA71-F17FB79C4F07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essenbee.Bot.Web", "Essenbee.Bot.Web\Essenbee.Bot.Web.csproj", "{D52EA832-5840-479B-8512-C3D0DEE58538}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot.Web", "Essenbee.Bot.Web\Essenbee.Bot.Web.csproj", "{D52EA832-5840-479B-8512-C3D0DEE58538}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AB856A69-567D-4C25-87F5-F178E64C9BF1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
