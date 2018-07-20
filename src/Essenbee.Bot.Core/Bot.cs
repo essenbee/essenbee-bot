@@ -87,7 +87,7 @@ namespace Essenbee.Bot.Core
         {
             if (_repository != null)
             {
-                var messages = _repository.List<TimedMessage>();
+                var messages = _repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
 
                 foreach (var message in messages)
                 {
