@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Web
 
         public void AddAction(IScheduledAction action)
         {
-            Log.Information($"Scheduling {action.Name}.with Hangfire server...");
+            Log.Information($"Scheduling {action.Name} with Hangfire server...");
 
             switch (action)
             {
