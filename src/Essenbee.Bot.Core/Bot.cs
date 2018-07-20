@@ -22,6 +22,7 @@ namespace Essenbee.Bot.Core
         private bool _endProgram = false;
         private IRepository _repository;
         private readonly AutoMessaging _autoMessaging;
+        private readonly IActionScheduler _actionScheduler;
 
         public Bot()
         {
@@ -54,7 +55,8 @@ namespace Essenbee.Bot.Core
             CancelKeyPress += OnCtrlC;
 
             LoadCommands();
-            PublishTimerTriggeredMessages();
+            ScheduleRepeatedMessages();
+            //PublishTimerTriggeredMessages();
 
             ShowStartupMessage();
 
@@ -77,6 +79,20 @@ namespace Essenbee.Bot.Core
                                 $"{DateTime.Now.ToShortTimeString()} - {startupMessage.Message}");
                         }
                     }
+                }
+            }
+        }
+        
+        private void ScheduleRepeatedMessages()
+        {
+            if (_repository != null)
+            {
+                var messages = _repository.List<TimedMessage>();
+
+                foreach (var message in messages)
+                {
+                    var action = new RepeatingMessage(DefaultChannel, message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
+                    _actionScheduler.AddAction(action);
                 }
             }
         }
@@ -107,24 +123,24 @@ namespace Essenbee.Bot.Core
                 Thread.Sleep(1000);
 
                 // Show Timer Triggered Messages
-                _autoMessaging.EnqueueMessagesToDisplay();
+                //_autoMessaging.EnqueueMessagesToDisplay();
 
-                while (true)
-                {
-                    var (isMessage, message) = _autoMessaging.DequeueNextMessage();
+                //while (true)
+                //{
+                //    var (isMessage, message) = _autoMessaging.DequeueNextMessage();
 
-                    if (!isMessage) break;
+                //    if (!isMessage) break;
 
-                    foreach (var client in ConnectedClients)
-                    {
-                        var channelId = client.Channels.ContainsKey(DefaultChannel)
-                            ? client.Channels[DefaultChannel]
-                            : string.Empty;
+                //    foreach (var client in ConnectedClients)
+                //    {
+                //        var channelId = client.Channels.ContainsKey(DefaultChannel)
+                //            ? client.Channels[DefaultChannel]
+                //            : string.Empty;
 
-                        client.PostMessage(channelId,
-                            $"{DateTime.Now.ToShortTimeString()} - {message}");
-                    }
-                }
+                //        client.PostMessage(channelId,
+                //            $"{DateTime.Now.ToShortTimeString()} - {message}");
+                //    }
+                //}
 
                 if (_endProgram) break;
             }
