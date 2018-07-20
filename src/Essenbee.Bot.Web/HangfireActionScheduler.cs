@@ -7,11 +7,11 @@ using Serilog;
 
 namespace Essenbee.Bot.Web
 {
-    public class HangfileActionScheduler : IActionScheduler
+    public class HangfireActionScheduler : IActionScheduler
     {
         private readonly IList<IChatClient> _chatClients;
         
-        public HangfileActionScheduler(IList<IChatClient> chatClients)
+        public HangfireActionScheduler(IList<IChatClient> chatClients)
         {
             _chatClients = chatClients;
         }
