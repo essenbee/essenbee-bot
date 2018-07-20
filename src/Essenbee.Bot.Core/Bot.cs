@@ -22,7 +22,7 @@ namespace Essenbee.Bot.Core
         private bool _endProgram = false;
         private IRepository _repository;
         private readonly AutoMessaging _autoMessaging;
-        private readonly IActionScheduler _actionScheduler;
+        private IActionScheduler _actionScheduler;
 
         public Bot()
         {
@@ -40,6 +40,11 @@ namespace Essenbee.Bot.Core
             _repository = repository;
         }
 
+        public void SetActionScheduler(IActionScheduler scheduler)
+        {
+            _actionScheduler = scheduler;
+        }
+
         public void SetChatClients(List<IChatClient> connectedClients)
         {
             ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
@@ -55,8 +60,8 @@ namespace Essenbee.Bot.Core
             CancelKeyPress += OnCtrlC;
 
             LoadCommands();
-            ScheduleRepeatedMessages();
-            //PublishTimerTriggeredMessages();
+            //ScheduleRepeatedMessages();
+            PublishTimerTriggeredMessages();
 
             ShowStartupMessage();
 
@@ -85,14 +90,16 @@ namespace Essenbee.Bot.Core
         
         private void ScheduleRepeatedMessages()
         {
-            if (_repository != null)
+            if (_repository != null && _actionScheduler != null)
             {
                 var messages = _repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
+                var channels = ConnectedClients.SelectMany(c => c.Channels);
+                var channel = channels.FirstOrDefault(x => x.Key.Equals(DefaultChannel));
 
                 foreach (var message in messages)
                 {
-                    var action = new RepeatingMessage(DefaultChannel, message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
-                    _actionScheduler.AddAction(action);
+                    var action = new RepeatingMessage(channel.Value, message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
+                    _actionScheduler.Schedule(action);
                 }
             }
         }
@@ -123,24 +130,24 @@ namespace Essenbee.Bot.Core
                 Thread.Sleep(1000);
 
                 // Show Timer Triggered Messages
-                //_autoMessaging.EnqueueMessagesToDisplay();
+                _autoMessaging.EnqueueMessagesToDisplay();
 
-                //while (true)
-                //{
-                //    var (isMessage, message) = _autoMessaging.DequeueNextMessage();
+                while (true)
+                {
+                    var (isMessage, message) = _autoMessaging.DequeueNextMessage();
 
-                //    if (!isMessage) break;
+                    if (!isMessage) break;
 
-                //    foreach (var client in ConnectedClients)
-                //    {
-                //        var channelId = client.Channels.ContainsKey(DefaultChannel)
-                //            ? client.Channels[DefaultChannel]
-                //            : string.Empty;
+                    foreach (var client in ConnectedClients)
+                    {
+                        var channelId = client.Channels.ContainsKey(DefaultChannel)
+                            ? client.Channels[DefaultChannel]
+                            : string.Empty;
 
-                //        client.PostMessage(channelId,
-                //            $"{DateTime.Now.ToShortTimeString()} - {message}");
-                //    }
-                //}
+                        client.PostMessage(channelId,
+                            $"{DateTime.Now.ToShortTimeString()} - {message}");
+                    }
+                }
 
                 if (_endProgram) break;
             }

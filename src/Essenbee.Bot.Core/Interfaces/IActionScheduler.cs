@@ -2,7 +2,6 @@
 {
     public interface IActionScheduler
     {
-        void AddAction(IScheduledAction action);
-
+        void Schedule(IScheduledAction action);
     }
 }

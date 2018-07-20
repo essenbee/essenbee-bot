@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Hangfire;
@@ -16,7 +15,7 @@ namespace Essenbee.Bot.Web
             _chatClients = chatClients;
         }
 
-        public void AddAction(IScheduledAction action)
+        public void Schedule(IScheduledAction action)
         {
             Log.Information($"Scheduling {action.Name} with Hangfire server...");
 
@@ -25,16 +24,24 @@ namespace Essenbee.Bot.Web
                case DelayedMessage delayedMsg:
                     var msg = delayedMsg.Message;
                     var chnl = delayedMsg.Channel;
-                    BackgroundJob.Schedule(() => _chatClients.Single().PostMessage(chnl, msg), delayedMsg.Delay);
+
+                    foreach (var chatClient in _chatClients)
+                    {
+                        BackgroundJob.Schedule(() => chatClient.PostMessage(chnl, msg), delayedMsg.Delay);
+                    }
                     break;
 
                 case RepeatingMessage repeatingMsg:
                     var message = repeatingMsg.Message;
                     var channel = repeatingMsg.Channel;
-                    RecurringJob.AddOrUpdate(
-                        repeatingMsg.Name,
-                        () => _chatClients.Single().PostMessage(channel, message),
-                        Cron.MinuteInterval(repeatingMsg.IntervalInMinutes));
+
+                    foreach (var chatClient in _chatClients)
+                    {
+                        RecurringJob.AddOrUpdate(
+                            repeatingMsg.Name,
+                            () => chatClient.PostMessage(channel, message),
+                            Cron.MinuteInterval(repeatingMsg.IntervalInMinutes));
+                    }
                     break;
             }
         }
