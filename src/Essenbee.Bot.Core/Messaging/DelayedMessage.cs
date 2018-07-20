@@ -14,7 +14,6 @@ namespace Essenbee.Bot.Core.Messaging
 
         public int DelayInSeconds => Delay.Seconds;
         private DateTime _nextExecutionTime;
-        private readonly IClock _clock;
         private readonly IList<IChatClient> _chatClients;
 
         public DelayedMessage(string channel, string message, int intervalInMinutes,
