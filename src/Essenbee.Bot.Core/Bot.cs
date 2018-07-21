@@ -21,7 +21,6 @@ namespace Essenbee.Bot.Core
 
         private bool _endProgram = false;
         private IRepository _repository;
-        private readonly AutoMessaging _autoMessaging;
         private IActionScheduler _actionScheduler;
 
         public Bot()
@@ -32,7 +31,6 @@ namespace Essenbee.Bot.Core
         public Bot(List<IChatClient> connectedClients)
         {
             ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
-            _autoMessaging = new AutoMessaging(new SystemClock());
         }
 
         public void SetRepository(IRepository repository)
@@ -61,8 +59,6 @@ namespace Essenbee.Bot.Core
 
             LoadCommands();
             ScheduleRepeatedMessages();
-            //PublishTimerTriggeredMessages();
-
             ShowStartupMessage();
 
             BeginLoop();
