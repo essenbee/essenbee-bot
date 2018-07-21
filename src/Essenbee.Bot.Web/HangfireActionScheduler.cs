@@ -27,7 +27,14 @@ namespace Essenbee.Bot.Web
 
                     foreach (var chatClient in _chatClients)
                     {
-                        BackgroundJob.Schedule(() => chatClient.PostMessage(chnl, msg), delayedMsg.Delay);
+                        if (!string.IsNullOrWhiteSpace(chnl))
+                        {
+                            BackgroundJob.Schedule(() => chatClient.PostMessage(chnl, msg), delayedMsg.Delay);
+                        }
+                        else
+                        {
+                            BackgroundJob.Schedule(() => chatClient.PostMessage(msg), delayedMsg.Delay);
+                        }
                     }
                     break;
 
@@ -37,10 +44,20 @@ namespace Essenbee.Bot.Web
 
                     foreach (var chatClient in _chatClients)
                     {
-                        RecurringJob.AddOrUpdate(
+                        if (!string.IsNullOrWhiteSpace(channel))
+                        {
+                            RecurringJob.AddOrUpdate(
                             repeatingMsg.Name,
                             () => chatClient.PostMessage(channel, message),
                             Cron.MinuteInterval(repeatingMsg.IntervalInMinutes));
+                        }
+                        else
+                        {
+                            RecurringJob.AddOrUpdate(
+                            repeatingMsg.Name,
+                            () => chatClient.PostMessage(message),
+                            Cron.MinuteInterval(repeatingMsg.IntervalInMinutes));
+                        }
                     }
                     break;
             }

@@ -73,11 +73,7 @@ namespace Essenbee.Bot.Core
                 {
                     foreach (var client in ConnectedClients)
                     {
-                        foreach (var channel in client.Channels)
-                        {
-                            client.PostMessage(channel.Key,
-                                $"{DateTime.Now.ToShortTimeString()} - {startupMessage.Message}");
-                        }
+                        client.PostMessage($"{DateTime.Now.ToShortTimeString()} - {startupMessage.Message}");
                     }
                 }
             }

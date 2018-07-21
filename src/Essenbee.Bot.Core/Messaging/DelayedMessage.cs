@@ -26,15 +26,25 @@ namespace Essenbee.Bot.Core.Messaging
             _chatClients = chatClients;
         }
 
-        public bool ShouldExecute() => DateTime.Now > _nextExecutionTime;
-        
+        public bool ShouldExecute()
+        {
+            return DateTime.Now > _nextExecutionTime;
+        }
+
         public void Invoke()
         {
             _nextExecutionTime = DateTime.MaxValue;
 
             foreach (var chatClient in _chatClients)
             {
-                chatClient.PostMessage(Channel, Message);
+                if (!string.IsNullOrWhiteSpace(Channel))
+                {
+                    chatClient.PostMessage(Channel, Message);
+                }
+                else
+                {
+                    chatClient.PostMessage(Message);
+                }
             }
         }
     }

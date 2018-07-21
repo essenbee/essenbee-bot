@@ -53,7 +53,14 @@ namespace Essenbee.Bot.Core.Messaging
 
             foreach (var chatClient in _chatClients)
             {
-                chatClient.PostMessage(Channel, Message);
+                if (!string.IsNullOrWhiteSpace(Channel))
+                {
+                    chatClient.PostMessage(Channel, Message);
+                }
+                else
+                {
+                    chatClient.PostMessage(Message);
+                }
             }
         }
     }
