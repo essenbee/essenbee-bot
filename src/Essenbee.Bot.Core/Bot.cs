@@ -11,8 +11,8 @@ namespace Essenbee.Bot.Core
 {
     public class Bot
     {
-        public List<IChatClient> ConnectedClients { get; set; } = new List<IChatClient>();
-        public IActionScheduler ActionScheduler { get; set; }
+        public List<IChatClient> ConnectedClients { get; } = new List<IChatClient>();
+        public IActionScheduler ActionScheduler { get; }
         public static string ProjectAnswerKey;
 
         public static readonly string DefaultChannel = "general";
@@ -26,16 +26,6 @@ namespace Essenbee.Bot.Core
             ActionScheduler = actionScheduler;
             _repository = repository;
             ConnectedClients = clients.ChatClients;
-        }
-
-        public void SetRepository(IRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public void SetChatClients(List<IChatClient> connectedClients)
-        {
-            ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
         }
 
         public void Start()
