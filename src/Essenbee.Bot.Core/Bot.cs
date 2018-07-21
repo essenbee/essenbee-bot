@@ -21,9 +21,10 @@ namespace Essenbee.Bot.Core
         private bool _endProgram = false;
         private IRepository _repository;
         
-        public Bot(IActionScheduler actionScheduler, IConnectedClients clients)
+        public Bot(IActionScheduler actionScheduler, IConnectedClients clients, IRepository repository)
         {
             ActionScheduler = actionScheduler;
+            _repository = repository;
             ConnectedClients = clients.ChatClients;
         }
 

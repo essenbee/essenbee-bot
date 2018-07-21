@@ -11,15 +11,11 @@ namespace Essenbee.Bot.Web
     {
         private readonly Core.Bot _bot;
         private readonly IOptions<UserSecrets> _config;
-        private readonly IRepository _repository;
 
-        public BotWorker(Core.Bot bot, IOptions<UserSecrets> config, IRepository repository)
+        public BotWorker(Core.Bot bot, IOptions<UserSecrets> config)
         {
             _bot = bot;
             _config = config;
-            _repository = repository;
-
-            bot.SetRepository(_repository);
             bot.SetProjectAnswerKey(_config.Value.ProjectAnswerKey);
         }
 
