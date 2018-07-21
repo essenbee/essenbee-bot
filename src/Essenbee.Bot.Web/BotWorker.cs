@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using Essenbee.Bot.Core.Interfaces;
+using Hangfire;
 using Hangfire.Server;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -11,10 +12,11 @@ namespace Essenbee.Bot.Web
         private readonly Core.Bot _bot;
         private readonly IOptions<UserSecrets> _config;
 
-        public BotWorker(Core.Bot bot, IOptions<UserSecrets> config)
+        public BotWorker(Core.Bot bot, IOptions<UserSecrets> config, IRepository repository)
         {
             _bot = bot;
             _config = config;
+            bot.SetRepository(repository);
             bot.SetProjectAnswerKey(_config.Value.ProjectAnswerKey);
         }
 
