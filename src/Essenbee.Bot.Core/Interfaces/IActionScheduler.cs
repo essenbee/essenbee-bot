@@ -4,7 +4,7 @@ namespace Essenbee.Bot.Core.Interfaces
 {
     public interface IActionScheduler
     {
-        IList<IChatClient> ChatClients { get; set; }
+        IList<IChatClient> ChatClients { get; }
 
         void Schedule(IScheduledAction action);
         List<string> GetRunningJobs();

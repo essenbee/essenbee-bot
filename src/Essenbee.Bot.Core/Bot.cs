@@ -21,14 +21,10 @@ namespace Essenbee.Bot.Core
         private bool _endProgram = false;
         private IRepository _repository;
         
-        public Bot(IActionScheduler actionScheduler)
+        public Bot(IActionScheduler actionScheduler, IConnectedClients clients)
         {
             ActionScheduler = actionScheduler;
-        }
-
-        public Bot(List<IChatClient> connectedClients)
-        {
-            ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
+            ConnectedClients = clients.ChatClients;
         }
 
         public void SetRepository(IRepository repository)
@@ -39,11 +35,6 @@ namespace Essenbee.Bot.Core
         public void SetChatClients(List<IChatClient> connectedClients)
         {
             ConnectedClients = connectedClients ?? throw new ArgumentNullException(nameof(connectedClients));
-
-            if (ActionScheduler != null)
-            {
-                ActionScheduler.ChatClients = ConnectedClients;
-            }
         }
 
         public void Start()
@@ -51,11 +42,6 @@ namespace Essenbee.Bot.Core
             foreach (var chatClient in ConnectedClients)
             {
                 chatClient.OnChatCommandReceived += OnCommandReceived;
-            }
-
-            if (ActionScheduler != null && ActionScheduler.ChatClients is null)
-            {
-                ActionScheduler.ChatClients = ConnectedClients;
             }
 
             CancelKeyPress += OnCtrlC;

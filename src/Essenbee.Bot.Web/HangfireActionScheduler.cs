@@ -10,10 +10,11 @@ namespace Essenbee.Bot.Web
 {
     public class HangfireActionScheduler : IActionScheduler
     {
-        public IList<IChatClient> ChatClients { get; set; }
+        public IList<IChatClient> ChatClients { get; }
 
-        public HangfireActionScheduler()
+        public HangfireActionScheduler(IConnectedClients clients)
         {
+            ChatClients = clients.ChatClients;
         }
 
         public void Schedule(IScheduledAction action)

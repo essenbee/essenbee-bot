@@ -37,6 +37,9 @@ namespace Essenbee.Bot.Web
             var slackConfig = new SlackConfig { ApiKey = secrets.SlackApiKey };
             services.AddSingleton(slackConfig);
 
+            services.AddSingleton<IConnectedClients, ConnectedClients>();
+
+
             services.AddHangfire(x => x.UseSqlServerStorage(secrets.DatabaseConnectionString));
 
             services.AddDbContext<AppDataContext>(options =>
