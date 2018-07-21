@@ -47,7 +47,7 @@ namespace Essenbee.Bot.Web
 
             services.AddScoped<IRepository, EntityFrameworkRepository>();
             services.AddSingleton<IActionScheduler, HangfireActionScheduler>();
-            services.AddSingleton<Core.Bot>();
+            services.AddSingleton<IBot, Core.Bot>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

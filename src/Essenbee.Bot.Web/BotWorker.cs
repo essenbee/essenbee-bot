@@ -9,10 +9,10 @@ namespace Essenbee.Bot.Web
 {
     public class BotWorker : Worker
     {
-        private readonly Core.Bot _bot;
+        private readonly IBot _bot;
         private readonly IOptions<UserSecrets> _config;
 
-        public BotWorker(Core.Bot bot, IOptions<UserSecrets> config, IRepository repository)
+        public BotWorker(IBot bot, IOptions<UserSecrets> config, IRepository repository)
         {
             _bot = bot;
             _config = config;

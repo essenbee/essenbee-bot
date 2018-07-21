@@ -9,7 +9,7 @@ using Essenbee.Bot.Core.Data;
 
 namespace Essenbee.Bot.Core
 {
-    public class Bot
+    public class Bot : IBot
     {
         public List<IChatClient> ConnectedClients { get; } = new List<IChatClient>();
         public IActionScheduler ActionScheduler { get; }
