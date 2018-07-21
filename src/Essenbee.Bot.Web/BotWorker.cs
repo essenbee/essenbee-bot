@@ -1,5 +1,4 @@
-﻿using Essenbee.Bot.Core.Interfaces;
-using Hangfire;
+﻿using Hangfire;
 using Hangfire.Server;
 using Microsoft.Extensions.Options;
 using Serilog;
