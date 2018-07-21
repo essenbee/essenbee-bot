@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Hangfire;
@@ -61,6 +62,24 @@ namespace Essenbee.Bot.Web
                     }
                     break;
             }
+        }
+
+        public static List<KeyValuePair<string, Hangfire.Storage.Monitoring.ProcessingJobDto>> GetRunningJobs()
+        {
+            return JobStorage.Current.GetMonitoringApi()
+                .ProcessingJobs(0, int.MaxValue).ToList();
+        }
+
+        public static List<KeyValuePair<string, Hangfire.Storage.Monitoring.ScheduledJobDto>> GetScheduledJobs()
+        {
+            return JobStorage.Current.GetMonitoringApi()
+                .ScheduledJobs(0, int.MaxValue).ToList();
+        }
+
+        public static List<KeyValuePair<string, Hangfire.Storage.Monitoring.EnqueuedJobDto>> GetEnqueuedJobs()
+        {
+            return JobStorage.Current.GetMonitoringApi()
+                .EnqueuedJobs("default", 0, int.MaxValue).ToList();
         }
     }
 }

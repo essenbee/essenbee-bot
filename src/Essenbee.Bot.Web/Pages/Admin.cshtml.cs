@@ -32,7 +32,7 @@ namespace Essenbee.Bot.Web.Pages
         {
             try
             {
-                var runningJobs = GetRunningJobs();
+                var runningJobs = HangfireActionScheduler.GetRunningJobs();
                 IsRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
                 TimedMessages = _repository.List<Core.Data.TimedMessage>();
                 StartupMessage = _repository.List<Core.Data.StartupMessage>();
@@ -49,7 +49,7 @@ namespace Essenbee.Bot.Web.Pages
         {
             try
             {
-                var runningJobs = GetRunningJobs();
+                var runningJobs = HangfireActionScheduler.GetRunningJobs();
                 var botWorkerJobs = runningJobs.Where(o => o.Value.Job.Type == typeof(BotWorker)).ToList();
                 var alreadyRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
 
@@ -85,12 +85,6 @@ namespace Essenbee.Bot.Web.Pages
             }
 
             return Page();
-        }
-
-        private List<KeyValuePair<string, Hangfire.Storage.Monitoring.ProcessingJobDto>> GetRunningJobs()
-        {
-            return JobStorage.Current.GetMonitoringApi()
-                .ProcessingJobs(0, int.MaxValue).ToList();
         }
     }
 }
