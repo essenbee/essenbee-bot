@@ -71,10 +71,8 @@ namespace Essenbee.Bot.Core
 
                 if (startupMessage != null)
                 {
-                    foreach (var client in ConnectedClients)
-                    {
-                        client.PostMessage($"{DateTime.Now.ToShortTimeString()} - {startupMessage.Message}");
-                    }
+                    var action = new DelayedMessage(string.Empty, startupMessage.Message, 5, ConnectedClients, $"AutomatedMessage-{startupMessage.Id}");
+                    _actionScheduler.Schedule(action);
                 }
             }
         }

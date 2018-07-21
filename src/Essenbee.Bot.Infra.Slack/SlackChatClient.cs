@@ -84,9 +84,23 @@ namespace Essenbee.Bot.Infra.Slack
 
         public void PostMessage(string msg)
         {
-            foreach (var channel in Channels)
+            var retries = 0;
+
+            while (retries < 5)
             {
-                PostMessage(channel.Key, msg);
+                if (!_isReady)
+                {
+                    System.Threading.Thread.Sleep(2000);
+                    retries++;
+                }
+                else
+                {
+                    foreach (var channel in Channels)
+                    {
+                        PostMessage(channel.Key, msg);
+                    }
+                    break;
+                }
             }
         }
 
