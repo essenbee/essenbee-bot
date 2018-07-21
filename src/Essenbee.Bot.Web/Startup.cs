@@ -1,4 +1,5 @@
 using Essenbee.Bot.Core.Interfaces;
+using Essenbee.Bot.Infra.Slack;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,10 @@ namespace Essenbee.Bot.Web
 
             services.Configure<UserSecrets>(Configuration.GetSection(nameof(UserSecrets)));
             var secrets = Configuration.GetSection(nameof(UserSecrets)).Get<UserSecrets>();
+
+            // Injected into SlackChatClient by DI for Hangfire sceduled actions
+            var slackConfig = new SlackConfig { ApiKey = secrets.SlackApiKey };
+            services.AddSingleton(slackConfig);
 
             services.AddHangfire(x => x.UseSqlServerStorage(secrets.DatabaseConnectionString));
 

@@ -12,15 +12,31 @@ namespace Essenbee.Bot.Infra.Slack
         private  int _connectionFailures = 0;
         private  bool _shutdown = false;
         private bool _isReady = false;
+        private SlackConfig _settings;
 
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
         
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
 
+        public SlackChatClient(SlackConfig settings)
+        {
+            _settings = settings;
+            _slackClient = new Client(_settings.ApiKey);
+
+            SetupEvents();
+            _slackClient.Connect();
+        }
+
         public SlackChatClient(string apiKey)
         {
             _slackClient = new Client(apiKey);
 
+            SetupEvents();
+            _slackClient.Connect();
+        }
+
+        private void SetupEvents()
+        {
             // Wire up basic connectivity events
             _slackClient.ServiceConnected += OnConnected;
             _slackClient.ServiceConnectionFailed += OnDisconnected;
@@ -31,8 +47,6 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient.Message += OnMessage;
             _slackClient.MesssageEdit += OnMessageEdit;
             _slackClient.CommandReceived += ProcessCommand;
-
-            _slackClient.Connect();
         }
 
         public void Disconnect()
@@ -44,21 +58,27 @@ namespace Essenbee.Bot.Infra.Slack
 
         public void PostMessage(string theChannel, string msg)
         {
-            if (_isReady)
-            {
-                var msgArgs = new Chat.PostMessageArguments
-                {
-                    channel = theChannel,
-                    text = msg,
-                    unfurl_links = false,
-                    unfurl_media = false,
-                };
+            var retries = 0;
 
-                _slackClient.Chat.PostMessage(msgArgs);
-            }
-            else
+            while (retries < 5)
             {
-                WriteLine("Slack Chat Client is not connected to the Slack service!");
+                if (!_isReady)
+                {
+                    System.Threading.Thread.Sleep(2000);
+                    retries++;
+                }
+                else
+                {
+                    var msgArgs = new Chat.PostMessageArguments {
+                        channel = theChannel,
+                        text = msg,
+                        unfurl_links = false,
+                        unfurl_media = false,
+                    };
+
+                    _slackClient.Chat.PostMessage(msgArgs);
+                    break;
+                }
             }
         }
 

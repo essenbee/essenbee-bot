@@ -26,7 +26,7 @@ namespace Essenbee.Bot.Core
 
         public Bot()
         {
-            _autoMessaging = new AutoMessaging(new SystemClock());
+            // _autoMessaging = new AutoMessaging(new SystemClock());
         }
 
         public Bot(List<IChatClient> connectedClients)
@@ -60,8 +60,8 @@ namespace Essenbee.Bot.Core
             CancelKeyPress += OnCtrlC;
 
             LoadCommands();
-            //ScheduleRepeatedMessages();
-            PublishTimerTriggeredMessages();
+            ScheduleRepeatedMessages();
+            //PublishTimerTriggeredMessages();
 
             ShowStartupMessage();
 
@@ -109,45 +109,11 @@ namespace Essenbee.Bot.Core
             ProjectAnswerKey = key;
         }
 
-        private void PublishTimerTriggeredMessages()
-        {
-            if (_repository != null)
-            {
-                var timerTriggeredMessages = _repository.List<TimedMessage>();
-
-                foreach (var msg in timerTriggeredMessages)
-                {
-                    var ttm = new TimerTriggeredMessage(msg.Message, msg.Delay, DateTime.Now);
-                    _autoMessaging.PublishMessage(ttm, msg.Status);
-                }
-            }
-        }
-
         private void BeginLoop()
         {
             while (true)
             {
                 Thread.Sleep(1000);
-
-                // Show Timer Triggered Messages
-                _autoMessaging.EnqueueMessagesToDisplay();
-
-                while (true)
-                {
-                    var (isMessage, message) = _autoMessaging.DequeueNextMessage();
-
-                    if (!isMessage) break;
-
-                    foreach (var client in ConnectedClients)
-                    {
-                        var channelId = client.Channels.ContainsKey(DefaultChannel)
-                            ? client.Channels[DefaultChannel]
-                            : string.Empty;
-
-                        client.PostMessage(channelId,
-                            $"{DateTime.Now.ToShortTimeString()} - {message}");
-                    }
-                }
 
                 if (_endProgram) break;
             }
