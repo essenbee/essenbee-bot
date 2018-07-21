@@ -24,7 +24,6 @@ namespace Essenbee.Bot.Core
 
         public Bot()
         {
-            // _autoMessaging = new AutoMessaging(new SystemClock());
         }
 
         public Bot(List<IChatClient> connectedClients)
@@ -65,13 +64,13 @@ namespace Essenbee.Bot.Core
 
         private void ShowStartupMessage()
         {
-            if (_repository != null)
+            if (_repository != null && _actionScheduler != null)
             {
                 var startupMessage = _repository.List<StartupMessage>().FirstOrDefault(m => m.Status == ItemStatus.Active);
 
                 if (startupMessage != null)
                 {
-                    var action = new DelayedMessage(string.Empty, startupMessage.Message, 5, ConnectedClients, $"AutomatedMessage-{startupMessage.Id}");
+                    var action = new DelayedMessage(startupMessage.Message, 5, ConnectedClients, $"AutomatedMessage-{startupMessage.Id}");
                     _actionScheduler.Schedule(action);
                 }
             }

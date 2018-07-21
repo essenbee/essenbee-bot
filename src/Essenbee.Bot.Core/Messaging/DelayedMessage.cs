@@ -9,12 +9,20 @@ namespace Essenbee.Bot.Core.Messaging
     {
         public string Name { get; }
         public string Message { get; }
-        public string Channel { get; }
+        public string Channel { get; } = string.Empty;
         public TimeSpan Delay { get; }
 
         public int DelayInSeconds => Delay.Seconds;
         private DateTime _nextExecutionTime;
         private readonly IList<IChatClient> _chatClients;
+
+        public DelayedMessage(string message, int delayInSeconds,     IList<IChatClient> chatClients, string name)
+        {
+            Message = message;
+            Delay = TimeSpan.FromSeconds(delayInSeconds);
+            Name = name;
+            _chatClients = chatClients;
+        }
 
         public DelayedMessage(string channel, string message, int delayInSeconds,
             IList<IChatClient> chatClients, string name)
