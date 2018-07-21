@@ -16,12 +16,12 @@ namespace Essenbee.Bot.Core.Messaging
         private DateTime _nextExecutionTime;
         private readonly IList<IChatClient> _chatClients;
 
-        public DelayedMessage(string channel, string message, int intervalInMinutes,
+        public DelayedMessage(string channel, string message, int delayInSeconds,
             IList<IChatClient> chatClients, string name)
         {
             Channel = channel;
             Message = message;
-            Delay = TimeSpan.FromSeconds(DelayInSeconds);
+            Delay = TimeSpan.FromSeconds(delayInSeconds);
             Name = name;
             _chatClients = chatClients;
         }

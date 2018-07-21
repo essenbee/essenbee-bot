@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
-using Essenbee.Bot.Core.Utilities;
 using static System.Console;
 using System.Linq;
 using Essenbee.Bot.Core.Data;
@@ -83,12 +82,13 @@ namespace Essenbee.Bot.Core
                 }
             }
         }
-        
+
         private void ScheduleRepeatedMessages()
         {
             if (_repository != null && _actionScheduler != null)
             {
                 var messages = _repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
+
                 var channels = ConnectedClients.SelectMany(c => c.Channels);
                 var channel = channels.FirstOrDefault(x => x.Key.Equals(DefaultChannel));
 
