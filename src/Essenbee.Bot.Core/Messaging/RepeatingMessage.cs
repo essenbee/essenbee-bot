@@ -43,12 +43,12 @@ namespace Essenbee.Bot.Core.Messaging
 
         public bool ShouldExecute()
         {
-            return _nextExecutionTime <= _clock.UtcNow;
+            var now = _clock.UtcNow;
+            return _nextExecutionTime <= now;
         }
 
         public void Invoke()
         {
-
             _nextExecutionTime = _clock.UtcNow.AddMinutes(IntervalInMinutes);
 
             foreach (var chatClient in _chatClients)
