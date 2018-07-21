@@ -82,12 +82,10 @@ namespace Essenbee.Bot.Core
             {
                 var messages = _repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
 
-                var channels = ConnectedClients.SelectMany(c => c.Channels);
-                var channel = channels.FirstOrDefault(x => x.Key.Equals(DefaultChannel));
-
+                // ToDo: Allow configurable channel selection per message
                 foreach (var message in messages)
                 {
-                    var action = new RepeatingMessage(channel.Value, message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
+                    var action = new RepeatingMessage(DefaultChannel, message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
                     _actionScheduler.Schedule(action);
                 }
             }
