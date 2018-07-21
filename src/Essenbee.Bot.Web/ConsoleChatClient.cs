@@ -26,5 +26,11 @@ namespace Essenbee.Bot.Web
             Console.WriteLine(text);
             Log.Information("*** " + text);
         }
+
+        public void PostMessage(string text)
+        {
+            Console.WriteLine(text);
+            Log.Information("*** " + text);
+        }
     }
 }

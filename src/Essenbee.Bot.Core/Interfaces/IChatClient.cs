@@ -10,7 +10,9 @@ namespace Essenbee.Bot.Core.Interfaces
         IDictionary<string, string> Channels { get; set; }
 
         void PostMessage(string channel, string text);
-        
+
+        void PostMessage(string text);
+
         void Disconnect();
     }
 }

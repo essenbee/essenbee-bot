@@ -82,6 +82,14 @@ namespace Essenbee.Bot.Infra.Slack
             }
         }
 
+        public void PostMessage(string msg)
+        {
+            foreach (var channel in Channels)
+            {
+                PostMessage(channel.Key, msg);
+            }
+        }
+
         private void OnConnected()
         {
             _isReady = true;

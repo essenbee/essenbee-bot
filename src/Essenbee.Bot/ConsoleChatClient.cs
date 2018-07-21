@@ -23,5 +23,10 @@ namespace Essenbee.Bot
         {
             Console.WriteLine(text);
         }
+
+        public void PostMessage(string text)
+        {
+            Console.WriteLine(text);
+        }
     }
 }
