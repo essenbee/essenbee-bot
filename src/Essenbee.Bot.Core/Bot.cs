@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core
     public class Bot
     {
         public List<IChatClient> ConnectedClients { get; set; } = new List<IChatClient>();
-
+        public IActionScheduler ActionScheduler { get; set; }
         public static string ProjectAnswerKey;
 
         public static readonly string DefaultChannel = "general";
@@ -20,8 +20,7 @@ namespace Essenbee.Bot.Core
 
         private bool _endProgram = false;
         private IRepository _repository;
-        private IActionScheduler _actionScheduler;
-
+        
         public Bot()
         {
         }
@@ -34,11 +33,6 @@ namespace Essenbee.Bot.Core
         public void SetRepository(IRepository repository)
         {
             _repository = repository;
-        }
-
-        public void SetActionScheduler(IActionScheduler scheduler)
-        {
-            _actionScheduler = scheduler;
         }
 
         public void SetChatClients(List<IChatClient> connectedClients)
@@ -64,21 +58,21 @@ namespace Essenbee.Bot.Core
 
         private void ShowStartupMessage()
         {
-            if (_repository != null && _actionScheduler != null)
+            if (_repository != null && ActionScheduler != null)
             {
                 var startupMessage = _repository.List<StartupMessage>().FirstOrDefault(m => m.Status == ItemStatus.Active);
 
                 if (startupMessage != null)
                 {
                     var action = new DelayedMessage(startupMessage.Message, 5, ConnectedClients, $"AutomatedMessage-{startupMessage.Id}");
-                    _actionScheduler.Schedule(action);
+                    ActionScheduler.Schedule(action);
                 }
             }
         }
 
         private void ScheduleRepeatedMessages()
         {
-            if (_repository != null && _actionScheduler != null)
+            if (_repository != null && ActionScheduler != null)
             {
                 var messages = _repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
 
@@ -86,7 +80,7 @@ namespace Essenbee.Bot.Core
                 foreach (var message in messages)
                 {
                     var action = new RepeatingMessage(DefaultChannel, message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
-                    _actionScheduler.Schedule(action);
+                    ActionScheduler.Schedule(action);
                 }
             }
         }

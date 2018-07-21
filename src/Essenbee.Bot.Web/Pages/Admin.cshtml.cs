@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Web.Pages
     {
         private readonly IOptions<UserSecrets> _config;
         private readonly IRepository _repository;
+        private readonly IActionScheduler _actionScheduler;
 
         [BindProperty]
         public bool IsRunning { get; set; } = false;
@@ -22,18 +23,19 @@ namespace Essenbee.Bot.Web.Pages
         [BindProperty]
         public IList<Core.Data.StartupMessage> StartupMessage { get; set; }
 
-        public AdminModel(IOptions<UserSecrets> config, IRepository repository)
+        public AdminModel(IOptions<UserSecrets> config, IRepository repository, IActionScheduler actionScheduler)
         {
             _config = config;
             _repository = repository;
+            _actionScheduler = actionScheduler;
         }
 
         public IActionResult OnGet()
         {
             try
             {
-                var runningJobs = HangfireActionScheduler.GetRunningJobs();
-                IsRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
+                var runningJobs = _actionScheduler.GetRunningJobs<BotWorker>();
+                IsRunning = runningJobs.Any();
                 TimedMessages = _repository.List<Core.Data.TimedMessage>();
                 StartupMessage = _repository.List<Core.Data.StartupMessage>();
             }
@@ -49,9 +51,9 @@ namespace Essenbee.Bot.Web.Pages
         {
             try
             {
-                var runningJobs = HangfireActionScheduler.GetRunningJobs();
-                var botWorkerJobs = runningJobs.Where(o => o.Value.Job.Type == typeof(BotWorker)).ToList();
-                var alreadyRunning = runningJobs.Any(j => j.Value.Job.Type == typeof(BotWorker));
+                var runningJobs = _actionScheduler.GetRunningJobs<BotWorker>();
+                var botWorkerJobs = runningJobs;
+                var alreadyRunning = runningJobs.Any();
 
                 if (botWorkerJobs.Any())
                 {
@@ -59,7 +61,7 @@ namespace Essenbee.Bot.Web.Pages
 
                     foreach (var botWorkerJob in botWorkerJobs)
                     {
-                        jobInstanceIdsToDelete.Add(botWorkerJob.Key);
+                        jobInstanceIdsToDelete.Add(botWorkerJob);
                     }
 
                     foreach (var id in jobInstanceIdsToDelete)

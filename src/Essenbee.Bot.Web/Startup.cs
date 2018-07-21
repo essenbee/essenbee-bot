@@ -43,6 +43,7 @@ namespace Essenbee.Bot.Web
                 options.UseSqlServer(secrets.DatabaseConnectionString));
 
             services.AddScoped<IRepository, EntityFrameworkRepository>();
+            services.AddSingleton<IActionScheduler, HangfireActionScheduler>();
             services.AddSingleton<Core.Bot>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

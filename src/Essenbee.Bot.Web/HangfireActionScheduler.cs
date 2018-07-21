@@ -9,11 +9,15 @@ namespace Essenbee.Bot.Web
 {
     public class HangfireActionScheduler : IActionScheduler
     {
-        private readonly IList<IChatClient> _chatClients;
-        
+        public IList<IChatClient> ChatClients { get; set; }
+
+        public HangfireActionScheduler()
+        {
+        }
+
         public HangfireActionScheduler(IList<IChatClient> chatClients)
         {
-            _chatClients = chatClients;
+            ChatClients = chatClients;
         }
 
         public void Schedule(IScheduledAction action)
@@ -26,7 +30,7 @@ namespace Essenbee.Bot.Web
                     var msg = delayedMsg.Message;
                     var chnl = delayedMsg.Channel;
 
-                    foreach (var chatClient in _chatClients)
+                    foreach (var chatClient in ChatClients)
                     {
                         if (!string.IsNullOrWhiteSpace(chnl))
                         {
@@ -43,7 +47,7 @@ namespace Essenbee.Bot.Web
                     var message = repeatingMsg.Message;
                     var channel = repeatingMsg.Channel;
 
-                    foreach (var chatClient in _chatClients)
+                    foreach (var chatClient in ChatClients)
                     {
                         if (!string.IsNullOrWhiteSpace(channel))
                         {
@@ -64,22 +68,46 @@ namespace Essenbee.Bot.Web
             }
         }
 
-        public static List<KeyValuePair<string, Hangfire.Storage.Monitoring.ProcessingJobDto>> GetRunningJobs()
+        public List<string> GetRunningJobs<T>()
+        {
+            var jobs = GetRunningHangfireJobs().Where(o => o.Value.Job.Type == typeof(T));
+            return jobs.Select(j => j.Key).ToList();
+        }
+
+        public List<string> GetRunningJobs()
+        {
+            var jobs = GetRunningHangfireJobs();
+            return jobs.Select(j => j.Key).ToList();
+        }
+
+        public List<string> GetScheduledJobs()
+        {
+            var jobs = GetScheduledHangfireJobs();
+            return jobs.Select(j => j.Key).ToList();
+        }
+
+        public List<string> GetEnqueuedJobs()
+        {
+            var jobs = GetEnqueuedHangfireJobs();
+            return jobs.Select(j => j.Key).ToList();
+        }
+
+        private List<KeyValuePair<string, Hangfire.Storage.Monitoring.ProcessingJobDto>> GetRunningHangfireJobs()
         {
             return JobStorage.Current.GetMonitoringApi()
                 .ProcessingJobs(0, int.MaxValue).ToList();
         }
 
-        public static List<KeyValuePair<string, Hangfire.Storage.Monitoring.ScheduledJobDto>> GetScheduledJobs()
+        private List<KeyValuePair<string, Hangfire.Storage.Monitoring.ScheduledJobDto>> GetScheduledHangfireJobs()
         {
             return JobStorage.Current.GetMonitoringApi()
                 .ScheduledJobs(0, int.MaxValue).ToList();
         }
 
-        public static List<KeyValuePair<string, Hangfire.Storage.Monitoring.EnqueuedJobDto>> GetEnqueuedJobs()
+        private List<KeyValuePair<string, Hangfire.Storage.Monitoring.EnqueuedJobDto>> GetEnqueuedHangfireJobs(string queue = "default")
         {
             return JobStorage.Current.GetMonitoringApi()
-                .EnqueuedJobs("default", 0, int.MaxValue).ToList();
+                .EnqueuedJobs(queue, 0, int.MaxValue).ToList();
         }
     }
 }
