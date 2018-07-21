@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
@@ -15,13 +16,14 @@ namespace Essenbee.Bot.Web
         {
         }
 
-        public HangfireActionScheduler(IList<IChatClient> chatClients)
-        {
-            ChatClients = chatClients;
-        }
-
         public void Schedule(IScheduledAction action)
         {
+            if (ChatClients is null)
+            {
+                Log.Error("Chat clients property is not set!");
+                throw new InvalidDataException("Chat clients property is not set!"); ;
+            }
+
             Log.Information($"Scheduling {action.Name} with Hangfire server...");
 
             switch (action)

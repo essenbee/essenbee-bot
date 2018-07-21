@@ -25,7 +25,8 @@ namespace Essenbee.Bot.Web
             bot.SetRepository(_repository);
             bot.ConnectedClients = ConnectChatClients();
             bot.SetProjectAnswerKey(_config.Value.ProjectAnswerKey);
-            bot.ActionScheduler = new HangfireActionScheduler(bot.ConnectedClients);
+            bot.ActionScheduler = new HangfireActionScheduler();
+            bot.ActionScheduler.ChatClients = bot.ConnectedClients;
         }
 
         [DisableConcurrentExecution(60)]
