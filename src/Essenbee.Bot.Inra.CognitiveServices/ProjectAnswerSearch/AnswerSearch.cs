@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Infra.CognitiveServices
     {
         // ToDo: Move to configuration
         private const string UriBase = "https://api.labs.cognitive.microsoft.com/answerSearch/v7.0/search";
+        // ToDo: Move to configuration
         private readonly string _apiKey;
         
         public AnswerSearch(string apiKey)
