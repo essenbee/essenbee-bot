@@ -3,7 +3,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Essenbee.Bot.Core.Commands
+namespace Essenbee.Bot.Infra.CognitiveServices
 {
     public partial class Answer
     {
@@ -408,8 +408,7 @@ namespace Essenbee.Bot.Core.Commands
 
     internal static class Converter
     {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings {
             MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
             DateParseHandling = DateParseHandling.None,
             Converters = {

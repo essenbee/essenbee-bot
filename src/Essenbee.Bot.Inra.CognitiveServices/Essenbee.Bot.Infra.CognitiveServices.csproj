@@ -4,16 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="ConsoleTableExt" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Essenbee.Bot.Inra.CognitiveServices\Essenbee.Bot.Infra.CognitiveServices.csproj" />
-  </ItemGroup>
 </Project>
