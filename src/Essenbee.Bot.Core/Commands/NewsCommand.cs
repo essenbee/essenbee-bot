@@ -7,14 +7,16 @@ namespace Essenbee.Bot.Core.Commands
     {
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName { get => "news"; }
-        public string HelpText { get; }
-
-        public NewsCommand()
-        {
-            HelpText = @"The command !news with no argument will display Home news from Sky News. Valid arguments are: " +
+        public string HelpText { get; } = @"The command !news with no argument will display Home news from Sky News. Valid arguments are: " +
                         "space, tech, uk, us, world, business, politics, entertainment, sport or strange.";
-        }
 
+        private readonly IBotSettings _settings;
+
+        public NewsCommand(IBotSettings settings)
+        {
+            _settings = settings;
+        }
+    
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
             if (Status != ItemStatus.Active) return;

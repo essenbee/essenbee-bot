@@ -13,7 +13,9 @@ namespace Essenbee.Bot.Core
     {
         public List<IChatClient> ConnectedClients { get; } = new List<IChatClient>();
         public IActionScheduler ActionScheduler { get; }
-        public static string ProjectAnswerKey;
+        public IBotSettings Settings { get; }
+
+        //public static string ProjectAnswerKey;
 
         public static readonly string DefaultChannel = "general";
         public static readonly Dictionary<string, ICommand> _CommandsAvailable = new Dictionary<string, ICommand>();
@@ -21,9 +23,10 @@ namespace Essenbee.Bot.Core
         private bool _endProgram = false;
         private IRepository _repository;
         
-        public Bot(IActionScheduler actionScheduler, IConnectedClients clients)
+        public Bot(IActionScheduler actionScheduler, IConnectedClients clients, IBotSettings settings)
         {
             ActionScheduler = actionScheduler;
+            Settings = settings;
             ConnectedClients = clients.ChatClients;
         }
 
@@ -77,10 +80,10 @@ namespace Essenbee.Bot.Core
             }
         }
 
-        public void SetProjectAnswerKey(string key)
-        {
-            ProjectAnswerKey = key;
-        }
+        //public void SetProjectAnswerKey(string key)
+        //{
+        //    ProjectAnswerKey = key;
+        //}
 
         private void BeginLoop()
         {
@@ -105,7 +108,7 @@ namespace Essenbee.Bot.Core
             {
                 if (type.Name == "ICommand") continue;
 
-                var cmd = Activator.CreateInstance(type) as ICommand;
+                var cmd = Activator.CreateInstance(type, Settings) as ICommand;
                 cmd.Status = ItemStatus.Active;
                 _CommandsAvailable.Add(cmd.CommandName, cmd);
             }

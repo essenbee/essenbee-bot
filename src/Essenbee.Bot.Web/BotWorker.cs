@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Web
             _bot = bot;
             _config = config;
             bot.SetRepository(repository);
-            bot.SetProjectAnswerKey(_config.Value.ProjectAnswerKey);
+            // bot.SetProjectAnswerKey(_config.Value.ProjectAnswerKey);
         }
 
         [DisableConcurrentExecution(60)]

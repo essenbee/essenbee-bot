@@ -12,10 +12,12 @@ namespace Essenbee.Bot.Core.Commands
 
         private readonly Random _random = new Random();
         private readonly List<string> _quotes;
+        private readonly IBotSettings _settings;
 
-        public SkeetCommand()
+        public SkeetCommand(IBotSettings settings)
         {
             _quotes = SkeetQuotes.Quotes;
+            _settings = settings;
         }
 
         public SkeetCommand(List<string> quotes)

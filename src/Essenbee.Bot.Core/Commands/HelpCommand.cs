@@ -7,10 +7,15 @@ namespace Essenbee.Bot.Core.Commands
     public class HelpCommand : ICommand
     {
         public ItemStatus Status { get; set; } = ItemStatus.Active;
-
         public string CommandName => "help";
-
         public string HelpText => "The !help command provides help on the commands available through CoreBot.";
+
+        private readonly IBotSettings _settings;
+
+        public HelpCommand(IBotSettings settings)
+        {
+            _settings = settings;
+        }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {

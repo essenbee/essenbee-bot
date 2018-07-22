@@ -7,11 +7,13 @@ namespace Essenbee.Bot.Core.Commands
     {
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName { get => "cricket"; }
-        public string HelpText { get; }
+        public string HelpText { get; } = @"The !cricket command shows live scoreboards from around the world.";
 
-        public CricketCommand()
+        private readonly IBotSettings _settings;
+
+        public CricketCommand(IBotSettings settings)
         {
-            HelpText = @"The !cricket command shows live scoreboards from around the world.";
+            _settings = settings;
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
