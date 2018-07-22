@@ -24,9 +24,10 @@ namespace Essenbee.Bot.Core
         
         public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, IBotSettings settings)
         {
+            Settings = settings;
             ActionScheduler = actionScheduler;
             AnswerSearchEngine = answerSearchEngine;
-            Settings = settings;
+            AnswerSearchEngine.SetApiKey(Settings.AnswerSerachApiKey);
             ConnectedClients = clients.ChatClients;
         }
 
@@ -103,9 +104,7 @@ namespace Essenbee.Bot.Core
             {
                 if (type.Name == "ICommand") continue;
 
-                var cmd = type.Name.Equals("AskCommand") 
-                    ? Activator.CreateInstance(type, Settings, AnswerSearchEngine) as ICommand
-                    : Activator.CreateInstance(type, Settings) as ICommand;
+                var cmd = Activator.CreateInstance(type, this) as ICommand;
                 cmd.Status = ItemStatus.Active;
                 _CommandsAvailable.Add(cmd.CommandName, cmd);
             }

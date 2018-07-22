@@ -9,11 +9,11 @@ namespace Essenbee.Bot.Core.Commands
         public string CommandName { get => "cricket"; }
         public string HelpText { get; } = @"The !cricket command shows live scoreboards from around the world.";
 
-        private readonly IBotSettings _settings;
+        private readonly IBot _bot;
 
-        public CricketCommand(IBotSettings settings)
+        public CricketCommand(IBot bot)
         {
-            _settings = settings;
+            _bot = bot;
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

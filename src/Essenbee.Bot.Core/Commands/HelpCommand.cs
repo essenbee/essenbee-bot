@@ -10,11 +10,11 @@ namespace Essenbee.Bot.Core.Commands
         public string CommandName => "help";
         public string HelpText => "The !help command provides help on the commands available through CoreBot.";
 
-        private readonly IBotSettings _settings;
+        private readonly IBot _bot;
 
-        public HelpCommand(IBotSettings settings)
+        public HelpCommand(IBot bot)
         {
-            _settings = settings;
+            _bot = bot;
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

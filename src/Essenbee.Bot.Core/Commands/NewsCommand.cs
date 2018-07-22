@@ -10,11 +10,11 @@ namespace Essenbee.Bot.Core.Commands
         public string HelpText { get; } = @"The command !news with no argument will display Home news from Sky News. Valid arguments are: " +
                         "space, tech, uk, us, world, business, politics, entertainment, sport or strange.";
 
-        private readonly IBotSettings _settings;
+        private readonly IBot _bot;
 
-        public NewsCommand(IBotSettings settings)
+        public NewsCommand(IBot bot)
         {
-            _settings = settings;
+            _bot = bot;
         }
     
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

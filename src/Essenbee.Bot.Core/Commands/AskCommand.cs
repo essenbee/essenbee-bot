@@ -5,18 +5,17 @@ namespace Essenbee.Bot.Core.Commands
 {
     public class AskCommand : ICommand
     {
-        private readonly IBotSettings _settings;
+        private readonly IBot _bot;
         private readonly IAnswerSearchEngine _searchEngine;
 
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName => "ask";
         public string HelpText => "The !ask command uses the experimental Project Answer Search to try to answer your questions.";
 
-        public AskCommand(IBotSettings settings, IAnswerSearchEngine searchEngine)
+        public AskCommand(IBot bot)
         {
-            _settings = settings;
-            _searchEngine = searchEngine;
-            _searchEngine.SetApiKey(_settings.AnswerSerachApiKey);
+            _bot = bot;
+            _searchEngine = bot.AnswerSearchEngine;
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
