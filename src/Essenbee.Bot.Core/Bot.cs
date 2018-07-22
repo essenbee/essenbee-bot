@@ -15,8 +15,6 @@ namespace Essenbee.Bot.Core
         public IActionScheduler ActionScheduler { get; }
         public IBotSettings Settings { get; }
 
-        //public static string ProjectAnswerKey;
-
         public static readonly string DefaultChannel = "general";
         public static readonly Dictionary<string, ICommand> _CommandsAvailable = new Dictionary<string, ICommand>();
 
@@ -79,11 +77,6 @@ namespace Essenbee.Bot.Core
                 }
             }
         }
-
-        //public void SetProjectAnswerKey(string key)
-        //{
-        //    ProjectAnswerKey = key;
-        //}
 
         private void BeginLoop()
         {

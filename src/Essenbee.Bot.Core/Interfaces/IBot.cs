@@ -8,7 +8,6 @@ namespace Essenbee.Bot.Core.Interfaces
         IActionScheduler ActionScheduler { get; }
 
         void SetRepository(IRepository repository);
-        //void SetProjectAnswerKey(string key);
         void Start();
     }
 }
