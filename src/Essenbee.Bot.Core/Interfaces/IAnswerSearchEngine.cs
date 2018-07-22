@@ -3,5 +3,6 @@
     public interface IAnswerSearchEngine
     {
         string GetAnswer(string question);
+        void SetApiKey(string apiKey);
     }
 }

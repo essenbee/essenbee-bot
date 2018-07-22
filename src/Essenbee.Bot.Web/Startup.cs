@@ -1,4 +1,5 @@
 using Essenbee.Bot.Core.Interfaces;
+using Essenbee.Bot.Infra.CognitiveServices;
 using Essenbee.Bot.Infra.Slack;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
@@ -47,6 +48,7 @@ namespace Essenbee.Bot.Web
 
             services.AddScoped<IRepository, EntityFrameworkRepository>();
             services.AddSingleton<IActionScheduler, HangfireActionScheduler>();
+            services.AddSingleton<IAnswerSearchEngine, AnswerSearch>();
             services.AddSingleton<IBot, Core.Bot>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

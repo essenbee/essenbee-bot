@@ -1,4 +1,5 @@
 ﻿using ConsoleTableExt;
+using Essenbee.Bot.Core.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,18 @@ using System.Net;
 
 namespace Essenbee.Bot.Infra.CognitiveServices
 {
-    public class AnswerSearch
+    public class AnswerSearch : IAnswerSearchEngine
     {
         // ToDo: Move to configuration
         private const string UriBase = "https://api.labs.cognitive.microsoft.com/answerSearch/v7.0/search";
         // ToDo: Move to configuration
-        private readonly string _apiKey;
+        private string _apiKey;
         
-        public AnswerSearch(string apiKey)
+        public AnswerSearch()
+        {
+        }
+
+        public void SetApiKey(string apiKey)
         {
             _apiKey = apiKey;
         }

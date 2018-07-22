@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core
     {
         public List<IChatClient> ConnectedClients { get; } = new List<IChatClient>();
         public IActionScheduler ActionScheduler { get; }
+        public IAnswerSearchEngine AnswerSearchEngine { get; }
         public IBotSettings Settings { get; }
 
         public static readonly string DefaultChannel = "general";
@@ -21,9 +22,10 @@ namespace Essenbee.Bot.Core
         private bool _endProgram = false;
         private IRepository _repository;
         
-        public Bot(IActionScheduler actionScheduler, IConnectedClients clients, IBotSettings settings)
+        public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, IBotSettings settings)
         {
             ActionScheduler = actionScheduler;
+            AnswerSearchEngine = answerSearchEngine;
             Settings = settings;
             ConnectedClients = clients.ChatClients;
         }
@@ -101,7 +103,9 @@ namespace Essenbee.Bot.Core
             {
                 if (type.Name == "ICommand") continue;
 
-                var cmd = Activator.CreateInstance(type, Settings) as ICommand;
+                var cmd = type.Name.Equals("AskCommand") 
+                    ? Activator.CreateInstance(type, Settings, AnswerSearchEngine) as ICommand
+                    : Activator.CreateInstance(type, Settings) as ICommand;
                 cmd.Status = ItemStatus.Active;
                 _CommandsAvailable.Add(cmd.CommandName, cmd);
             }
