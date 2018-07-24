@@ -52,24 +52,10 @@ namespace Essenbee.Bot.Web.Pages
             try
             {
                 var runningJobs = _actionScheduler.GetRunningJobs<BotWorker>();
-                var botWorkerJobs = runningJobs;
-                var alreadyRunning = runningJobs.Any();
 
-                if (botWorkerJobs.Any())
+                if (runningJobs.Any())
                 {
-                    var jobInstanceIdsToDelete = new List<string>();
-
-                    foreach (var botWorkerJob in botWorkerJobs)
-                    {
-                        jobInstanceIdsToDelete.Add(botWorkerJob);
-                    }
-
-                    foreach (var id in jobInstanceIdsToDelete)
-                    {
-                        BackgroundJob.Delete(id);
-                        RecurringJob.RemoveIfExists(id);
-                    }
-
+                    _actionScheduler.StopRunningJobs<BotWorker>();
                     IsRunning = false;
                 }
                 else

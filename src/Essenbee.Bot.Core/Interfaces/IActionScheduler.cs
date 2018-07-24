@@ -11,5 +11,6 @@ namespace Essenbee.Bot.Core.Interfaces
         List<string> GetRunningJobs<T>();
         List<string> GetScheduledJobs();
         List<string> GetEnqueuedJobs();
+        void StopRunningJobs<T>();
     }
 }

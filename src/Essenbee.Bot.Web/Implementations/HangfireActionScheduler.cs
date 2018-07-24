@@ -77,6 +77,19 @@ namespace Essenbee.Bot.Web
             return jobs.Select(j => j.Key).ToList();
         }
 
+        public void StopRunningJobs<T>()
+        {
+            var jobs = GetRunningJobs<T>();
+            if (jobs.Any())
+            {
+                foreach (var job in jobs)
+                {
+                    BackgroundJob.Delete(job);
+                    RecurringJob.RemoveIfExists(job);
+                }
+            }
+        }
+
         public List<string> GetRunningJobs()
         {
             var jobs = GetRunningHangfireJobs();
