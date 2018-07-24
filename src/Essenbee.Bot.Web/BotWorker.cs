@@ -12,10 +12,9 @@ namespace Essenbee.Bot.Web
         private readonly IBot _bot;
         private readonly IOptions<UserSecrets> _config;
 
-        public BotWorker(IBot bot, IOptions<UserSecrets> config, IRepository repository)
+        public BotWorker(IBot bot, IRepository repository)
         {
             _bot = bot;
-            _config = config;
             bot.SetRepository(repository);
         }
 
