@@ -1,7 +1,6 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using Hangfire;
 using Hangfire.Server;
-using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 
@@ -10,12 +9,13 @@ namespace Essenbee.Bot.Web
     public class BotWorker : Worker
     {
         private readonly IBot _bot;
-        private readonly IOptions<UserSecrets> _config;
+        private readonly IRepository _repository;
 
         public BotWorker(IBot bot, IRepository repository)
         {
             _bot = bot;
-            bot.SetRepository(repository);
+            _repository = repository;
+            bot.SetRepository(_repository);
         }
 
         [DisableConcurrentExecution(60)]
