@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Essenbee.Bot.Core.Interfaces;
-using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace Essenbee.Bot.Web.Pages

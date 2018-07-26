@@ -28,11 +28,8 @@ namespace Essenbee.Bot.Infra.Hangfire
         {
             if (ChatClients is null)
             {
-                //Log.Error("Chat clients property is not set!");
                 throw new InvalidDataException("Chat clients property is not set!"); ;
             }
-
-            //Log.Information($"Scheduling {action.Name} with Hangfire server...");
 
             switch (action)
             {

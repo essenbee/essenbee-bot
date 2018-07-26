@@ -2,6 +2,7 @@
 using Hangfire;
 using Hangfire.Server;
 using System;
+using static System.Console;
 
 namespace Essenbee.Bot.Infra.Hangfire
 {
@@ -26,7 +27,7 @@ namespace Essenbee.Bot.Infra.Hangfire
             }
             catch (Exception ex)
             {
-                // Log.Error($"BotWorker.Start(): {ex.Message} - {ex.StackTrace}");
+                WriteLine($"BotWorker.Start(): {ex.Message} - {ex.StackTrace}");
             }
         }
     }
