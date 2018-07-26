@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Hangfire;
@@ -15,6 +17,11 @@ namespace Essenbee.Bot.Web
         public HangfireActionScheduler(IConnectedClients clients)
         {
             ChatClients = clients.ChatClients;
+        }
+
+        public void Enqueue(Expression<Action> action)
+        {
+            BackgroundJob.Enqueue(action);
         }
 
         public void Schedule(IScheduledAction action)

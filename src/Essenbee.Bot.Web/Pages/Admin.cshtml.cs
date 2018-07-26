@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Web.Pages
 {
     public class AdminModel : PageModel
     {
-        private readonly IOptions<UserSecrets> _config;
+        private readonly IBot _bot;
         private readonly IRepository _repository;
         private readonly IActionScheduler _actionScheduler;
 
@@ -23,9 +23,9 @@ namespace Essenbee.Bot.Web.Pages
         [BindProperty]
         public IList<Core.Data.StartupMessage> StartupMessage { get; set; }
 
-        public AdminModel(IOptions<UserSecrets> config, IRepository repository, IActionScheduler actionScheduler)
+        public AdminModel(IBot bot, IRepository repository, IActionScheduler actionScheduler)
         {
-            _config = config;
+            _bot = bot;
             _repository = repository;
             _actionScheduler = actionScheduler;
         }
@@ -34,7 +34,7 @@ namespace Essenbee.Bot.Web.Pages
         {
             try
             {
-                var runningJobs = _actionScheduler.GetRunningJobs<BotWorker>();
+                var runningJobs = _actionScheduler.GetRunningJobs<Core.Bot>();
                 IsRunning = runningJobs.Any();
                 TimedMessages = _repository.List<Core.Data.TimedMessage>();
                 StartupMessage = _repository.List<Core.Data.StartupMessage>();
@@ -51,16 +51,17 @@ namespace Essenbee.Bot.Web.Pages
         {
             try
             {
-                var runningJobs = _actionScheduler.GetRunningJobs<BotWorker>();
+                var runningJobs = _actionScheduler.GetRunningJobs<Core.Bot>();
 
                 if (runningJobs.Any())
                 {
-                    _actionScheduler.StopRunningJobs<BotWorker>();
+                    _actionScheduler.StopRunningJobs<Core.Bot>();
                     IsRunning = false;
                 }
                 else
                 {
-                    BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
+                    //BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
+                    _actionScheduler.Enqueue(() => _bot.Start());
                     IsRunning = true;
                 }
 
