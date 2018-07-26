@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HangFire" Version="1.6.19" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
+  </ItemGroup>
+
+</Project>

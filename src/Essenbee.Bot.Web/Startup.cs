@@ -1,5 +1,6 @@
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Infra.CognitiveServices;
+using Essenbee.Bot.Infra.Hangfire;
 using Essenbee.Bot.Infra.Slack;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;

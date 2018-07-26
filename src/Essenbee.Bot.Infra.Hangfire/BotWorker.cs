@@ -1,10 +1,9 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using Hangfire;
 using Hangfire.Server;
-using Serilog;
 using System;
 
-namespace Essenbee.Bot.Web
+namespace Essenbee.Bot.Infra.Hangfire
 {
     public class BotWorker : Worker
     {
@@ -27,7 +26,7 @@ namespace Essenbee.Bot.Web
             }
             catch (Exception ex)
             {
-                Log.Error($"BotWorker.Start(): {ex.Message} - {ex.StackTrace}");
+                // Log.Error($"BotWorker.Start(): {ex.Message} - {ex.StackTrace}");
             }
         }
     }

@@ -6,9 +6,9 @@ using System.Linq.Expressions;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Hangfire;
-using Serilog;
+using Hangfire.Storage.Monitoring;
 
-namespace Essenbee.Bot.Web
+namespace Essenbee.Bot.Infra.Hangfire
 {
     public class HangfireActionScheduler : IActionScheduler
     {
@@ -28,11 +28,11 @@ namespace Essenbee.Bot.Web
         {
             if (ChatClients is null)
             {
-                Log.Error("Chat clients property is not set!");
+                //Log.Error("Chat clients property is not set!");
                 throw new InvalidDataException("Chat clients property is not set!"); ;
             }
 
-            Log.Information($"Scheduling {action.Name} with Hangfire server...");
+            //Log.Information($"Scheduling {action.Name} with Hangfire server...");
 
             switch (action)
             {
@@ -115,19 +115,19 @@ namespace Essenbee.Bot.Web
             return jobs.Select(j => j.Key).ToList();
         }
 
-        private List<KeyValuePair<string, Hangfire.Storage.Monitoring.ProcessingJobDto>> GetRunningHangfireJobs()
+        private List<KeyValuePair<string, ProcessingJobDto>> GetRunningHangfireJobs()
         {
             return JobStorage.Current.GetMonitoringApi()
                 .ProcessingJobs(0, int.MaxValue).ToList();
         }
 
-        private List<KeyValuePair<string, Hangfire.Storage.Monitoring.ScheduledJobDto>> GetScheduledHangfireJobs()
+        private List<KeyValuePair<string, ScheduledJobDto>> GetScheduledHangfireJobs()
         {
             return JobStorage.Current.GetMonitoringApi()
                 .ScheduledJobs(0, int.MaxValue).ToList();
         }
 
-        private List<KeyValuePair<string, Hangfire.Storage.Monitoring.EnqueuedJobDto>> GetEnqueuedHangfireJobs(string queue = "default")
+        private List<KeyValuePair<string, EnqueuedJobDto>> GetEnqueuedHangfireJobs(string queue = "default")
         {
             return JobStorage.Current.GetMonitoringApi()
                 .EnqueuedJobs(queue, 0, int.MaxValue).ToList();

@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
+    <ProjectReference Include="..\Essenbee.Bot.Infra.Hangfire\Essenbee.Bot.Infra.Hangfire.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Inra.CognitiveServices\Essenbee.Bot.Infra.CognitiveServices.csproj" />
   </ItemGroup>
