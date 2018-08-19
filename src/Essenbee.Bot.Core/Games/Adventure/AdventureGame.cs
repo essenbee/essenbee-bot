@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         private IDictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>> commands;
         private IList<AdventurePlayer> players;
 
-        // For initial testing only
+        // For initial testing only - will be a JSON file
         private readonly Dictionary<int, AdventureLocation> locations = new Dictionary<int, AdventureLocation>
         {
             { 0, new AdventureLocation {
@@ -77,7 +77,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         new AdventureItem
                         {
                             ItemId = "food",
-                            Name = "parcel of *food* items",
+                            Name = "packet of dried *food* rations",
                             CanBeTaken = true,
                         },
                 },
