@@ -94,7 +94,6 @@ namespace Essenbee.Bot.Core.Games
             }
         }
 
-
         private void InitialiseCommands()
         {
             commands = new Dictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>>
@@ -112,7 +111,7 @@ namespace Essenbee.Bot.Core.Games
 
         private void DisplayIntroText(AdventurePlayer player, ChatCommandEventArgs e)
         {
-           player.ChatClient.PostDirectMessage(player.Id, $"Welcome to Adventure!");
+            player.ChatClient.PostDirectMessage(player.Id, $"Welcome to Adventure!");
             AdvCommandLook(player, e);
         }
 
@@ -120,7 +119,7 @@ namespace Essenbee.Bot.Core.Games
         {
             var description = new StringBuilder("*" + player.CurrentLocation.Name + "*");
             description.AppendLine();
-                        description.AppendLine($"You are {player.CurrentLocation.LongDescription}");
+            description.AppendLine($"You are {player.CurrentLocation.LongDescription}");
 
             var otherPlayersHere = players.Where(p => p.CurrentLocation.Name == player.CurrentLocation.Name &&
                                                       p.UserName != player.UserName);

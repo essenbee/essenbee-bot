@@ -21,12 +21,15 @@ namespace Essenbee.Bot.Core.Games
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (_adventureGame is null)
+            if (chatClient.GetType().ToString() == e.ClientType)
             {
-                _adventureGame = new AdventureGame();
-            }
+                if (_adventureGame is null)
+                {
+                    _adventureGame = new AdventureGame();
+                }
 
-            _adventureGame.HandleCommand(chatClient, e);
+                _adventureGame.HandleCommand(chatClient, e);
+            }
         }
 
         public bool ShoudExecute() => true;
