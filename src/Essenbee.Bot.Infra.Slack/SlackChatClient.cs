@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Essenbee.Bot.Core.Interfaces;
 using static System.Console;
 using SlackLibCore;
+using System.Linq;
 
 namespace Essenbee.Bot.Infra.Slack
 {
@@ -104,6 +105,16 @@ namespace Essenbee.Bot.Infra.Slack
             }
         }
 
+        public void PostDirectMessage(string userId, string msg)
+        {
+            var imChannelList = _slackClient.IM.List();
+            var userChannel = imChannelList.ims.FirstOrDefault(c => c.user == userId);
+
+            if (userChannel is null) return;
+
+            PostMessage(userChannel.id, msg);
+        }
+
         private void OnConnected()
         {
             _isReady = true;
@@ -176,8 +187,9 @@ namespace Essenbee.Bot.Infra.Slack
             var args = e?.ArgsAsString ?? string.Empty;
             var argsList = e?.ArgsAsList ?? new List<string>();
             var channel = e?.Channel ?? string.Empty;
+            var userId = e?.User ?? string.Empty;
 
-            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, channel, user));
+            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, channel, user, userId));
         }
     }
 }

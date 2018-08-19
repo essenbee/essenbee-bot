@@ -4,7 +4,7 @@ namespace Essenbee.Bot.Core.Games
 {
     public class AdventurePlayer
     {
-
+        public string Id { get; set; }
         public string UserName { get; set; }
         public AdventureLocation CurrentLocation { get; set; }
         public IChatClient ChatClient { get; set; }

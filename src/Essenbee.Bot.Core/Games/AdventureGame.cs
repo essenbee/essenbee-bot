@@ -46,13 +46,13 @@ namespace Essenbee.Bot.Core.Games
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (players.Any(x => x.UserName == e.UserName))
+            if (players.Any(x => x.Id == e.UserId))
             {
-                var player = GetPlayer(e.UserName);
+                var player = GetPlayer(e.UserId);
 
                 if (e.ArgsAsList.Count == 0)
                 {
-                    player.ChatClient.PostMessage(e.Channel, $"{e.UserName}, you are already playing Adventure!");
+                    player.ChatClient.PostDirectMessage(player.Id, $"{e.UserName}, you are already playing Adventure!");
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace Essenbee.Bot.Core.Games
                     }
                     else
                     {
-                        player.ChatClient.PostMessage(e.Channel, $"Sorry {e.UserName}, I don't understand {advCommands[0]}.");
+                        player.ChatClient.PostDirectMessage(player.Id, $"Sorry, I don't understand {advCommands[0]}.");
                     }
                 }
             }
@@ -73,6 +73,7 @@ namespace Essenbee.Bot.Core.Games
                 if (e.ArgsAsList.Count == 0)
                 {
                     var player = new AdventurePlayer {
+                        Id = e.UserId,
                         UserName = e.UserName,
                         CurrentLocation = locations.First().Value,
                         Score = 0,
@@ -81,35 +82,33 @@ namespace Essenbee.Bot.Core.Games
                     };
 
                     players.Add(player);
+                    chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
 
-                    DisplayIntroText(player.ChatClient, e);
+                    DisplayIntroText(player, e);
                 }
                 else
                 {
-                    chatClient.PostMessage(e.Channel, $"You are not playing Adventure, {e.UserName}. Use the command !adv to join the game.");
+                    chatClient.PostDirectMessage(e.UserId, $"You are not playing Adventure. Use the command !adv to join the game.");
                 }
             }
         }
 
-
-        private AdventurePlayer GetPlayer(string userName)
+        private AdventurePlayer GetPlayer(string userId)
         {
-            return players.First(x => x.UserName == userName);
+            return players.First(x => x.Id == userId);
         }
 
-        private void DisplayIntroText(IChatClient chatClient, ChatCommandEventArgs e)
+        private void DisplayIntroText(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            chatClient.PostMessage(e.Channel, $"Welcome to Adventure, <{e.UserName}>!");
-            AdvCommandLook(chatClient, e);
+           player.ChatClient.PostDirectMessage(player.Id, $"Welcome to Adventure!");
+            AdvCommandLook(player, e);
         }
 
-        private void AdvCommandLook(IChatClient chatClient, ChatCommandEventArgs e)
+        private void AdvCommandLook(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            var player = GetPlayer(e.UserName);
-
             var description = new StringBuilder(player.CurrentLocation.Name);
             description.AppendLine();
-                        description.AppendLine($"<{player.UserName}>: You are {player.CurrentLocation.LongDescription}");
+                        description.AppendLine($"You are {player.CurrentLocation.LongDescription}");
 
             var otherPlayersHere = players.Where(p => p.CurrentLocation.Name == player.CurrentLocation.Name &&
                                                       p.UserName != player.UserName);
@@ -141,7 +140,7 @@ namespace Essenbee.Bot.Core.Games
                 }
             }
 
-            chatClient.PostMessage(e.Channel, description.ToString());
+            player.ChatClient.PostDirectMessage(player.Id, description.ToString());
         }
     }
 }

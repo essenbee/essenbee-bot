@@ -32,5 +32,11 @@ namespace Essenbee.Bot.Web
             Console.WriteLine(text);
             Log.Information("*** " + text);
         }
+
+        public void PostDirectMessage(string username, string text)
+        {
+            Console.WriteLine($"<{username}>: " + text);
+            Log.Information($"*** <{username}>: " + text);
+        }
     }
 }
