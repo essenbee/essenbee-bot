@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventureGame
     {
-
         private IDictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>> commands;
         private IList<AdventurePlayer> players;
 
@@ -81,6 +81,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public AdventureGame()
         {
             players = new List<AdventurePlayer>();
+            //var json = JsonConvert.SerializeObject(locations);
             InitialiseCommands();
         }
 
@@ -138,7 +139,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             commands = new Dictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>>
             {
-                // {"help", AdvCommandHelp },
+                {"help", AdvCommandHelp },
                 {"look", AdvCommandLook},
                 { "l", AdvCommandLook},
                 { "go", AdvCommandMove},
@@ -174,6 +175,20 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             player.ChatClient.PostDirectMessage(player.Id, $"Welcome to Adventure!");
             AdvCommandLook(player, e);
+        }
+
+        private void AdvCommandHelp(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            var helpText = new StringBuilder("I know several commands to aid you in your exploration, such as:");
+            helpText.AppendLine();
+            helpText.AppendLine("\t'look'");
+            helpText.AppendLine("\t'go'");
+            helpText.AppendLine("\t'take'");
+            helpText.AppendLine("\t'use'");
+            helpText.AppendLine("\t'inventory'");
+            helpText.AppendLine();
+            helpText.AppendLine("Some of the places you will visit have items lying around. If such an item is shown in *bold* text, you can take it and carry it with you; it may or may not be of any use.");
+            player.ChatClient.PostDirectMessage(player.Id, helpText.ToString());
         }
 
         private void AdvCommandLook(AdventurePlayer player, ChatCommandEventArgs e)
@@ -269,7 +284,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 return;
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, "You are carrying these items with you:");
             var inventory = new StringBuilder("You are carrying these items with you:");
             inventory.AppendLine();
 
