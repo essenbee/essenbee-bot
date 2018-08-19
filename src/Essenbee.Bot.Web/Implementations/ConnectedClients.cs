@@ -25,7 +25,7 @@ namespace Essenbee.Bot.Web
             var slackApiKey = _config.Value.SlackApiKey;
             var connectedClients = new List<IChatClient>
             {
-                new ConsoleChatClient(),
+                //new ConsoleChatClient(),
                 new SlackChatClient(slackApiKey),
             };
 
