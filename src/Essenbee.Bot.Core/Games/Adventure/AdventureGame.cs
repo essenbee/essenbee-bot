@@ -148,6 +148,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 { "get", AdvCommandTake},
                 { "inventory", AdvCommandInventory},
                 { "inv", AdvCommandInventory},
+                { "open", AdvCommandOpen},
             };
         }
 
@@ -258,8 +259,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var item = e.ArgsAsList[1].ToLower();
 
             var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
+            var innerItem = location.Items.FirstOrDefault(i => i.Contents.FirstOrDefault(c => c.Name == item) != null);
 
-            if (locationItem is null)
+            if (locationItem is null && innerItem is null)
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
                 return;
@@ -293,6 +295,34 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             player.ChatClient.PostDirectMessage(player.Id, inventory.ToString());
+        }
+
+        private void AdvCommandOpen(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            var location = player.CurrentLocation;
+            var item = e.ArgsAsList[1].ToLower();
+
+            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
+
+            if (locationItem is null)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
+                return;
+            }
+
+            if (locationItem.IsOpen)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"The {item} is already open!");
+                return;
+            }
+
+            if (locationItem.IsLocked)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"The {item} is locked!");
+                return;
+            }
+
+            locationItem.IsOpen = true;
         }
     }
 }
