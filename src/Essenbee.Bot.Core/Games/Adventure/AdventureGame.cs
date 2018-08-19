@@ -32,7 +32,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                                 new AdventureItem
                                 {
                                     ItemId = "leaflet",
-                                    Name = "A *leaflet*",
+                                    Name = "*leaflet*",
                                     CanBeTaken = true
                                 }
                             }
@@ -223,7 +223,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
                     foreach (var content in item.Contents)
                     {
-                        description.AppendLine($"\t{content.Name}");
+                        description.AppendLine($"\tA {content.Name}");
                     }
                 }
             }
@@ -259,9 +259,25 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var item = e.ArgsAsList[1].ToLower();
 
             var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
-            var innerItem = location.Items.FirstOrDefault(i => i.Contents.FirstOrDefault(c => c.Name == item) != null);
+            var containers = location.Items.Where(i => i.Contents.Count > 0).ToList();
 
-            if (locationItem is null && innerItem is null)
+            foreach (var container in containers)
+            {
+                foreach (var containedItem in container.Contents)
+                {
+                    if (containedItem.ItemId == item && containedItem.CanBeTaken)
+                    {
+                        player.Inventory.Add(containedItem);
+                        container.Contents.Remove(containedItem);
+                        player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
+
+                        return;
+                    }
+                }
+            }
+            
+
+            if (locationItem is null)
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
                 return;
