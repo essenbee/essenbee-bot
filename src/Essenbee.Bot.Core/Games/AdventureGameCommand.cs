@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure;
+using Essenbee.Bot.Core.Interfaces;
 
 namespace Essenbee.Bot.Core.Games
 {
@@ -8,7 +9,7 @@ namespace Essenbee.Bot.Core.Games
 
         public string CommandName => "adv";
 
-        public string HelpText => "Play an adventure game";
+        public string HelpText => "Play an old school text adventure game";
 
         private AdventureGame _adventureGame;
 

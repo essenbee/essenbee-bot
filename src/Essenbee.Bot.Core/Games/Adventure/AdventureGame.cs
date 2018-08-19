@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Essenbee.Bot.Core.Games
+namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventureGame
     {

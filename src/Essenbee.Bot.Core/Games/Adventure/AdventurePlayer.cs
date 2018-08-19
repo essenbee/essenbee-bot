@@ -1,6 +1,6 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 
-namespace Essenbee.Bot.Core.Games
+namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventurePlayer
     {

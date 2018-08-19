@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Essenbee.Bot.Core.Games
+namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventureItem
     {
