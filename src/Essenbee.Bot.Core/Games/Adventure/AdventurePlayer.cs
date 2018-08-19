@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
+using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -10,5 +11,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IChatClient ChatClient { get; set; }
         public int Score { get; set; }
         public int Moves { get; set; }
+        public IList<AdventureItem> Inventory { get; set; }
+
+        public AdventurePlayer()
+        {
+            Inventory = new List<AdventureItem>();
+        }
     }
 }

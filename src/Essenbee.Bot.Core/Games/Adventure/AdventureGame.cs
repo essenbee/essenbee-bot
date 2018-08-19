@@ -24,13 +24,16 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     {
                         new AdventureItem
                         {
+                            ItemId = "mailbox",
                             Name = "small mailbox",
                             IsOpen = true,
                             Contents = new List<AdventureItem>
                             {
                                 new AdventureItem
                                 {
-                                    Name = "A leaflet"
+                                    ItemId = "leaflet",
+                                    Name = "A *leaflet*",
+                                    CanBeTaken = true
                                 }
                             }
                         }
@@ -54,13 +57,15 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 {
                     new AdventureItem
                         {
-                            Name = "key",
-                            IsOpen = false,
+                            ItemId = "key",
+                            Name = "large iron *key*",
+                            CanBeTaken = true
                         },
                         new AdventureItem
                         {
-                            Name = "lamp",
-                            IsOpen = false,
+                            ItemId = "lamp",
+                            Name = "battered *lamp*",
+                            CanBeTaken = true,
                         },
                 },
                 Moves = new Dictionary<string, string> {
@@ -138,6 +143,10 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 { "l", AdvCommandLook},
                 { "go", AdvCommandMove},
                 { "move", AdvCommandMove},
+                { "take", AdvCommandTake},
+                { "get", AdvCommandTake},
+                { "inventory", AdvCommandInventory},
+                { "inv", AdvCommandInventory},
             };
         }
 
@@ -226,6 +235,50 @@ namespace Essenbee.Bot.Core.Games.Adventure
             {
                 player.ChatClient.PostDirectMessage(player.Id, "You cannot go in that direction!");
             }
+        }
+
+        private void AdvCommandTake(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            var location = player.CurrentLocation;
+            var item = e.ArgsAsList[1].ToLower();
+
+            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
+
+            if (locationItem is null)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
+                return;
+            }
+
+            if (!locationItem.CanBeTaken)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You cannot carry a {item} with you!");
+                return;
+            }
+
+            player.Inventory.Add(locationItem);
+            player.CurrentLocation.Items.Remove(locationItem);
+            player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
+        }
+
+        private void AdvCommandInventory(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            if (player.Inventory.Count == 0 )
+            {
+                player.ChatClient.PostDirectMessage(player.Id, "You are not carrying anything with you at the moment.");
+                return;
+            }
+
+            player.ChatClient.PostDirectMessage(player.Id, "You are carrying these items with you:");
+            var inventory = new StringBuilder("You are carrying these items with you:");
+            inventory.AppendLine();
+
+            foreach (var item in player.Inventory)
+            {
+                inventory.AppendLine($"\ta {item.Name}");
+            }
+
+            player.ChatClient.PostDirectMessage(player.Id, inventory.ToString());
         }
     }
 }
