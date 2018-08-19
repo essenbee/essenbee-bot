@@ -34,8 +34,42 @@ namespace Essenbee.Bot.Core.Games.Adventure
                                 }
                             }
                         }
+                    },
+                    Moves = new Dictionary<string, string>
+                    {
+                        {"east", "building" },
+                        {"enter", "building" },
+                        {"in", "building" },
+                        {"inside", "building" },
+                        {"building", "building" },
                     }
                 }
+            },
+            { 1, new AdventureLocation {
+                LocationId = "building",
+                Name = "Small Brick Building",
+                ShortDescription = "inside a small brick building.",
+                LongDescription = " inside a small brick building, a well house for a bubbling spring.",
+                Items = new List<AdventureItem>
+                {
+                    new AdventureItem
+                        {
+                            Name = "key",
+                            IsOpen = false,
+                        },
+                        new AdventureItem
+                        {
+                            Name = "lamp",
+                            IsOpen = false,
+                        },
+                },
+                Moves = new Dictionary<string, string> {
+                        {"west", "road" },
+                        {"road", "road" },
+                        {"out", "road" },
+                        {"outside", "road" },
+                }
+            }
             }
         };
 
@@ -58,10 +92,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 else
                 {
                     var advCommands = e.ArgsAsList;
+                    var cmd = advCommands[0].ToLower();
 
-                    if (commands.ContainsKey(advCommands[0]))
+                    if (commands.ContainsKey(cmd))
                     {
-                        commands[advCommands[0]](player, e);
+                        commands[cmd](player, e);
                     }
                     else
                     {
@@ -100,13 +135,30 @@ namespace Essenbee.Bot.Core.Games.Adventure
             {
                 // {"help", AdvCommandHelp },
                 {"look", AdvCommandLook},
-                { "l", AdvCommandLook}
+                { "l", AdvCommandLook},
+                { "go", AdvCommandMove},
+                { "move", AdvCommandMove},
             };
         }
 
         private AdventurePlayer GetPlayer(string userId)
         {
             return players.First(x => x.Id == userId);
+        }
+
+        private bool TryGetLocation(string locationId, out AdventureLocation place)
+        {
+            var location = locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
+            place = null;
+
+            if (location.Count == 0)
+            {
+                return false;
+            }
+
+            place = location[0].Value;
+
+            return true;
         }
 
         private void DisplayIntroText(AdventurePlayer player, ChatCommandEventArgs e)
@@ -152,6 +204,28 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             player.ChatClient.PostDirectMessage(player.Id, description.ToString());
+        }
+
+        private void AdvCommandMove(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            var canMove = false;
+            var direction = e.ArgsAsList[1].ToLower();
+
+            if (player.CurrentLocation.Moves.ContainsKey(direction))
+            {
+                var moveTo = player.CurrentLocation.Moves[direction];
+                canMove = TryGetLocation(moveTo, out var place);
+                player.CurrentLocation = place;
+            }
+
+            if (canMove)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
+            }
+            else
+            {
+                player.ChatClient.PostDirectMessage(player.Id, "You cannot go in that direction!");
+            }
         }
     }
 }
