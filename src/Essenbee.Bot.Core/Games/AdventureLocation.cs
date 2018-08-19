@@ -4,6 +4,7 @@ namespace Essenbee.Bot.Core.Games
 {
     public class AdventureLocation
     {
+        public string LocationId { get; set; }
         public string Name { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }

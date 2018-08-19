@@ -9,13 +9,14 @@ namespace Essenbee.Bot.Core.Games
     public class AdventureGame
     {
 
-        private IDictionary<string, Action<ChatCommandEventArgs>> commands;
+        private IDictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>> commands;
         private IList<AdventurePlayer> players;
 
         // For initial testing only
         private readonly Dictionary<int, AdventureLocation> locations = new Dictionary<int, AdventureLocation>
         {
             { 0, new AdventureLocation {
+                    LocationId = "road",
                     Name = "End of a Road",
                     ShortDescription = "standing at the end of a road.",
                     LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.",
@@ -41,7 +42,7 @@ namespace Essenbee.Bot.Core.Games
         public AdventureGame()
         {
             players = new List<AdventurePlayer>();
-            commands = new Dictionary<string, Action<ChatCommandEventArgs>>();
+            InitialiseCommands();
         }
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
@@ -60,7 +61,7 @@ namespace Essenbee.Bot.Core.Games
 
                     if (commands.ContainsKey(advCommands[0]))
                     {
-                        commands[advCommands[0]](e);
+                        commands[advCommands[0]](player, e);
                     }
                     else
                     {
@@ -93,6 +94,17 @@ namespace Essenbee.Bot.Core.Games
             }
         }
 
+
+        private void InitialiseCommands()
+        {
+            commands = new Dictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>>
+            {
+                // {"help", AdvCommandHelp },
+                {"look", AdvCommandLook},
+                { "l", AdvCommandLook}
+            };
+        }
+
         private AdventurePlayer GetPlayer(string userId)
         {
             return players.First(x => x.Id == userId);
@@ -106,7 +118,7 @@ namespace Essenbee.Bot.Core.Games
 
         private void AdvCommandLook(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            var description = new StringBuilder(player.CurrentLocation.Name);
+            var description = new StringBuilder("*" + player.CurrentLocation.Name + "*");
             description.AppendLine();
                         description.AppendLine($"You are {player.CurrentLocation.LongDescription}");
 
