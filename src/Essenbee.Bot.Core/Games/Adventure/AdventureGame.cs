@@ -27,6 +27,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                             ItemId = "mailbox",
                             Name = "small mailbox",
                             IsOpen = true,
+                            IsContainer = true,
                             Contents = new List<AdventureItem>
                             {
                                 new AdventureItem
@@ -65,6 +66,18 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         {
                             ItemId = "lamp",
                             Name = "battered *lamp*",
+                            CanBeTaken = true,
+                        },
+                        new AdventureItem
+                        {
+                            ItemId = "bottle",
+                            Name = "small glass *bottle*",
+                            CanBeTaken = true,
+                        },
+                        new AdventureItem
+                        {
+                            ItemId = "food",
+                            Name = "parcel of *food* items",
                             CanBeTaken = true,
                         },
                 },
@@ -149,6 +162,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 { "inventory", AdvCommandInventory},
                 { "inv", AdvCommandInventory},
                 { "open", AdvCommandOpen},
+                { "drop", AdvCommandDrop},
             };
         }
 
@@ -259,7 +273,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var item = e.ArgsAsList[1].ToLower();
 
             var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
-            var containers = location.Items.Where(i => i.Contents.Count > 0).ToList();
+            var containers = location.Items.Where(i => i.IsContainer && i.Contents.Count > 0).ToList();
 
             foreach (var container in containers)
             {
@@ -275,7 +289,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     }
                 }
             }
-            
 
             if (locationItem is null)
             {
@@ -294,9 +307,34 @@ namespace Essenbee.Bot.Core.Games.Adventure
             player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
         }
 
+        private void AdvCommandDrop(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            var args = e.ArgsAsList;
+
+            if (args.Count == 1)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"What wpoudl you like to drop?");
+                return;
+            }
+
+            var itemToDrop = args[1];
+            var itemInInventory = player.Inventory.FirstOrDefault(x => x.Name.Equals(itemToDrop, StringComparison.InvariantCultureIgnoreCase));
+
+            if (itemInInventory == null)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToDrop} to drop!");
+            }
+            else
+            {
+                player.Inventory.Remove(itemInInventory);
+                player.CurrentLocation.Items.Add(itemInInventory);
+                player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
+            }
+        }
+
         private void AdvCommandInventory(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            if (player.Inventory.Count == 0 )
+            if (player.Inventory.Count == 0)
             {
                 player.ChatClient.PostDirectMessage(player.Id, "You are not carrying anything with you at the moment.");
                 return;
