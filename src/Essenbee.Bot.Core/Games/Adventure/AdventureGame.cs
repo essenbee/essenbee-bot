@@ -163,6 +163,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 { "inv", AdvCommandInventory},
                 { "open", AdvCommandOpen},
                 { "drop", AdvCommandDrop},
+                { "unlock", AdvCommandUnlock},
             };
         }
 
@@ -313,7 +314,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             if (args.Count == 1)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"What wpoudl you like to drop?");
+                player.ChatClient.PostDirectMessage(player.Id, $"What would you like to drop? Try using: !adv drop _item_");
                 return;
             }
 
@@ -377,6 +378,42 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             locationItem.IsOpen = true;
+        }
+
+        private void AdvCommandUnlock(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            var location = player.CurrentLocation;
+            var item = e.ArgsAsList[1].ToLower();
+
+            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
+
+            if (locationItem is null)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
+                return;
+            }
+
+            if (!locationItem.IsLocked)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"The {item} is already unlocked!");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(locationItem.ItemIdToUnlock))
+            {
+                if (!player.Inventory.Any(i => i.ItemId == locationItem.ItemIdToUnlock))
+                {
+                    player.ChatClient.PostDirectMessage(player.Id, $"You need a {locationItem.ItemIdToUnlock} to unlock the {item}!");
+                    return;
+                }
+                else
+                {
+                    player.ChatClient.PostDirectMessage(player.Id, $"You try your {locationItem.ItemIdToUnlock} ...");
+                }
+            }
+
+            locationItem.IsLocked = false;
+            player.ChatClient.PostDirectMessage(player.Id, $"The {item} is now unlocked!");
         }
     }
 }
