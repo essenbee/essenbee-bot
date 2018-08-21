@@ -195,13 +195,13 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private void AdvCommandHelp(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            var helpText = new StringBuilder("I know several commands to aid you in your exploration, such as:");
+            var helpText = new StringBuilder("I know several commands to aid you in your exploration, including:");
             helpText.AppendLine();
-            helpText.AppendLine("\t'look'");
-            helpText.AppendLine("\t'go'");
-            helpText.AppendLine("\t'take'");
-            helpText.AppendLine("\t'use'");
-            helpText.AppendLine("\t'inventory'");
+            helpText.AppendLine("\t`!adv look`");
+            helpText.AppendLine("\t`!adv go`");
+            helpText.AppendLine("\t`!adv take`");
+            helpText.AppendLine("\t`!adv use`");
+            helpText.AppendLine("\t`!adv inventory`");
             helpText.AppendLine();
             helpText.AppendLine("Some of the places you will visit have items lying around. If such an item is shown in *bold* text, you can take it and carry it with you; it may or may not be of any use.");
             player.ChatClient.PostDirectMessage(player.Id, helpText.ToString());
@@ -219,11 +219,10 @@ namespace Essenbee.Bot.Core.Games.Adventure
             if (otherPlayersHere.Any())
             {
                 description.AppendLine();
-            }
-
-            foreach (var otherPlayer in otherPlayersHere)
-            {
-                description.AppendLine($"\t{otherPlayer.UserName} is also here.");
+                foreach (var otherPlayer in otherPlayersHere)
+                {
+                    description.AppendLine($"\t{otherPlayer.UserName} is also here.");
+                }
             }
 
             description.AppendLine();
