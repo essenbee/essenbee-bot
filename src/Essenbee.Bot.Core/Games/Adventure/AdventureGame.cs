@@ -9,11 +9,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventureGame
     {
-        private IDictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>> commands;
-        private IList<AdventurePlayer> players;
+        private IDictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>> _commands;
+        private IList<AdventurePlayer> _players;
 
         // For initial testing only - will be a JSON file
-        private readonly Dictionary<int, AdventureLocation> locations = new Dictionary<int, AdventureLocation>
+        private readonly Dictionary<int, AdventureLocation> _locations = new Dictionary<int, AdventureLocation>
         {
             { 0, new AdventureLocation {
                     LocationId = "road",
@@ -34,7 +34,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                                 {
                                     ItemId = "leaflet",
                                     Name = "*leaflet*",
-                                    CanBeTaken = true
+                                    IsPortable = true
                                 }
                             }
                         }
@@ -60,25 +60,25 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         {
                             ItemId = "key",
                             Name = "large iron *key*",
-                            CanBeTaken = true
+                            IsPortable = true
                         },
                         new AdventureItem
                         {
                             ItemId = "lamp",
                             Name = "battered *lamp*",
-                            CanBeTaken = true,
+                            IsPortable = true,
                         },
                         new AdventureItem
                         {
                             ItemId = "bottle",
                             Name = "small glass *bottle*",
-                            CanBeTaken = true,
+                            IsPortable = true,
                         },
                         new AdventureItem
                         {
                             ItemId = "food",
                             Name = "packet of dried *food* rations",
-                            CanBeTaken = true,
+                            IsPortable = true,
                         },
                 },
                 Moves = new Dictionary<string, string> {
@@ -93,14 +93,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public AdventureGame()
         {
-            players = new List<AdventurePlayer>();
+            _players = new List<AdventurePlayer>();
             //var json = JsonConvert.SerializeObject(locations);
             InitialiseCommands();
         }
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (players.Any(x => x.Id == e.UserId))
+            if (_players.Any(x => x.Id == e.UserId))
             {
                 var player = GetPlayer(e.UserId);
 
@@ -113,9 +113,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     var advCommands = e.ArgsAsList;
                     var cmd = advCommands[0].ToLower();
 
-                    if (commands.ContainsKey(cmd))
+                    if (_commands.ContainsKey(cmd))
                     {
-                        commands[cmd](player, e);
+                        _commands[cmd](player, e);
                     }
                     else
                     {
@@ -130,27 +130,27 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     var player = new AdventurePlayer {
                         Id = e.UserId,
                         UserName = e.UserName,
-                        CurrentLocation = locations.First().Value,
+                        CurrentLocation = _locations.First().Value,
                         Score = 0,
                         Moves = 1,
                         ChatClient = chatClient,
                     };
 
-                    players.Add(player);
+                    _players.Add(player);
                     chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
 
                     DisplayIntroText(player, e);
                 }
                 else
                 {
-                    chatClient.PostDirectMessage(e.UserId, $"You are not playing Adventure. Use the command !adv to join the game.");
+                    chatClient.PostDirectMessage(e.UserId, "You are not playing Adventure. Use the command !adv to join the game.");
                 }
             }
         }
 
         private void InitialiseCommands()
         {
-            commands = new Dictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>>
+            _commands = new Dictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>>
             {
                 {"help", AdvCommandHelp },
                 {"look", AdvCommandLook},
@@ -169,12 +169,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private AdventurePlayer GetPlayer(string userId)
         {
-            return players.First(x => x.Id == userId);
+            return _players.First(x => x.Id == userId);
         }
 
         private bool TryGetLocation(string locationId, out AdventureLocation place)
         {
-            var location = locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
+            var location = _locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
             place = null;
 
             if (location.Count == 0)
@@ -189,7 +189,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private void DisplayIntroText(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            player.ChatClient.PostDirectMessage(player.Id, $"Welcome to Adventure!");
+            player.ChatClient.PostDirectMessage(player.Id, "Welcome to Adventure!");
             AdvCommandLook(player, e);
         }
 
@@ -213,10 +213,10 @@ namespace Essenbee.Bot.Core.Games.Adventure
             description.AppendLine();
             description.AppendLine($"You are {player.CurrentLocation.LongDescription}");
 
-            var otherPlayersHere = players.Where(p => p.CurrentLocation.Name == player.CurrentLocation.Name &&
-                                                      p.UserName != player.UserName);
+            var otherPlayersHere = _players.Where(p => p.CurrentLocation.Name == player.CurrentLocation.Name &&
+                                                      p.UserName != player.UserName).ToList();
 
-            if (otherPlayersHere.Count() > 0)
+            if (otherPlayersHere.Any())
             {
                 description.AppendLine();
             }
@@ -280,7 +280,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             {
                 foreach (var containedItem in container.Contents)
                 {
-                    if (containedItem.ItemId == item && containedItem.CanBeTaken)
+                    if (containedItem.ItemId == item && containedItem.IsPortable)
                     {
                         player.Inventory.Add(containedItem);
                         container.Contents.Remove(containedItem);
@@ -297,7 +297,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 return;
             }
 
-            if (!locationItem.CanBeTaken)
+            if (!locationItem.IsPortable)
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You cannot carry a {item} with you!");
                 return;
@@ -314,7 +314,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             if (args.Count == 1)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"What would you like to drop? Try using: !adv drop _item_");
+                player.ChatClient.PostDirectMessage(player.Id, "What would you like to drop? Try using: !adv drop _item_");
                 return;
             }
 
@@ -401,7 +401,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             if (!string.IsNullOrEmpty(locationItem.ItemIdToUnlock))
             {
-                if (!player.Inventory.Any(i => i.ItemId == locationItem.ItemIdToUnlock))
+                if (player.Inventory.All(i => i.ItemId != locationItem.ItemIdToUnlock))
                 {
                     player.ChatClient.PostDirectMessage(player.Id, $"You need a {locationItem.ItemIdToUnlock} to unlock the {item}!");
                     return;
