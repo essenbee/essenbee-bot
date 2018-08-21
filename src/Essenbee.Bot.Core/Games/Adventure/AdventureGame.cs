@@ -125,25 +125,28 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
             else
             {
-                if (e.ArgsAsList.Count == 0)
+                if (_players.FirstOrDefault(p => p.Id.Equals(e.UserId)) is null)
                 {
-                    var player = new AdventurePlayer {
-                        Id = e.UserId,
-                        UserName = e.UserName,
-                        CurrentLocation = _locations.First().Value,
-                        Score = 0,
-                        Moves = 1,
-                        ChatClient = chatClient,
-                    };
+                    if (e.ArgsAsList.Count == 0)
+                    { 
+                        var player = new AdventurePlayer {
+                            Id = e.UserId,
+                            UserName = e.UserName,
+                            CurrentLocation = _locations.First().Value,
+                            Score = 0,
+                            Moves = 1,
+                            ChatClient = chatClient,
+                        };
 
-                    _players.Add(player);
-                    chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
+                        _players.Add(player);
+                        chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
 
-                    DisplayIntroText(player, e);
-                }
-                else
-                {
-                    chatClient.PostDirectMessage(e.UserId, "You are not playing Adventure. Use the command !adv to join the game.");
+                        DisplayIntroText(player, e);
+                    }
+                    else
+                    {
+                        chatClient.PostDirectMessage(e.UserId, "You are not playing Adventure. Use the command !adv to join the game.");
+                    }
                 }
             }
         }
