@@ -11,6 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsLocked { get; set; }
         public string ItemIdToUnlock { get; set; }
         public bool IsPortable { get; set; }
+        public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
 
         public AdventureItem()

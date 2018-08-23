@@ -65,8 +65,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         new AdventureItem
                         {
                             ItemId = "lamp",
-                            Name = "battered *lamp*",
+                            Name = "rack of *lamp*es",
                             IsPortable = true,
+                            IsEndlessSupply = true,
                         },
                         new AdventureItem
                         {
@@ -100,15 +101,26 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (_players.Any(x => x.Id == e.UserId))
+            if (IsNewPlayer(e))
+            {
+                var player = new AdventurePlayer {
+                    Id = e.UserId,
+                    UserName = e.UserName,
+                    CurrentLocation = _locations.First().Value,
+                    Score = 0,
+                    Moves = 1,
+                    ChatClient = chatClient,
+                };
+
+                _players.Add(player);
+                chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
+
+                DisplayIntroText(player, e);
+            }
+            else
             {
                 var player = GetPlayer(e.UserId);
-
-                if (e.ArgsAsList.Count == 0)
-                {
-                    player.ChatClient.PostDirectMessage(player.Id, $"{e.UserName}, you are already playing Adventure!");
-                }
-                else
+                if (e.ArgsAsList.Count > 0)
                 {
                     var advCommands = e.ArgsAsList;
                     var cmd = advCommands[0].ToLower();
@@ -122,34 +134,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         player.ChatClient.PostDirectMessage(player.Id, $"Sorry, I don't understand {advCommands[0]}.");
                     }
                 }
-            }
-            else
-            {
-                if (_players.FirstOrDefault(p => p.Id.Equals(e.UserId)) is null)
+                else
                 {
-                    if (e.ArgsAsList.Count == 0)
-                    { 
-                        var player = new AdventurePlayer {
-                            Id = e.UserId,
-                            UserName = e.UserName,
-                            CurrentLocation = _locations.First().Value,
-                            Score = 0,
-                            Moves = 1,
-                            ChatClient = chatClient,
-                        };
-
-                        _players.Add(player);
-                        chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
-
-                        DisplayIntroText(player, e);
-                    }
-                    else
-                    {
-                        chatClient.PostDirectMessage(e.UserId, "You are not playing Adventure. Use the command !adv to join the game.");
-                    }
+                    player.ChatClient.PostDirectMessage(player.Id, "What would you like me to do?");
                 }
             }
         }
+
+        private bool IsNewPlayer(ChatCommandEventArgs e) => _players.All(p => p.Id != e.UserId);
 
         private void InitialiseCommands()
         {
@@ -278,6 +270,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
             var containers = location.Items.Where(i => i.IsContainer && i.Contents.Count > 0).ToList();
 
+            if (player.Inventory.Any(i => i.ItemId.Equals(locationItem.ItemId)))
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You are already carrying a {item} with you.");
+                return;
+            }
+
             foreach (var container in containers)
             {
                 foreach (var containedItem in container.Contents)
@@ -306,7 +304,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             player.Inventory.Add(locationItem);
-            player.CurrentLocation.Items.Remove(locationItem);
+
+            if (!locationItem.IsEndlessSupply)
+            {
+                player.CurrentLocation.Items.Remove(locationItem);
+            }
+
             player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
         }
 
