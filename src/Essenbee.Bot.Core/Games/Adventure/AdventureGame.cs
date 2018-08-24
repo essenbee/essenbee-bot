@@ -289,7 +289,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
             var containers = location.Items.Where(i => i.IsContainer && i.Contents.Count > 0).ToList();
 
-            if (locationItem != null && player.Inventory.Any(i => i.ItemId.Equals(locationItem.ItemId)))
+            if (locationItem != null && player.Inventory.GetItems().Any(i => i.ItemId.Equals(locationItem.ItemId)))
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You are already carrying a {item} with you.");
                 return;
@@ -301,7 +301,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 {
                     if (containedItem.ItemId == item && containedItem.IsPortable)
                     {
-                        player.Inventory.Add(containedItem);
+                        player.Inventory.AddItem(containedItem);
                         container.Contents.Remove(containedItem);
                         player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
 
@@ -322,7 +322,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 return;
             }
 
-            player.Inventory.Add(locationItem);
+            player.Inventory.AddItem(locationItem);
 
             if (!locationItem.IsEndlessSupply)
             {
@@ -343,7 +343,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             var itemToDrop = args[1];
-            var itemInInventory = player.Inventory.FirstOrDefault(x => x.Name.Equals(itemToDrop, StringComparison.InvariantCultureIgnoreCase));
+            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToDrop || i.ItemId == itemToDrop);
 
             if (itemInInventory == null)
             {
@@ -351,7 +351,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
             else
             {
-                player.Inventory.Remove(itemInInventory);
+                player.Inventory.RemoveItem(itemInInventory);
                 player.CurrentLocation.Items.Add(itemInInventory);
                 player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
             }
@@ -359,7 +359,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private void AdvCommandInventory(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            if (player.Inventory.Count == 0)
+            if (player.Inventory.Count() == 0)
             {
                 player.ChatClient.PostDirectMessage(player.Id, "You are not carrying anything with you at the moment.");
                 return;
@@ -368,7 +368,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var inventory = new StringBuilder("You are carrying these items with you:");
             inventory.AppendLine();
 
-            foreach (var item in player.Inventory)
+            foreach (var item in player.Inventory.GetItems())
             {
                 inventory.AppendLine($"\ta {item.Name}");
             }
@@ -425,7 +425,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             if (!string.IsNullOrEmpty(locationItem.ItemIdToUnlock))
             {
-                if (player.Inventory.All(i => i.ItemId != locationItem.ItemIdToUnlock))
+                if (player.Inventory.GetItems().All(i => i.ItemId != locationItem.ItemIdToUnlock))
                 {
                     player.ChatClient.PostDirectMessage(player.Id, $"You need a {locationItem.ItemIdToUnlock} to unlock the {item}!");
                     return;
@@ -449,7 +449,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             var itemToUse = args[1];
-            var itemInInventory = player.Inventory.FirstOrDefault(i => i.Name == itemToUse || i.ItemId == itemToUse);
+            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToUse || i.ItemId == itemToUse);
 
             if (itemInInventory == null)
             {
@@ -470,7 +470,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             var msg = new StringBuilder("You read the leaflet and this is what it says:");
             msg.AppendLine();
-            msg.AppendLine("Somewhere nearby lies the fabled Colossal Cave.");
+            msg.AppendLine("Somewhere nearby lies the fabled Colossal Cave, a place of danger, mystery and, some say, magic.");
 
             player.ChatClient.PostDirectMessage(player.Id, msg.ToString());
         }

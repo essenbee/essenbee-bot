@@ -11,11 +11,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IChatClient ChatClient { get; set; }
         public int Score { get; set; }
         public int Moves { get; set; }
-        public IList<AdventureItem> Inventory { get; set; }
+        public Inventory Inventory { get; set; }
 
         public AdventurePlayer()
         {
-            Inventory = new List<AdventureItem>();
+            Inventory = new Inventory();
         }
     }
 }
