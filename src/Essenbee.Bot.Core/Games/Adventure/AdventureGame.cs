@@ -26,6 +26,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         {
                             ItemId = "mailbox",
                             Name = "small mailbox",
+                            PluralName = "small mailboxes",
                             IsOpen = true,
                             IsContainer = true,
                             Contents = new List<AdventureItem>
@@ -34,6 +35,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                                 {
                                     ItemId = "leaflet",
                                     Name = "*leaflet*",
+                                    PluralName = "*leaflets*",
                                     IsPortable = true
                                 }
                             }
@@ -60,12 +62,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         {
                             ItemId = "key",
                             Name = "large iron *key*",
+                            PluralName = "large iron *keys*",
                             IsPortable = true
                         },
                         new AdventureItem
                         {
                             ItemId = "lamp",
-                            Name = "rack of *lamp*es",
+                            Name = "battered *lamp*",
+                            PluralName = "battered *lamps*",
                             IsPortable = true,
                             IsEndlessSupply = true,
                         },
@@ -73,13 +77,16 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         {
                             ItemId = "bottle",
                             Name = "small glass *bottle*",
+                            PluralName = "small glass *bottles*",
                             IsPortable = true,
                         },
                         new AdventureItem
                         {
                             ItemId = "food",
                             Name = "packet of dried *food* rations",
+                            PluralName = "packets of dried *food* rations",
                             IsPortable = true,
+                            IsEndlessSupply = true,
                         },
                 },
                 Moves = new Dictionary<string, string> {
@@ -224,7 +231,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             foreach (var item in player.CurrentLocation.Items)
             {
-                description.AppendLine($"There is a {item.Name} here.");
+                description.AppendLine(item.IsEndlessSupply 
+                    ? $"There are several {item.PluralName} here." 
+                    : $"There is a {item.Name} here.");
 
                 if (item.Contents.Any() && item.IsOpen)
                 {
@@ -270,7 +279,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
             var containers = location.Items.Where(i => i.IsContainer && i.Contents.Count > 0).ToList();
 
-            if (player.Inventory.Any(i => i.ItemId.Equals(locationItem.ItemId)))
+            if (locationItem != null && player.Inventory.Any(i => i.ItemId.Equals(locationItem.ItemId)))
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You are already carrying a {item} with you.");
                 return;
@@ -411,10 +420,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     player.ChatClient.PostDirectMessage(player.Id, $"You need a {locationItem.ItemIdToUnlock} to unlock the {item}!");
                     return;
                 }
-                else
-                {
-                    player.ChatClient.PostDirectMessage(player.Id, $"You try your {locationItem.ItemIdToUnlock} ...");
-                }
+
+                player.ChatClient.PostDirectMessage(player.Id, $"You try your {locationItem.ItemIdToUnlock} ...");
             }
 
             locationItem.IsLocked = false;
