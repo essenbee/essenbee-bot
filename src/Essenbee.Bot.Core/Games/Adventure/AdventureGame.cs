@@ -127,6 +127,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             else
             {
                 var player = GetPlayer(e.UserId);
+
                 if (e.ArgsAsList.Count > 0)
                 {
                     var advCommands = e.ArgsAsList;
@@ -191,7 +192,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private void DisplayIntroText(AdventurePlayer player, ChatCommandEventArgs e)
         {
-            player.ChatClient.PostDirectMessage(player.Id, "Welcome to Adventure!");
+            var welcome = new StringBuilder("Welcome to Adventure!");
+            welcome.AppendLine("Use `!adv help` to get some help.");
+            player.ChatClient.PostDirectMessage(player.Id, welcome.ToString());
             AdvCommandLook(player, e);
         }
 
@@ -206,6 +209,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             helpText.AppendLine("\t`!adv inventory`");
             helpText.AppendLine();
             helpText.AppendLine("Some of the places you will visit have items lying around. If such an item is shown in *bold* text, you can take it and carry it with you; it may or may not be of any use.");
+            helpText.AppendLine("Note that, if you find several of the same item, you can only carry one of them at a time!");
             player.ChatClient.PostDirectMessage(player.Id, helpText.ToString());
         }
 
@@ -216,7 +220,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             description.AppendLine($"You are {player.CurrentLocation.LongDescription}");
 
             var otherPlayersHere = _players.Where(p => p.CurrentLocation.Name == player.CurrentLocation.Name &&
-                                                      p.UserName != player.UserName).ToList();
+                                                      p.Id != player.Id).ToList();
 
             if (otherPlayersHere.Any())
             {
