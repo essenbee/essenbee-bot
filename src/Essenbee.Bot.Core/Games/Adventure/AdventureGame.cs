@@ -36,7 +36,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
                                     ItemId = "leaflet",
                                     Name = "*leaflet*",
                                     PluralName = "*leaflets*",
-                                    IsPortable = true
+                                    IsPortable = true,
+                                    Interactions = new Dictionary<string, Action<AdventurePlayer>>
+                                    {
+                                        {"read", ReadLeaflet }
+                                    },
                                 }
                             }
                         }
@@ -167,6 +171,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 { "open", AdvCommandOpen},
                 { "drop", AdvCommandDrop},
                 { "unlock", AdvCommandUnlock},
+                { "use", AdvCommandUse},
+                { "read", AdvCommandUse},
             };
         }
 
@@ -403,7 +409,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var location = player.CurrentLocation;
             var item = e.ArgsAsList[1].ToLower();
 
-            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
+            var locationItem = location.Items.FirstOrDefault(i => i.ItemId == item || i.ItemId == item);
 
             if (locationItem is null)
             {
@@ -430,6 +436,43 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             locationItem.IsLocked = false;
             player.ChatClient.PostDirectMessage(player.Id, $"The {item} is now unlocked!");
+        }
+
+        private void AdvCommandUse(AdventurePlayer player, ChatCommandEventArgs e)
+        {
+            var args = e.ArgsAsList;
+
+            if (args.Count == 1)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, "What would you like to use? Try using: !adv use _item_");
+                return;
+            }
+
+            var itemToUse = args[1];
+            var itemInInventory = player.Inventory.FirstOrDefault(i => i.Name == itemToUse || i.ItemId == itemToUse);
+
+            if (itemInInventory == null)
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToUse} to use!");
+                return;
+            }
+
+                if (itemInInventory.Interactions != null && itemInInventory.Interactions.ContainsKey(args[0]))
+                {
+                    itemInInventory.Interactions[args[0]](player);
+                    return;
+                }
+            
+            player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to {args[0]} a {itemToUse}. Can you be clearer?");
+        }
+
+        private static void ReadLeaflet(AdventurePlayer player)
+        {
+            var msg = new StringBuilder("You read the leaflet and this is what it says:");
+            msg.AppendLine();
+            msg.AppendLine("Somewhere nearby lies the fabled Colossal Cave.");
+
+            player.ChatClient.PostDirectMessage(player.Id, msg.ToString());
         }
     }
 }

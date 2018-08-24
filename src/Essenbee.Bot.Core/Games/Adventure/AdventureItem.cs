@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -14,10 +15,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
+        public IDictionary<string, Action<AdventurePlayer>> Interactions { get; set; }
 
         public AdventureItem()
         {
             Contents = new List<AdventureItem>();
+            Interactions = new Dictionary<string, Action<AdventurePlayer>>();
         }
     }
 }
