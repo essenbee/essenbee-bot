@@ -6,7 +6,7 @@
         string CommandName { get; }
         string HelpText { get; }
 
-        bool ShoudExecute();
+        bool ShouldExecute();
 
         void Execute(IChatClient chatClient, ChatCommandEventArgs e);
     }

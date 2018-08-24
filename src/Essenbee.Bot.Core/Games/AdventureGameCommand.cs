@@ -35,6 +35,6 @@ namespace Essenbee.Bot.Core.Games
             }
         }
 
-        public bool ShoudExecute() => true;
+        public bool ShouldExecute() => true;
     }
 }

@@ -45,7 +45,7 @@ namespace Essenbee.Bot.Core.Commands
             chatClient.PostMessage(e.Channel, text);
         }
 
-        public bool ShoudExecute()
+        public bool ShouldExecute()
         {
             return Status == ItemStatus.Active;
         }
