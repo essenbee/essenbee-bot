@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -106,7 +105,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public AdventureGame()
         {
             _players = new List<AdventurePlayer>();
-            //var json = JsonConvert.SerializeObject(locations);
             InitialiseCommands();
         }
 

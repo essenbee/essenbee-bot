@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -21,6 +22,16 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             Contents = new List<AdventureItem>();
             Interactions = new Dictionary<string, Action<AdventurePlayer>>();
+        }
+
+        public void AddInteraction(Dictionary<string, Action<AdventurePlayer>> interaction)
+        {
+            interaction.ToList().ForEach(x => Interactions.Add(x.Key, x.Value));
+        }
+
+        public void RemoveInteraction(string interactionKey)
+        {
+            Interactions.Remove(interactionKey);
         }
     }
 }
