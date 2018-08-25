@@ -152,6 +152,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 Name = "small glass *bottle*",
                 PluralName = "small glass *bottles*",
                 IsPortable = true,
+                InteractionAlias = new Dictionary<string, string> {
+                    { "break", "smash" }
+                },
             };
 
             var brokenGlass = new AdventureItem {

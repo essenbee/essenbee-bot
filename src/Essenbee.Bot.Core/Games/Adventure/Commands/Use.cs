@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
@@ -30,13 +31,25 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            if (IsValidInteraction(itemInInventory, args[0]))
+            var requestedAction = ResolveInteractionAlias(itemInInventory, args[0]);
+
+            if (IsValidInteraction(itemInInventory, requestedAction))
             {
-                itemInInventory.Interact(args[0], player);
+                itemInInventory.Interact(requestedAction, player);
                 return;
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to {args[0]} a {itemToUse}. Can you be clearer?");
+            player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to {requestedAction} a {itemToUse}. Can you be clearer?");
+        }
+
+        private string ResolveInteractionAlias(AdventureItem item, string originalRequest)
+        {
+            if (item.InteractionAlias.ContainsKey(originalRequest))
+            {
+                return item.InteractionAlias[originalRequest];
+            }
+
+            return originalRequest;
         }
 
         private bool IsValidInteraction(AdventureItem item, string requestedAction)

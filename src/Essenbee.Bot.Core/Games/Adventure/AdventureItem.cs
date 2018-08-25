@@ -17,6 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
         public IDictionary<string, IAction> Interactions { get; set; }
+        public IDictionary<string, string> InteractionAlias { get; set; }
 
         public AdventureItem()
         {
