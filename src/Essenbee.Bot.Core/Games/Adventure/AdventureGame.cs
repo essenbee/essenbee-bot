@@ -171,6 +171,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 PluralName = "spread of broken glass",
                 IsPortable = false,
                 IsContainer = true,
+                IsOpen = true,
                 Contents = new List<AdventureItem> { shard },
             };
 
