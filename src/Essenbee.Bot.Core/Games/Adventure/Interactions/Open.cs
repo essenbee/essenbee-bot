@@ -1,8 +1,6 @@
-﻿using System.Linq;
-
-namespace Essenbee.Bot.Core.Games.Adventure.Commands
+﻿namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
-    public class Open : IAdventureCommand
+    public class Open : IAction
     {
         private readonly IReadonlyAdventureGame _game;
 
@@ -11,32 +9,31 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             _game = game;
         }
 
-        public void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public bool Do(AdventurePlayer player, AdventureItem item)
         {
             var location = player.CurrentLocation;
-            var item = e.ArgsAsList[1].ToLower();
 
-            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
-
-            if (locationItem is null)
+            if (item is null)
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
-                return;
+                return false;
             }
 
-            if (locationItem.IsOpen)
+            if (item.IsOpen)
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"The {item} is already open!");
-                return;
+                return false;
             }
 
-            if (locationItem.IsLocked)
+            if (item.IsLocked)
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"The {item} is locked!");
-                return;
+                return false;
             }
 
-            locationItem.IsOpen = true;
+            player.ChatClient.PostDirectMessage(player.Id, $"You have opened the {item}.");
+            item.IsOpen = true;
+            return true;
         }
     }
 }

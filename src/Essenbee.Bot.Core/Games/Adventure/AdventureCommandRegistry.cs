@@ -18,8 +18,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var takeCommand = new Take(_game);
             var inventoryCommand = new Carrying(_game);
             var dropCommand = new Drop(_game);
-            var openCommand = new Open(_game);
-            var unlockCommand = new Unlock(_game);
             var useCommand = new Use(_game);
 
             RegisteredCommands = new Dictionary<string, IAdventureCommand> {
@@ -33,8 +31,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 { "drop", dropCommand },
                 { "inventory", inventoryCommand },
                 { "inv", inventoryCommand },
-                { "open", openCommand },
-                { "unlock", unlockCommand },
                 { "use", useCommand },
                 { "read", useCommand },
                 { "smash", useCommand },
