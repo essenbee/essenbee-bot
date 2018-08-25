@@ -5,36 +5,27 @@ namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventureCommandRegistry
     {
-        public IDictionary<string, IAdventureCommand> RegisteredCommands { get; }
+        public IList<BaseAdventureCommand> RegisteredCommands { get; }
         private readonly IReadonlyAdventureGame _game;
 
         public AdventureCommandRegistry(IReadonlyAdventureGame game)
         {
             _game = game;
 
-            var lookCommand = new Look(_game);
-            var helpCommand = new Help(_game);
-            var moveCommand = new Move(_game);
-            var takeCommand = new Take(_game);
-            var inventoryCommand = new Carrying(_game);
-            var dropCommand = new Drop(_game);
-            var useCommand = new Use(_game);
+            var lookCommand = new Look(_game, "look", "l");
+            var helpCommand = new Help(_game, "help");
+            var moveCommand = new Move(_game, "move", "go");
+            var takeCommand = new Take(_game, "take", "get");
+            var inventoryCommand = new Carrying(_game, "inventory", "inv");
+            var interactCommand = new Use(_game, "use", "open", "drop", "unlock", "smash", "break");
 
-            RegisteredCommands = new Dictionary<string, IAdventureCommand> {
-                { "look", lookCommand },
-                { "l", lookCommand },
-                { "help", helpCommand },
-                { "go", moveCommand },
-                { "move", moveCommand },
-                { "take", takeCommand },
-                { "get", takeCommand },
-                { "drop", dropCommand },
-                { "inventory", inventoryCommand },
-                { "inv", inventoryCommand },
-                { "use", useCommand },
-                { "read", useCommand },
-                { "smash", useCommand },
-                { "break", useCommand },
+            RegisteredCommands = new List<BaseAdventureCommand> {
+                lookCommand,
+                helpCommand,
+                moveCommand,
+                takeCommand,
+                inventoryCommand,
+                interactCommand,
             };
         }
     }

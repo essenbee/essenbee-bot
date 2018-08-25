@@ -1,6 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -50,14 +49,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     var advCommands = e.ArgsAsList;
                     var cmd = advCommands[0].ToLower();
 
-                    if (_commandRegistry.RegisteredCommands.ContainsKey(cmd))
-                    {
-                        _commandRegistry.RegisteredCommands[cmd].Invoke(player, e);
-                    }
-                    else
+                    var command = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(cmd));
+
+                    if (command is null)
                     {
                         player.ChatClient.PostDirectMessage(player.Id, $"Sorry, I don't understand {advCommands[0]}.");
                     }
+
+                    command.Invoke(player, e);
                 }
                 else
                 {
@@ -86,7 +85,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var welcome = new StringBuilder("Welcome to Adventure!");
             welcome.AppendLine("Use `!adv help` to get some help.");
             player.ChatClient.PostDirectMessage(player.Id, welcome.ToString());
-            _commandRegistry.RegisteredCommands["look"].Invoke(player, e);
+
+            var look = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("look"));
+            look.Invoke(player, e);
         }
 
         private bool IsNewPlayer(ChatCommandEventArgs e) => _players.All(p => p.Id != e.UserId);

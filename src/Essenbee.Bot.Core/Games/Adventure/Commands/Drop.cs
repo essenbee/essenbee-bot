@@ -2,16 +2,13 @@
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Drop : IAdventureCommand
+    public class Drop : BaseAdventureCommand
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Drop(IReadonlyAdventureGame game)
+        public Drop(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
-            _game = game;
         }
 
-        public void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
         {
             var args = e.ArgsAsList;
 

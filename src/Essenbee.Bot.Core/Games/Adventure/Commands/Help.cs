@@ -1,18 +1,14 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Help : IAdventureCommand
+    public class Help : BaseAdventureCommand
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Help(IReadonlyAdventureGame game)
+        public Help(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
-            _game = game;
         }
 
-        public void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
         {
             var helpText = new StringBuilder("I know several commands to aid you in your exploration, including:");
             helpText.AppendLine();

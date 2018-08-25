@@ -1,18 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Use : IAdventureCommand
+    public class Use : BaseAdventureCommand
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Use(IReadonlyAdventureGame game)
+        public Use(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
-            _game = game;
         }
 
-        public void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
         {
             var args = e.ArgsAsList;
 

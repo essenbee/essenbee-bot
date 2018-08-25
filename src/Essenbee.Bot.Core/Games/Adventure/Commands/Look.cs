@@ -3,16 +3,13 @@ using System.Text;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Look : IAdventureCommand
+    public class Look : BaseAdventureCommand
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Look (IReadonlyAdventureGame game)
+        public Look (IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
-            _game = game;
         }
 
-        public void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
         {
             var description = new StringBuilder("*" + player.CurrentLocation.Name + "*");
             description.AppendLine();

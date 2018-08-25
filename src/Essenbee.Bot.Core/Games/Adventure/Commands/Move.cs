@@ -1,15 +1,12 @@
 ﻿namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Move : IAdventureCommand
+    public class Move : BaseAdventureCommand
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Move(IReadonlyAdventureGame game)
+        public Move(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
-            _game = game;
         }
 
-        public void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
         {
             var canMove = false;
             var direction = e.ArgsAsList[1].ToLower();

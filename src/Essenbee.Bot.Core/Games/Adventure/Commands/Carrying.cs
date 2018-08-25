@@ -1,15 +1,12 @@
 ﻿namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Carrying : IAdventureCommand
+    public class Carrying : BaseAdventureCommand
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Carrying(IReadonlyAdventureGame game)
+        public Carrying(IReadonlyAdventureGame game, params string[] verbs) : base (game, verbs)
         {
-            _game = game;
         }
 
-        public void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
         {
             player.ChatClient.PostDirectMessage(player.Id, player.Inventory.ListItems());
         }
