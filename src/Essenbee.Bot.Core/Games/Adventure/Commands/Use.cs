@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (args.Count == 1)
             {
-                player.ChatClient.PostDirectMessage(player.Id, "What would you like to use? Try using: !adv use _item_");
+                player.ChatClient.PostDirectMessage(player.Id, "Which of your carried items would you like to use?");
                 return;
             }
 
@@ -32,7 +32,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (itemInInventory.Interactions != null && itemInInventory.Interactions.ContainsKey(args[0]))
             {
-                itemInInventory.Interactions[args[0]](player);
+                itemInInventory.Interact(args[0], player);
                 return;
             }
 

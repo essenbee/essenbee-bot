@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
+using Essenbee.Bot.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,102 +14,13 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private List<AdventurePlayer> _players;
         private AdventureCommandRegistry _commandRegistry;
-
-        // For initial testing only - will be a JSON file
-        private readonly Dictionary<int, AdventureLocation> _locations = new Dictionary<int, AdventureLocation>
-        {
-            { 0, new AdventureLocation {
-                    LocationId = "road",
-                    Name = "End of a Road",
-                    ShortDescription = "standing at the end of a road.",
-                    LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.",
-                    Items = new List<AdventureItem>
-                    {
-                        new AdventureItem
-                        {
-                            ItemId = "mailbox",
-                            Name = "small mailbox",
-                            PluralName = "small mailboxes",
-                            IsOpen = true,
-                            IsContainer = true,
-                            Contents = new List<AdventureItem>
-                            {
-                                new AdventureItem
-                                {
-                                    ItemId = "leaflet",
-                                    Name = "*leaflet*",
-                                    PluralName = "*leaflets*",
-                                    IsPortable = true,
-                                    Interactions = new Dictionary<string, Action<AdventurePlayer>>
-                                    {
-                                        {"read", ReadLeaflet }
-                                    },
-                                }
-                            }
-                        }
-                    },
-                    Moves = new Dictionary<string, string>
-                    {
-                        {"east", "building" },
-                        {"enter", "building" },
-                        {"in", "building" },
-                        {"inside", "building" },
-                        {"building", "building" },
-                    }
-                }
-            },
-            { 1, new AdventureLocation {
-                LocationId = "building",
-                Name = "Small Brick Building",
-                ShortDescription = "inside a small brick building.",
-                LongDescription = " inside a small brick building, a well house for a bubbling spring.",
-                Items = new List<AdventureItem>
-                {
-                    new AdventureItem
-                        {
-                            ItemId = "key",
-                            Name = "large iron *key*",
-                            PluralName = "large iron *keys*",
-                            IsPortable = true
-                        },
-                        new AdventureItem
-                        {
-                            ItemId = "lamp",
-                            Name = "battered *lamp*",
-                            PluralName = "battered *lamps*",
-                            IsPortable = true,
-                            IsEndlessSupply = true,
-                        },
-                        new AdventureItem
-                        {
-                            ItemId = "bottle",
-                            Name = "small glass *bottle*",
-                            PluralName = "small glass *bottles*",
-                            IsPortable = true,
-                        },
-                        new AdventureItem
-                        {
-                            ItemId = "food",
-                            Name = "packet of dried *food* rations",
-                            PluralName = "packets of dried *food* rations",
-                            IsPortable = true,
-                            IsEndlessSupply = true,
-                        },
-                },
-                Moves = new Dictionary<string, string> {
-                        {"west", "road" },
-                        {"road", "road" },
-                        {"out", "road" },
-                        {"outside", "road" },
-                }
-            }
-            }
-        };
+        private readonly Dictionary<int, AdventureLocation> _locations = new Dictionary<int, AdventureLocation>();
 
         public AdventureGame()
         {
             _players = new List<AdventurePlayer>();
             _commandRegistry = new AdventureCommandRegistry(this);
+            _locations = BuildDungeon();
         }
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
@@ -191,6 +103,100 @@ namespace Essenbee.Bot.Core.Games.Adventure
             msg.AppendLine("Somewhere nearby lies the fabled Colossal Cave, a place of danger, mystery and, some say, magic.");
 
             player.ChatClient.PostDirectMessage(player.Id, msg.ToString());
+        }
+
+        // Temporary method - need to build this from stored data
+        private Dictionary<int, AdventureLocation> BuildDungeon()
+        {
+            var dungeon = new Dictionary<int, AdventureLocation>();
+
+            var leaflet = new AdventureItem {
+                ItemId = "leaflet",
+                Name = "*leaflet*",
+                PluralName = "*leaflets*",
+                IsPortable = true,
+            };
+
+            var whenRead = new StringBuilder("You read the leaflet and this is what it says:");
+            whenRead.AppendLine();
+            whenRead.AppendLine("Somewhere nearby lies the fabled Colossal Cave, a place of danger, mystery and, some say, magic.");
+            leaflet.AddInteraction("read", new Display(whenRead.ToString()));
+
+            var mailbox = new AdventureItem {
+                ItemId = "mailbox",
+                Name = "small mailbox",
+                PluralName = "small mailboxes",
+                IsOpen = true,
+                IsContainer = true,
+                Contents = new List<AdventureItem> { leaflet }
+            };
+
+            var startingLocation = new AdventureLocation {
+                LocationId = "road",
+                Name = "End of a Road",
+                ShortDescription = "standing at the end of a road.",
+                LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.",
+                Items = new List<AdventureItem> { mailbox },
+                Moves = new Dictionary<string, string>
+                        {
+                        {"east", "building" },
+                        {"enter", "building" },
+                        {"in", "building" },
+                        {"inside", "building" },
+                        {"building", "building" },
+                    }
+            };
+
+            var building = new AdventureLocation {
+                LocationId = "building",
+                Name = "Small Brick Building",
+                ShortDescription = "inside a small brick building.",
+                LongDescription = " inside a small brick building, a well house for a bubbling spring.",
+                Items = new List<AdventureItem>
+                {
+                    new AdventureItem
+                        {
+                            ItemId = "key",
+                            Name = "large iron *key*",
+                            PluralName = "large iron *keys*",
+                            IsPortable = true
+                        },
+                        new AdventureItem
+                        {
+                            ItemId = "lamp",
+                            Name = "battered *lamp*",
+                            PluralName = "battered *lamps*",
+                            IsPortable = true,
+                            IsEndlessSupply = true,
+                        },
+                        new AdventureItem
+                        {
+                            ItemId = "bottle",
+                            Name = "small glass *bottle*",
+                            PluralName = "small glass *bottles*",
+                            IsPortable = true,
+                        },
+                        new AdventureItem
+                        {
+                            ItemId = "food",
+                            Name = "packet of dried *food* rations",
+                            PluralName = "packets of dried *food* rations",
+                            IsPortable = true,
+                            IsEndlessSupply = true,
+                        },
+                },
+                Moves = new Dictionary<string, string> {
+                        {"west", "road" },
+                        {"road", "road" },
+                        {"out", "road" },
+                        {"outside", "road" },
+                }
+            };
+
+            dungeon.Add(0, startingLocation);
+            dungeon.Add(1, building);
+
+            return dungeon;
         }
     }
 }

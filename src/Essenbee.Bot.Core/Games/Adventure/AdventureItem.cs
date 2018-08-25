@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,20 +16,29 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
-        public IDictionary<string, Action<AdventurePlayer>> Interactions { get; set; }
+        public IDictionary<string, IAction> Interactions { get; set; }
 
         public AdventureItem()
         {
             Contents = new List<AdventureItem>();
-            Interactions = new Dictionary<string, Action<AdventurePlayer>>();
+            Interactions = new Dictionary<string, IAction>();
         }
 
-        public void AddInteraction(Dictionary<string, Action<AdventurePlayer>> interaction)
+        public void Interact(string requestedAction, AdventurePlayer player)
         {
-            interaction.ToList().ForEach(x => Interactions.Add(x.Key, x.Value));
+            requestedAction = requestedAction.ToLower();
+            foreach (var action in Interactions.Where(a => a.Key.Equals(requestedAction)))
+            {
+                action.Value.Do(player, this);
+            }
         }
 
-        public void RemoveInteraction(string interactionKey)
+        public void AddInteraction(string key, IAction value)
+        {
+            Interactions.Add(key, value);
+        }
+
+        public void RemoveInteractions(string interactionKey)
         {
             Interactions.Remove(interactionKey);
         }
