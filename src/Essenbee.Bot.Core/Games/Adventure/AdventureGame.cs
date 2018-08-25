@@ -147,6 +147,24 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     }
             };
 
+            var bottle = new AdventureItem {
+                ItemId = "bottle",
+                Name = "small glass *bottle*",
+                PluralName = "small glass *bottles*",
+                IsPortable = true,
+            };
+
+            var brokenGlass = new AdventureItem {
+                ItemId = "glass",
+                Name = "lot of broken glass",
+                PluralName = "lot of broken glass",
+                IsPortable = false,
+            };
+
+            bottle.AddInteraction("smash-1", new Display("You smash the bottle and glass flies everywhere!"));
+            bottle.AddInteraction("smash-2", new RemoveFromInventory());
+            bottle.AddInteraction("smash-3", new AddToLocation(brokenGlass));
+
             var building = new AdventureLocation {
                 LocationId = "building",
                 Name = "Small Brick Building",
@@ -169,13 +187,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                             IsPortable = true,
                             IsEndlessSupply = true,
                         },
-                        new AdventureItem
-                        {
-                            ItemId = "bottle",
-                            Name = "small glass *bottle*",
-                            PluralName = "small glass *bottles*",
-                            IsPortable = true,
-                        },
+                        bottle,
                         new AdventureItem
                         {
                             ItemId = "food",

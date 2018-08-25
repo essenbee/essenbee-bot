@@ -30,13 +30,21 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            if (itemInInventory.Interactions != null && itemInInventory.Interactions.ContainsKey(args[0]))
+            if (IsValidInteraction(itemInInventory, args[0]))
             {
                 itemInInventory.Interact(args[0], player);
                 return;
             }
 
             player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to {args[0]} a {itemToUse}. Can you be clearer?");
+        }
+
+        private bool IsValidInteraction(AdventureItem item, string requestedAction)
+        {
+            if (item is null || item.Interactions is null) return false;
+
+            requestedAction += "-";
+            return item.Interactions.Keys.Where(key => key.StartsWith(requestedAction)).Count() > 0;
         }
     }
 }

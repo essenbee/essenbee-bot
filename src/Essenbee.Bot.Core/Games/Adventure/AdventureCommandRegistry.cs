@@ -37,6 +37,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 { "unlock", unlockCommand },
                 { "use", useCommand },
                 { "read", useCommand },
+                { "smash", useCommand },
+                { "break", useCommand },
             };
         }
     }

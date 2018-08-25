@@ -27,9 +27,15 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public void Interact(string requestedAction, AdventurePlayer player)
         {
             requestedAction = requestedAction.ToLower();
-            foreach (var action in Interactions.Where(a => a.Key.Equals(requestedAction)))
+
+            foreach (var action in Interactions.OrderBy(i => i.Key))
             {
-                action.Value.Do(player, this);
+                var match = action.Key.Split('-')[0];
+
+                if (match.Equals(requestedAction))
+                {
+                    action.Value.Do(player, this);
+                }
             }
         }
 
