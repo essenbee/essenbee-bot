@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace Essenbee.Bot.Core.Games.Adventure
@@ -25,6 +27,24 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public int Count() => _items.Count;
 
-        public IList<AdventureItem> GetItems() => _items;
+        public ReadOnlyCollection<AdventureItem> GetItems() => _items.ToList().AsReadOnly();
+
+        public string ListItems()
+        {
+            if (_items.Count() == 0)
+            {
+                return "You are not carrying anything with you at the moment.";
+            }
+
+            var inventory = new StringBuilder("You are carrying these items with you:");
+            inventory.AppendLine();
+
+            foreach (var item in _items)
+            {
+                inventory.AppendLine($"\ta {item.Name}");
+            }
+
+            return inventory.ToString();
+        }
     }
 }

@@ -1,15 +1,18 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public class AdventureGame
+    public class AdventureGame : IGame, IReadonlyAdventureGame
     {
-        private IDictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>> _commands;
-        private IList<AdventurePlayer> _players;
+        public ReadOnlyCollection<AdventurePlayer> Players => _players.AsReadOnly();
+
+        private List<AdventurePlayer> _players;
+        private AdventureCommandRegistry _commandRegistry;
 
         // For initial testing only - will be a JSON file
         private readonly Dictionary<int, AdventureLocation> _locations = new Dictionary<int, AdventureLocation>
@@ -105,7 +108,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public AdventureGame()
         {
             _players = new List<AdventurePlayer>();
-            InitialiseCommands();
+            _commandRegistry = new AdventureCommandRegistry(this);
         }
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
@@ -135,9 +138,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     var advCommands = e.ArgsAsList;
                     var cmd = advCommands[0].ToLower();
 
-                    if (_commands.ContainsKey(cmd))
+                    if (_commandRegistry.RegisteredCommands.ContainsKey(cmd))
                     {
-                        _commands[cmd](player, e);
+                        _commandRegistry.RegisteredCommands[cmd].Invoke(player, e);
                     }
                     else
                     {
@@ -151,35 +154,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
         }
 
-        private bool IsNewPlayer(ChatCommandEventArgs e) => _players.All(p => p.Id != e.UserId);
-
-        private void InitialiseCommands()
-        {
-            _commands = new Dictionary<string, Action<AdventurePlayer, ChatCommandEventArgs>>
-            {
-                {"help", AdvCommandHelp },
-                {"look", AdvCommandLook},
-                { "l", AdvCommandLook},
-                { "go", AdvCommandMove},
-                { "move", AdvCommandMove},
-                { "take", AdvCommandTake},
-                { "get", AdvCommandTake},
-                { "inventory", AdvCommandInventory},
-                { "inv", AdvCommandInventory},
-                { "open", AdvCommandOpen},
-                { "drop", AdvCommandDrop},
-                { "unlock", AdvCommandUnlock},
-                { "use", AdvCommandUse},
-                { "read", AdvCommandUse},
-            };
-        }
-
-        private AdventurePlayer GetPlayer(string userId)
-        {
-            return _players.First(x => x.Id == userId);
-        }
-
-        private bool TryGetLocation(string locationId, out AdventureLocation place)
+        public bool TryGetLocation(string locationId, out AdventureLocation place)
         {
             var location = _locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
             place = null;
@@ -199,269 +174,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var welcome = new StringBuilder("Welcome to Adventure!");
             welcome.AppendLine("Use `!adv help` to get some help.");
             player.ChatClient.PostDirectMessage(player.Id, welcome.ToString());
-            AdvCommandLook(player, e);
+            _commandRegistry.RegisteredCommands["look"].Invoke(player, e);
         }
 
-        private void AdvCommandHelp(AdventurePlayer player, ChatCommandEventArgs e)
+        private bool IsNewPlayer(ChatCommandEventArgs e) => _players.All(p => p.Id != e.UserId);
+
+        private AdventurePlayer GetPlayer(string userId)
         {
-            var helpText = new StringBuilder("I know several commands to aid you in your exploration, including:");
-            helpText.AppendLine();
-            helpText.AppendLine("\t`!adv look`");
-            helpText.AppendLine("\t`!adv go`");
-            helpText.AppendLine("\t`!adv take`");
-            helpText.AppendLine("\t`!adv use`");
-            helpText.AppendLine("\t`!adv inventory`");
-            helpText.AppendLine();
-            helpText.AppendLine("Some of the places you will visit have items lying around. If such an item is shown in *bold* text, you can take it and carry it with you; it may or may not be of any use.");
-            helpText.AppendLine("Note that, if you find several of the same item, you can only carry one of them at a time!");
-            player.ChatClient.PostDirectMessage(player.Id, helpText.ToString());
-        }
-
-        private void AdvCommandLook(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            var description = new StringBuilder("*" + player.CurrentLocation.Name + "*");
-            description.AppendLine();
-            description.AppendLine($"You are {player.CurrentLocation.LongDescription}");
-
-            var otherPlayersHere = _players.Where(p => p.CurrentLocation.Name == player.CurrentLocation.Name &&
-                                                      p.Id != player.Id).ToList();
-
-            if (otherPlayersHere.Any())
-            {
-                description.AppendLine();
-                foreach (var otherPlayer in otherPlayersHere)
-                {
-                    description.AppendLine($"\t{otherPlayer.UserName} is also here.");
-                }
-            }
-
-            description.AppendLine();
-
-            foreach (var item in player.CurrentLocation.Items)
-            {
-                description.AppendLine(item.IsEndlessSupply 
-                    ? $"There are several {item.PluralName} here." 
-                    : $"There is a {item.Name} here.");
-
-                if (item.Contents.Any() && item.IsOpen)
-                {
-                    description.AppendLine($"The {item.Name} contains:");
-
-                    foreach (var content in item.Contents)
-                    {
-                        description.AppendLine($"\tA {content.Name}");
-                    }
-                }
-            }
-
-            player.ChatClient.PostDirectMessage(player.Id, description.ToString());
-        }
-
-        private void AdvCommandMove(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            var canMove = false;
-            var direction = e.ArgsAsList[1].ToLower();
-
-            if (player.CurrentLocation.Moves.ContainsKey(direction))
-            {
-                var moveTo = player.CurrentLocation.Moves[direction];
-                canMove = TryGetLocation(moveTo, out var place);
-                player.CurrentLocation = place;
-            }
-
-            if (canMove)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
-            }
-            else
-            {
-                player.ChatClient.PostDirectMessage(player.Id, "You cannot go in that direction!");
-            }
-        }
-
-        private void AdvCommandTake(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            var location = player.CurrentLocation;
-            var item = e.ArgsAsList[1].ToLower();
-
-            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
-            var containers = location.Items.Where(i => i.IsContainer && i.Contents.Count > 0).ToList();
-
-            if (locationItem != null && player.Inventory.GetItems().Any(i => i.ItemId.Equals(locationItem.ItemId)))
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"You are already carrying a {item} with you.");
-                return;
-            }
-
-            foreach (var container in containers)
-            {
-                foreach (var containedItem in container.Contents)
-                {
-                    if (containedItem.ItemId == item && containedItem.IsPortable)
-                    {
-                        player.Inventory.AddItem(containedItem);
-                        container.Contents.Remove(containedItem);
-                        player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
-
-                        return;
-                    }
-                }
-            }
-
-            if (locationItem is null)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
-                return;
-            }
-
-            if (!locationItem.IsPortable)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"You cannot carry a {item} with you!");
-                return;
-            }
-
-            player.Inventory.AddItem(locationItem);
-
-            if (!locationItem.IsEndlessSupply)
-            {
-                player.CurrentLocation.Items.Remove(locationItem);
-            }
-
-            player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
-        }
-
-        private void AdvCommandDrop(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            var args = e.ArgsAsList;
-
-            if (args.Count == 1)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, "What would you like to drop? Try using: !adv drop _item_");
-                return;
-            }
-
-            var itemToDrop = args[1];
-            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToDrop || i.ItemId == itemToDrop);
-
-            if (itemInInventory == null)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToDrop} to drop!");
-            }
-            else
-            {
-                player.Inventory.RemoveItem(itemInInventory);
-                player.CurrentLocation.Items.Add(itemInInventory);
-                player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
-            }
-        }
-
-        private void AdvCommandInventory(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            if (player.Inventory.Count() == 0)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, "You are not carrying anything with you at the moment.");
-                return;
-            }
-
-            var inventory = new StringBuilder("You are carrying these items with you:");
-            inventory.AppendLine();
-
-            foreach (var item in player.Inventory.GetItems())
-            {
-                inventory.AppendLine($"\ta {item.Name}");
-            }
-
-            player.ChatClient.PostDirectMessage(player.Id, inventory.ToString());
-        }
-
-        private void AdvCommandOpen(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            var location = player.CurrentLocation;
-            var item = e.ArgsAsList[1].ToLower();
-
-            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
-
-            if (locationItem is null)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
-                return;
-            }
-
-            if (locationItem.IsOpen)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"The {item} is already open!");
-                return;
-            }
-
-            if (locationItem.IsLocked)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"The {item} is locked!");
-                return;
-            }
-
-            locationItem.IsOpen = true;
-        }
-
-        private void AdvCommandUnlock(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            var location = player.CurrentLocation;
-            var item = e.ArgsAsList[1].ToLower();
-
-            var locationItem = location.Items.FirstOrDefault(i => i.ItemId == item || i.ItemId == item);
-
-            if (locationItem is null)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
-                return;
-            }
-
-            if (!locationItem.IsLocked)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"The {item} is already unlocked!");
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(locationItem.ItemIdToUnlock))
-            {
-                if (player.Inventory.GetItems().All(i => i.ItemId != locationItem.ItemIdToUnlock))
-                {
-                    player.ChatClient.PostDirectMessage(player.Id, $"You need a {locationItem.ItemIdToUnlock} to unlock the {item}!");
-                    return;
-                }
-
-                player.ChatClient.PostDirectMessage(player.Id, $"You try your {locationItem.ItemIdToUnlock} ...");
-            }
-
-            locationItem.IsLocked = false;
-            player.ChatClient.PostDirectMessage(player.Id, $"The {item} is now unlocked!");
-        }
-
-        private void AdvCommandUse(AdventurePlayer player, ChatCommandEventArgs e)
-        {
-            var args = e.ArgsAsList;
-
-            if (args.Count == 1)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, "What would you like to use? Try using: !adv use _item_");
-                return;
-            }
-
-            var itemToUse = args[1];
-            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToUse || i.ItemId == itemToUse);
-
-            if (itemInInventory == null)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToUse} to use!");
-                return;
-            }
-
-                if (itemInInventory.Interactions != null && itemInInventory.Interactions.ContainsKey(args[0]))
-                {
-                    itemInInventory.Interactions[args[0]](player);
-                    return;
-                }
-            
-            player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to {args[0]} a {itemToUse}. Can you be clearer?");
+            return _players.First(x => x.Id == userId);
         }
 
         private static void ReadLeaflet(AdventurePlayer player)
