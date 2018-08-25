@@ -31,23 +31,29 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             foreach (var action in Interactions.OrderBy(i => i.Key))
             {
-                var match = action.Key.Split('-')[0];
+                var keyword = action.Key.Split('-')[0];
 
-                if (match.Equals(requestedAction))
+                if (keyword.Equals(requestedAction))
                 {
                     action.Value.Do(player, this);
                 }
             }
         }
 
-        public void AddInteraction(string key, IAction value)
+        public void AddInteraction(string keyword, IAction value)
         {
+            // Add numeric suffix to key
+            var n = Interactions.Keys.Where(k => k.StartsWith(keyword)).Count();
+            var key = keyword + $"-{++n}";
             Interactions.Add(key, value);
         }
 
         public void RemoveInteractions(string interactionKey)
         {
-            Interactions.Remove(interactionKey);
+            foreach (var action in Interactions.Where(i => i.Key.StartsWith(interactionKey)))
+            {
+                Interactions.Remove(action.Key);
+            }
         }
     }
 }

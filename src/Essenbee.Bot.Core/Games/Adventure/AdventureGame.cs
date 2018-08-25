@@ -164,9 +164,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 IsPortable = false,
             };
 
-            bottle.AddInteraction("smash-1", new Display("You smash the bottle and glass flies everywhere!"));
-            bottle.AddInteraction("smash-2", new RemoveFromInventory());
-            bottle.AddInteraction("smash-3", new AddToLocation(brokenGlass));
+            bottle.AddInteraction("smash", new Display("You smash the bottle and glass flies everywhere!"));
+            bottle.AddInteraction("smash", new RemoveFromInventory());
+            bottle.AddInteraction("smash", new AddToLocation(brokenGlass));
 
             var building = new AdventureLocation {
                 LocationId = "building",
