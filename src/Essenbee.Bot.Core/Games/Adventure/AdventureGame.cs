@@ -157,11 +157,21 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 },
             };
 
+            var shard = new AdventureItem {
+                ItemId = "shard",
+                Name = "*shard* of jagged glass",
+                PluralName = "*shards* of jagged glass",
+                IsPortable = true,
+                IsEndlessSupply = true,
+            };
+
             var brokenGlass = new AdventureItem {
                 ItemId = "glass",
-                Name = "lot of broken glass",
-                PluralName = "lot of broken glass",
+                Name = "spread of broken glass",
+                PluralName = "spread of broken glass",
                 IsPortable = false,
+                IsContainer = true,
+                Contents = new List<AdventureItem> { shard },
             };
 
             bottle.AddInteraction("smash", new Display("You smash the bottle and glass flies everywhere!"));
