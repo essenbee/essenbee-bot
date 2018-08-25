@@ -2,13 +2,6 @@
 {
     public class Open : IAction
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Open(IReadonlyAdventureGame game)
-        {
-            _game = game;
-        }
-
         public bool Do(AdventurePlayer player, AdventureItem item)
         {
             var location = player.CurrentLocation;

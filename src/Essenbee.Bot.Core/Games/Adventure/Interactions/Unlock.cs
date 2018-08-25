@@ -4,13 +4,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class Unlock : IAction
     {
-        private readonly IReadonlyAdventureGame _game;
-
-        public Unlock(IReadonlyAdventureGame game)
-        {
-            _game = game;
-        }
-
         public bool Do(AdventurePlayer player, AdventureItem item)
         {
             var location = player.CurrentLocation;
