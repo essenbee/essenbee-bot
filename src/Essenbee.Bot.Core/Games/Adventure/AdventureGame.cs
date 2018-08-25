@@ -97,15 +97,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             return _players.First(x => x.Id == userId);
         }
 
-        private static void ReadLeaflet(AdventurePlayer player)
-        {
-            var msg = new StringBuilder("You read the leaflet and this is what it says:");
-            msg.AppendLine();
-            msg.AppendLine("Somewhere nearby lies the fabled Colossal Cave, a place of danger, mystery and, some say, magic.");
-
-            player.ChatClient.PostDirectMessage(player.Id, msg.ToString());
-        }
-
         // Temporary method - need to build this from stored data
         private Dictionary<int, AdventureLocation> BuildDungeon()
         {
