@@ -24,7 +24,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             unlock.RegisteredInteractions.Add(new Display("You open the grate and see a dark space below it. A rusty iron ladder leads down into pitch blackness!"));
             unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, string> 
             {
-                { "down", "cave1" }
+                { "down", "cave1" },
+                { "d", "cave1" },
             }));
             Interactions.Add(unlock);
         }

@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<AdventureItem> { grate, };
             Moves = new Dictionary<string, string> {
                         {"north", "slit" },
+                        {"n", "slit" },
             };
         }
     }

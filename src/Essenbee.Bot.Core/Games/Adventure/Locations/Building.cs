@@ -19,13 +19,14 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             WaterPresent = true;
             Items = new List<AdventureItem>
             {
-                    key,
-                    lamp,
-                    bottle,
-                    food,
-                };
+                key,
+                lamp,
+                bottle,
+                food,
+            };
             Moves = new Dictionary<string, string> {
                         {"west", "road" },
+                        {"w", "road" },
                         {"road", "road" },
                         {"out", "road" },
                         {"outside", "road" }

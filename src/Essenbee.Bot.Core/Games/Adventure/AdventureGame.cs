@@ -1,5 +1,4 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Items;
-using Essenbee.Bot.Core.Games.Adventure.Locations;
+﻿using Essenbee.Bot.Core.Games.Adventure.Locations;
 using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

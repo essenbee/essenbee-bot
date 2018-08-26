@@ -13,7 +13,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             WaterPresent = false;
             IsDark = true;
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, string>();
+            Moves = new Dictionary<string, string> 
+            {
+                { "up", "depression" },
+                { "u", "depression" },
+                //{ "west", "" },
+                //{ "w", "" },
+            };
         }
     }
 }

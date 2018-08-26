@@ -15,6 +15,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Moves = new Dictionary<string, string> {
                         {"north", "valley" },
                         {"south", "depression" },
+                        {"n", "valley" },
+                        {"s", "depression" },
                 };
         }
     }
