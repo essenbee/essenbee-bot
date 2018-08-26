@@ -108,6 +108,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var depression = new Depression(this);
             var entranceCave = new EntranceCave(this);
             var cobbles = new Cobbles(this);
+            var debrisRoom = new Debris(this);
 
             dungeon.Add(0, startingLocation);
             dungeon.Add(1, building);
@@ -116,6 +117,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             dungeon.Add(4, depression);
             dungeon.Add(5, entranceCave);
             dungeon.Add(6, cobbles);
+            dungeon.Add(7, debrisRoom);
 
             return dungeon;
         }

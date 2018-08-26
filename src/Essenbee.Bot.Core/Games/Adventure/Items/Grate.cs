@@ -27,6 +27,18 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 { "down", "cave1" },
                 { "d", "cave1" },
             }));
+
+            var found = Game.TryGetLocation("cave1", out var entranceCave);
+
+            if (found)
+            {
+                unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, string>
+                {
+                    { "up", "depression" },
+                    { "u", "depression" },
+                }, entranceCave));
+            }
+
             Interactions.Add(unlock);
         }
     }

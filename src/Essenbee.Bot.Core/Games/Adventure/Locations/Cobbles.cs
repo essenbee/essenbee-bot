@@ -17,8 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             {
                 { "e", "cave1" },
                 { "u", "cave1" },
-                //{ "west", "" },
-                //{ "w", "" },
+                { "west", "debris" },
+                { "w", "debris" },
             };
         }
     }

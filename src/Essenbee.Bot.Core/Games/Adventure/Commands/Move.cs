@@ -11,6 +11,14 @@
             var canMove = false;
             var direction = e.ArgsAsList[1].ToLower();
 
+            if (player.CurrentLocation.IsDark)
+            {
+                if (!player.Statuses.Contains(PlayerStatus.HasLight))
+                {
+                    player.ChatClient.PostDirectMessage(player.Id, "It is pitch black! If you move around, you'll probably fall into a chasm or something...");
+                }
+            }
+
             if (player.CurrentLocation.Moves.ContainsKey(direction))
             {
                 var moveTo = player.CurrentLocation.Moves[direction];

@@ -15,8 +15,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<AdventureItem>();
             Moves = new Dictionary<string, string> 
             {
-                { "up", "depression" },
-                { "u", "depression" },
                 { "west", "cobbles" },
                 { "w", "cobbles" },
             };
