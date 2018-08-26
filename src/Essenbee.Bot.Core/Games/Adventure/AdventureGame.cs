@@ -1,5 +1,6 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Locations;
 using Essenbee.Bot.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 var player = new AdventurePlayer {
                     Id = e.UserId,
                     UserName = e.UserName,
-                    CurrentLocation = _locations.First().Value,
+                    CurrentLocation = _locations[Location.Road],
                     Score = 0,
                     Moves = 1,
                     ChatClient = chatClient,
@@ -100,24 +101,33 @@ namespace Essenbee.Bot.Core.Games.Adventure
         private Dictionary<Location, AdventureLocation> BuildDungeon()
         {
             var dungeon = new Dictionary<Location, AdventureLocation>();
+            var locations = GetType().Assembly.GetTypes().Where(t => typeof(AdventureLocation).IsAssignableFrom(t));
 
-            var road = new Road(this);
-            var building = new Building(this);
-            var valley = new Valley(this);
-            var slit = new Slit(this);
-            var depression = new Depression(this);
-            var entranceCave = new EntranceCave(this);
-            var cobbles = new Cobbles(this);
-            var debrisRoom = new Debris(this);
+            foreach (var type in locations)
+            {
+                if (type.Name == "AdventureLocation") continue;
 
-            dungeon.Add(Location.Road, road);
-            dungeon.Add(Location.Building, building);
-            dungeon.Add(Location.Valley, valley);
-            dungeon.Add(Location.Slit, slit);
-            dungeon.Add(Location.Depression, depression);
-            dungeon.Add(Location.Cave1, entranceCave);
-            dungeon.Add(Location.Cobbles, cobbles);
-            dungeon.Add(Location.Debris, debrisRoom);
+                var loc = Activator.CreateInstance(type, this) as AdventureLocation;
+                dungeon.Add(loc.LocationId, loc);
+            }
+
+            //var road = new Road(this);
+            //var building = new Building(this);
+            //var valley = new Valley(this);
+            //var slit = new Slit(this);
+            //var depression = new Depression(this);
+            //var entranceCave = new EntranceCave(this);
+            //var cobbles = new Cobbles(this);
+            //var debrisRoom = new Debris(this);
+
+            //dungeon.Add(Location.Road, road);
+            //dungeon.Add(Location.Building, building);
+            //dungeon.Add(Location.Valley, valley);
+            //dungeon.Add(Location.Slit, slit);
+            //dungeon.Add(Location.Depression, depression);
+            //dungeon.Add(Location.Cave1, entranceCave);
+            //dungeon.Add(Location.Cobbles, cobbles);
+            //dungeon.Add(Location.Debris, debrisRoom);
 
             return dungeon;
         }
