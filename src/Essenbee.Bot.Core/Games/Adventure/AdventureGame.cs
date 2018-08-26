@@ -101,7 +101,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             var dungeon = new Dictionary<Location, AdventureLocation>();
 
-            var startingLocation = new Start(this);
+            var road = new Road(this);
             var building = new Building(this);
             var valley = new Valley(this);
             var slit = new Slit(this);
@@ -110,7 +110,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var cobbles = new Cobbles(this);
             var debrisRoom = new Debris(this);
 
-            dungeon.Add(Location.Road, startingLocation);
+            dungeon.Add(Location.Road, road);
             dungeon.Add(Location.Building, building);
             dungeon.Add(Location.Valley, valley);
             dungeon.Add(Location.Slit, slit);

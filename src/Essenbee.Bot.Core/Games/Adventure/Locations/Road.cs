@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
 {
-    public class Start : AdventureLocation
+    public class Road : AdventureLocation
     {
-        public Start(IReadonlyAdventureGame game) : base(game)
+        public Road(IReadonlyAdventureGame game) : base(game)
         {
             LocationId = Location.Road;
             Name = "End of a Road";
