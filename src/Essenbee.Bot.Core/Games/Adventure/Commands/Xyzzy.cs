@@ -1,4 +1,6 @@
-﻿namespace Essenbee.Bot.Core.Games.Adventure.Commands
+﻿using Essenbee.Bot.Core.Games.Adventure.Locations;
+
+namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
     public class Xyzzy : BaseAdventureCommand
     {
@@ -10,15 +12,15 @@
         {
             var canMove = false;
 
-            if (player.CurrentLocation.LocationId.Equals("building"))
+            if (player.CurrentLocation.LocationId.Equals(Location.Building))
             {
-                var moveTo = "debris";
+                var moveTo = Location.Debris;
                 canMove = _game.TryGetLocation(moveTo, out var place);
                 player.CurrentLocation = place;
             }
-            else if (player.CurrentLocation.LocationId.Equals("debris"))
+            else if (player.CurrentLocation.LocationId.Equals(Location.Debris))
             {
-                var moveTo = "building";
+                var moveTo = Location.Building;
                 canMove = _game.TryGetLocation(moveTo, out var place);
                 player.CurrentLocation = place;
             }

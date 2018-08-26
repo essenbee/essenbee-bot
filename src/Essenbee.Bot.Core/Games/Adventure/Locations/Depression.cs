@@ -9,14 +9,14 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
         {
             var grate = ItemFactory.GetInstance(Game, "grate");
 
-            LocationId = "depression";
+            LocationId = Location.Depression;
             Name = "Depression";
             ShortDescription = "outside the grate";
             LongDescription = "in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression.";
             Items = new List<AdventureItem> { grate, };
-            Moves = new Dictionary<string, string> {
-                        {"north", "slit" },
-                        {"n", "slit" },
+            Moves = new Dictionary<string, Location> {
+                        {"north", Location.Slit },
+                        {"n", Location.Slit },
             };
         }
     }

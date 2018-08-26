@@ -6,19 +6,19 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public Cobbles(IReadonlyAdventureGame game) : base(game)
         {
-            LocationId = "cobbles";
+            LocationId = Location.Cobbles;
             Name = "Cobble Crawl";
             ShortDescription = "in cobble crawl";
             LongDescription = "crawling over cobbles in a low passage. There is some very feint light visible at the east end of the passage.";
             WaterPresent = false;
             IsDark = true;
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, string>
+            Moves = new Dictionary<string, Location>
             {
-                { "e", "cave1" },
-                { "u", "cave1" },
-                { "west", "debris" },
-                { "w", "debris" },
+                { "e", Location.Cave1 },
+                { "u", Location.Cave1  },
+                { "west", Location.Debris  },
+                { "w", Location.Debris  },
             };
         }
     }

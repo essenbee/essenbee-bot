@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             var key = ItemFactory.GetInstance(Game, "key");
             var food = ItemFactory.GetInstance(Game, "food");
 
-            LocationId = "building";
+            LocationId = Location.Building;
             Name = "Small Brick Building";
             ShortDescription = "inside a small brick building.";
             LongDescription = " inside a small brick building, a well house for a bubbling spring.";
@@ -24,12 +24,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 bottle,
                 food,
             };
-            Moves = new Dictionary<string, string> {
-                        {"west", "road" },
-                        {"w", "road" },
-                        {"road", "road" },
-                        {"out", "road" },
-                        {"outside", "road" }
+            Moves = new Dictionary<string, Location> {
+                        {"west", Location.Road },
+                        {"w", Location.Road },
+                        {"road", Location.Road },
+                        {"out", Location.Road },
+                        {"outside", Location.Road }
             };
         }
     }

@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private List<AdventurePlayer> _players;
         private AdventureCommandRegistry _commandRegistry;
-        private readonly Dictionary<int, AdventureLocation> _locations = new Dictionary<int, AdventureLocation>();
+        private readonly Dictionary<Location, AdventureLocation> _locations = new Dictionary<Location, AdventureLocation>();
 
         public AdventureGame()
         {
@@ -65,7 +65,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
         }
 
-        public bool TryGetLocation(string locationId, out AdventureLocation place)
+        public bool TryGetLocation(Location locationId, out AdventureLocation place)
         {
             var location = _locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
             place = null;
@@ -97,9 +97,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
             return _players.First(x => x.Id == userId);
         }
 
-        private Dictionary<int, AdventureLocation> BuildDungeon()
+        private Dictionary<Location, AdventureLocation> BuildDungeon()
         {
-            var dungeon = new Dictionary<int, AdventureLocation>();
+            var dungeon = new Dictionary<Location, AdventureLocation>();
 
             var startingLocation = new Start(this);
             var building = new Building(this);
@@ -110,14 +110,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var cobbles = new Cobbles(this);
             var debrisRoom = new Debris(this);
 
-            dungeon.Add(0, startingLocation);
-            dungeon.Add(1, building);
-            dungeon.Add(2, valley);
-            dungeon.Add(3, slit);
-            dungeon.Add(4, depression);
-            dungeon.Add(5, entranceCave);
-            dungeon.Add(6, cobbles);
-            dungeon.Add(7, debrisRoom);
+            dungeon.Add(Location.Road, startingLocation);
+            dungeon.Add(Location.Building, building);
+            dungeon.Add(Location.Valley, valley);
+            dungeon.Add(Location.Slit, slit);
+            dungeon.Add(Location.Depression, depression);
+            dungeon.Add(Location.Cave1, entranceCave);
+            dungeon.Add(Location.Cobbles, cobbles);
+            dungeon.Add(Location.Debris, debrisRoom);
 
             return dungeon;
         }

@@ -6,7 +6,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public Debris(IReadonlyAdventureGame game) : base(game)
         {
-            LocationId = "debris";
+            LocationId = Location.Debris;
             Name = "Debris room";
             ShortDescription = "in debris room";
             LongDescription = "in a debris room filled with stuff washed in from the surface. A low wide passage with cobbles becomes plugged with mud and debris" +
@@ -14,10 +14,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             WaterPresent = false;
             IsDark = true;
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, string>
+            Moves = new Dictionary<string, Location>
             {
-                { "e", "cobbles" },
-                { "east", "cobbles" },
+                { "e", Location.Cobbles },
+                { "east", Location.Cobbles },
                 //{ "west", "" },
                 //{ "w", "" },
             };

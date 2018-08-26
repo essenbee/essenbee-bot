@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Items
@@ -19,7 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             open.RegisteredInteractions.Add(new Open());
             Interactions.Add(open);
 
-            var found = Game.TryGetLocation("depression", out var depression);
+            var found = Game.TryGetLocation(Location.Depression, out var depression);
 
             var unlock = new ItemInteraction(Game, "unlock");
             unlock.RegisteredInteractions.Add(new Unlock());
@@ -27,21 +28,21 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
             if (found)
             {
-                unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, string>
+                unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, Location>
                 {
-                    { "down", "cave1" },
-                    { "d", "cave1" },
+                    { "down", Location.Cave1 },
+                    { "d", Location.Cave1 },
                 }, depression));
             }
 
-            found = Game.TryGetLocation("cave1", out var entranceCave);
+            found = Game.TryGetLocation(Location.Cave1, out var entranceCave);
 
             if (found)
             {
-                unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, string>
+                unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, Location>
                 {
-                    { "up", "depression" },
-                    { "u", "depression" },
+                    { "up", Location.Depression},
+                    { "u", Location.Depression },
                 }, entranceCave));
             }
 
