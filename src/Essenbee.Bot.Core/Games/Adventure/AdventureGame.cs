@@ -1,5 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
-using Essenbee.Bot.Core.Games.Adventure.Items;
+﻿using Essenbee.Bot.Core.Games.Adventure.Items;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -103,91 +103,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             var dungeon = new Dictionary<int, AdventureLocation>();
 
-            var mailbox = ItemFactory.GetInstance(this, "mailbox");
-
-            var startingLocation = new AdventureLocation {
-                LocationId = "road",
-                Name = "End of a Road",
-                ShortDescription = "standing at the end of a road.",
-                LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.",
-                Items = new List<AdventureItem> { mailbox },
-                Moves = new Dictionary<string, string>
-                        {
-                        {"east", "building" },
-                        {"enter", "building" },
-                        {"in", "building" },
-                        {"inside", "building" },
-                        {"building", "building" },
-                        {"south" , "valley" },
-                    }
-            };
-
-            var bottle = ItemFactory.GetInstance(this, "bottle");
-            var lamp = ItemFactory.GetInstance(this, "lamp");
-            var key = ItemFactory.GetInstance(this, "key");
-            var food = ItemFactory.GetInstance(this, "food");
-
-            var building = new AdventureLocation {
-                LocationId = "building",
-                Name = "Small Brick Building",
-                ShortDescription = "inside a small brick building.",
-                LongDescription = " inside a small brick building, a well house for a bubbling spring.",
-                WaterPresent = true,
-                Items = new List<AdventureItem>
-                {
-                    key,
-                    lamp,
-                    bottle,
-                    food,
-                },
-                Moves = new Dictionary<string, string> {
-                        {"west", "road" },
-                        {"road", "road" },
-                        {"out", "road" },
-                        {"outside", "road" },
-                }
-            };
-
-            var valley = new AdventureLocation {
-                LocationId = "valley",
-                Name = "Valley",
-                ShortDescription = "in a valley",
-                LongDescription = "in a valley in the forest beside a stream tumbling along a rocky bed.",
-                WaterPresent = true,
-                Items = new List<AdventureItem>(),
-                Moves = new Dictionary<string, string> {
-                        {"north", "road" },
-                        {"south", "slit" },
-                }
-            };
-
-            var slit = new AdventureLocation {
-                LocationId = "slit",
-                Name = "Slit",
-                ShortDescription = "at the slit in the streambed",
-                LongDescription = "besides the stream. At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock.",
-                WaterPresent = true,
-                Items = new List<AdventureItem>(),
-                Moves = new Dictionary<string, string> {
-                        {"north", "valley" },
-                        {"south", "depression" },
-                }
-            };
-
-            var grate = ItemFactory.GetInstance(this, "grate");
-
-            var depression = new AdventureLocation {
-                LocationId = "depression",
-                Name = "Depression",
-                ShortDescription = "outside the grate",
-                LongDescription = "in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression.",
-                Items = new List<AdventureItem> {
-                        grate,
-                },
-                Moves = new Dictionary<string, string> {
-                        {"north", "slit" },
-                }
-            };
+            var startingLocation = new Start(this);
+            var building = new Building(this);
+            var valley = new Valley(this);
+            var slit = new Slit(this);
+            var depression = new Depression(this);
 
             dungeon.Add(0, startingLocation);
             dungeon.Add(1, building);
