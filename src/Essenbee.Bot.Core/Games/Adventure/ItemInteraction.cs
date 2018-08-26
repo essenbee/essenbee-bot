@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public class ItemInteraction
+    public class ItemInteraction : IInteraction
     {
-        public List<string> Verbs;
-        public readonly IReadonlyAdventureGame _game;
+        public List<string> Verbs { get; }
+        public IReadonlyAdventureGame Game { get; }
         public IList<IAction> RegisteredInteractions { get; set; }
 
         public ItemInteraction(IReadonlyAdventureGame game, params string[] verbs)
         {
-            _game = game;
+            Game = game;
             Verbs = new List<string>(verbs);
             RegisteredInteractions = new List<IAction>();
         }

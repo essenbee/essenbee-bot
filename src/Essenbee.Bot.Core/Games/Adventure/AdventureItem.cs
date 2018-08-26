@@ -15,12 +15,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
-        public IList<ItemInteraction> Interactions { get; set; }
+        public IList<IInteraction> Interactions { get; set; }
 
         public AdventureItem()
         {
             Contents = new List<AdventureItem>();
-            Interactions = new List<ItemInteraction>();
+            Interactions = new List<IInteraction>();
         }
 
         public bool Interact(string verb, AdventurePlayer player)
