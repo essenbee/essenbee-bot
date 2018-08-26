@@ -111,24 +111,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 dungeon.Add(loc.LocationId, loc);
             }
 
-            //var road = new Road(this);
-            //var building = new Building(this);
-            //var valley = new Valley(this);
-            //var slit = new Slit(this);
-            //var depression = new Depression(this);
-            //var entranceCave = new EntranceCave(this);
-            //var cobbles = new Cobbles(this);
-            //var debrisRoom = new Debris(this);
-
-            //dungeon.Add(Location.Road, road);
-            //dungeon.Add(Location.Building, building);
-            //dungeon.Add(Location.Valley, valley);
-            //dungeon.Add(Location.Slit, slit);
-            //dungeon.Add(Location.Depression, depression);
-            //dungeon.Add(Location.Cave1, entranceCave);
-            //dungeon.Add(Location.Cobbles, cobbles);
-            //dungeon.Add(Location.Debris, debrisRoom);
-
             return dungeon;
         }
     }
