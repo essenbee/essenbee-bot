@@ -155,7 +155,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 Name = "*shard* of jagged glass",
                 PluralName = "*shards* of jagged glass",
                 IsPortable = true,
-                IsEndlessSupply = true,
+                IsEndlessSupply = false, // ToDo: how to handle endless items
             };
 
             var brokenGlass = new AdventureItem {
@@ -175,6 +175,20 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             bottle.Interactions.Add(smash);
 
+            var lamp = new AdventureItem {
+                ItemId = "lamp",
+                Name = "battered *lamp*",
+                PluralName = "battered *lamps*",
+                IsPortable = true,
+                IsEndlessSupply = false, // ToDo: how to handle endless items
+            };
+
+            var light = new ItemInteraction(this, "light");
+            light.RegisteredInteractions.Add(new ActivateItem("The lamp shines brightly."));
+            light.RegisteredInteractions.Add(new AddPlayerStatus(PlayerStatus.HasLight));
+
+            lamp.Interactions.Add(light);
+
             var building = new AdventureLocation {
                 LocationId = "building",
                 Name = "Small Brick Building",
@@ -187,16 +201,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
                             ItemId = "key",
                             Name = "large iron *key*",
                             PluralName = "large iron *keys*",
-                            IsPortable = true
-                        },
-                        new AdventureItem
-                        {
-                            ItemId = "lamp",
-                            Name = "battered *lamp*",
-                            PluralName = "battered *lamps*",
                             IsPortable = true,
-                            IsEndlessSupply = true,
                         },
+                        lamp,
                         bottle,
                         new AdventureItem
                         {
@@ -204,7 +211,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                             Name = "packet of dried *food* rations",
                             PluralName = "packets of dried *food* rations",
                             IsPortable = true,
-                            IsEndlessSupply = true,
+                            IsEndlessSupply = false, // ToDo: how to handle endless items
                         },
                 },
                 Moves = new Dictionary<string, string> {

@@ -12,10 +12,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public int Score { get; set; }
         public int Moves { get; set; }
         public Inventory Inventory { get; set; }
+        public IList<PlayerStatus> Statuses { get; set; }
 
         public AdventurePlayer()
         {
             Inventory = new Inventory();
+            Statuses = new List<PlayerStatus>();
         }
     }
 }
