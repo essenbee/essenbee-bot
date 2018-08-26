@@ -10,5 +10,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
         IList<IAction> RegisteredInteractions { get; set; }
 
         bool IsMatch(string verb);
+        bool ShouldExecute();
     }
 }

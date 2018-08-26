@@ -26,7 +26,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool Interact(string verb, AdventurePlayer player)
         {
             verb = verb.ToLower();
-            var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb));
+            var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());
 
             if (interaction != null)
             {

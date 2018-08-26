@@ -17,9 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
             RegisteredInteractions = new List<IAction>();
         }
         
-        public bool IsMatch(string verb)
-        {
-            return Verbs.Any(v => verb.Equals(v));
-        }
+        public bool IsMatch(string verb) => Verbs.Any(v => verb.Equals(v));
+
+        public bool ShouldExecute() => true;
     }
 }
