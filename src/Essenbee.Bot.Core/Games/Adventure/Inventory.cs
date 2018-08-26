@@ -41,15 +41,16 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             foreach (var item in _items)
             {
-                inventory.AppendLine($"\ta {item.Name}");
+                var text = item.Contents.Any() 
+                    ? $"\t* a {item.Name} containing:" 
+                    : $"\t* a {item.Name}";
+                inventory.AppendLine(text);
 
                 if (item.Contents.Any())
                 {
-                    inventory.AppendLine($"The {item.Name} contains:");
-
                     foreach (var content in item.Contents)
                     {
-                        inventory.AppendLine($"\tA {content.Name}");
+                        inventory.AppendLine($"\t\t- a {content.Name}");
                     }
                 }
             }
