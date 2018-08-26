@@ -53,7 +53,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
                     if (command is null)
                     {
-                        player.ChatClient.PostDirectMessage(player.Id, $"Sorry, I don't understand {advCommands[0]}.");
+                        command = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("use"));
                     }
 
                     command.Invoke(player, e);

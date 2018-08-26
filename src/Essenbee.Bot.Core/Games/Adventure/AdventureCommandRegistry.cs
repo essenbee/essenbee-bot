@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var moveCommand = new Move(_game, "move", "go");
             var takeCommand = new Take(_game, "take", "get");
             var inventoryCommand = new Carrying(_game, "inventory", "inv");
-            var interactCommand = new Use(_game, "use", "open", "drop", "unlock", "smash", "break");
+            var interactCommand = new Interact(_game, "use");
 
             RegisteredCommands = new List<BaseAdventureCommand> {
                 lookCommand,

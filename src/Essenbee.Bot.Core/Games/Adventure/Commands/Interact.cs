@@ -2,9 +2,9 @@
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Use : BaseAdventureCommand
+    public class Interact : BaseAdventureCommand
     {
-        public Use(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
+        public Interact(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
         }
 
@@ -14,7 +14,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (args.Count == 1)
             {
-                player.ChatClient.PostDirectMessage(player.Id, "Which of your carried items would you like to use?");
+                if (Verbs.Contains(args[0]))
+                {
+                    player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to just `{args[0]}`. Can you be a little more explicit?");
+                }
+                else
+                {
+                    player.ChatClient.PostDirectMessage(player.Id, $"Sorry, I don't understand `{args[0]}`.");
+                }
+
                 return;
             }
 
@@ -23,7 +31,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (itemInInventory == null)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToUse} to use!");
+                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a `{itemToUse}` to use!");
                 return;
             }
 
@@ -35,12 +43,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to {requestedAction} a {itemToUse}. Can you be clearer?");
+            player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to `{requestedAction}` a `{itemToUse}`. Can you be clearer?");
         }
 
         private string ResolveInteractionAlias(AdventureItem item, string originalRequest)
         {
-            if (item.InteractionAlias.ContainsKey(originalRequest))
+            if (item.InteractionAlias != null && item.InteractionAlias.ContainsKey(originalRequest))
             {
                 return item.InteractionAlias[originalRequest];
             }
