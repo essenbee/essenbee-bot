@@ -17,8 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             {
                 { "up", "depression" },
                 { "u", "depression" },
-                //{ "west", "" },
-                //{ "w", "" },
+                { "west", "cobbles" },
+                { "w", "cobbles" },
             };
         }
     }
