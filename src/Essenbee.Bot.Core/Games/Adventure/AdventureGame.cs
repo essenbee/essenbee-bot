@@ -139,7 +139,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         {"in", "building" },
                         {"inside", "building" },
                         {"building", "building" },
-                        { "south" , "stream"}
+                        {"south" , "valley" },
                     }
             };
 
@@ -246,7 +246,17 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 IsPortable = false,
                 IsOpen = false,
                 IsLocked = true,
+                ItemIdToUnlock = "key",
             };
+
+            var open = new ItemInteraction(this, "open");
+            open.RegisteredInteractions.Add(new Open());
+            grate.Interactions.Add(open);
+
+            var unlock = new ItemInteraction(this, "unlock");
+            unlock.RegisteredInteractions.Add(new Unlock());
+            unlock.RegisteredInteractions.Add(new Display("You open the grate and see a dark spce below it. A rusty iron ladder leads down into pitch blackness!"));
+            grate.Interactions.Add(unlock);
 
             var depression = new AdventureLocation {
                 LocationId = "depression",
@@ -265,6 +275,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             dungeon.Add(1, building);
             dungeon.Add(2, valley);
             dungeon.Add(3, slit);
+            dungeon.Add(4, depression);
 
             return dungeon;
         }

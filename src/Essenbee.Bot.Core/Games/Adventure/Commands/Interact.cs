@@ -26,20 +26,30 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            var itemToUse = args[1];
-            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToUse || i.ItemId == itemToUse);
+            var itemToInteractWith = args[1];
+            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToInteractWith || i.ItemId == itemToInteractWith);
+            var itemAtLocation = player.CurrentLocation.Items.FirstOrDefault(i => i.Name == itemToInteractWith || i.ItemId == itemToInteractWith);
 
-            if (itemInInventory == null)
+            if (itemInInventory is null && itemAtLocation is null)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a `{itemToUse}` to use!");
+                player.ChatClient.PostDirectMessage(player.Id, $"Which `{itemToInteractWith}` are you referring to?");
                 return;
             }
 
-            var actionWasMatched = itemInInventory.Interact(args[0], player);
+            var actionWasMatched = false;
+
+            if (itemAtLocation != null)
+            {
+                actionWasMatched = itemAtLocation.Interact(args[0], player);
+            }
+            else
+            {
+                actionWasMatched = itemInInventory.Interact(args[0], player);
+            }
 
             if (!actionWasMatched)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to `{args[0]}` a `{itemToUse}`. Can you be clearer?");
+                player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to `{args[0]}` a `{itemToInteractWith}`. Can you be clearer?");
             }
         }
     }
