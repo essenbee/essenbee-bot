@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -102,29 +103,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             var dungeon = new Dictionary<int, AdventureLocation>();
 
-            var leaflet = new AdventureItem {
-                ItemId = "leaflet",
-                Name = "*leaflet*",
-                PluralName = "*leaflets*",
-                IsPortable = true,
-            };
-
-            var whenRead = new StringBuilder("You read the leaflet and this is what it says:");
-            whenRead.AppendLine();
-            whenRead.AppendLine("Somewhere nearby lies the fabled Colossal Cave, a place of danger, mystery and, some say, magic.");
-
-            var read = new ItemInteraction(this, "read");
-            read.RegisteredInteractions.Add(new Display(whenRead.ToString()));
-            leaflet.Interactions.Add(read);
-
-            var mailbox = new AdventureItem {
-                ItemId = "mailbox",
-                Name = "small mailbox",
-                PluralName = "small mailboxes",
-                IsOpen = true,
-                IsContainer = true,
-                Contents = new List<AdventureItem> { leaflet }
-            };
+            var mailbox = new Mailbox(this);
 
             var startingLocation = new AdventureLocation {
                 LocationId = "road",
@@ -143,51 +122,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     }
             };
 
-            var bottle = new AdventureItem {
-                ItemId = "bottle",
-                Name = "small glass *bottle*",
-                PluralName = "small glass *bottles*",
-                IsPortable = true,
-            };
-
-            var shard = new AdventureItem {
-                ItemId = "shard",
-                Name = "*shard* of jagged glass",
-                PluralName = "*shards* of jagged glass",
-                IsPortable = true,
-                IsEndlessSupply = false, // ToDo: how to handle endless items
-            };
-
-            var brokenGlass = new AdventureItem {
-                ItemId = "glass",
-                Name = "spread of broken glass",
-                PluralName = "spread of broken glass",
-                IsPortable = false,
-                IsContainer = true,
-                IsOpen = true,
-                Contents = new List<AdventureItem> { shard },
-            };
-
-            var smash = new ItemInteraction(this, "smash", "break");
-            smash.RegisteredInteractions.Add(new Display("You smash the bottle and glass flies everywhere!"));
-            smash.RegisteredInteractions.Add(new RemoveFromInventory());
-            smash.RegisteredInteractions.Add(new AddToLocation(brokenGlass));
-
-            bottle.Interactions.Add(smash);
-
-            var lamp = new AdventureItem {
-                ItemId = "lamp",
-                Name = "battered *lamp*",
-                PluralName = "battered *lamps*",
-                IsPortable = true,
-                IsEndlessSupply = false, // ToDo: how to handle endless items
-            };
-
-            var light = new ItemInteraction(this, "light");
-            light.RegisteredInteractions.Add(new ActivateItem("The lamp shines brightly."));
-            light.RegisteredInteractions.Add(new AddPlayerStatus(PlayerStatus.HasLight));
-
-            lamp.Interactions.Add(light);
+            var bottle = new Bottle(this);
+            var lamp = new Lamp(this);
 
             var building = new AdventureLocation {
                 LocationId = "building",
