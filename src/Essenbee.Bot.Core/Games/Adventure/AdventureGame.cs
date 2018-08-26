@@ -112,7 +112,10 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var whenRead = new StringBuilder("You read the leaflet and this is what it says:");
             whenRead.AppendLine();
             whenRead.AppendLine("Somewhere nearby lies the fabled Colossal Cave, a place of danger, mystery and, some say, magic.");
-            leaflet.AddInteraction("read", new Display(whenRead.ToString()));
+
+            var read = new ItemInteraction(this, "read");
+            read.RegisteredInteractions.Add(new Display(whenRead.ToString()));
+            leaflet.Interactions.Add(read);
 
             var mailbox = new AdventureItem {
                 ItemId = "mailbox",
@@ -144,9 +147,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 Name = "small glass *bottle*",
                 PluralName = "small glass *bottles*",
                 IsPortable = true,
-                InteractionAlias = new Dictionary<string, string> {
-                    { "break", "smash" }
-                },
             };
 
             var shard = new AdventureItem {
@@ -167,9 +167,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 Contents = new List<AdventureItem> { shard },
             };
 
-            bottle.AddInteraction("smash", new Display("You smash the bottle and glass flies everywhere!"));
-            bottle.AddInteraction("smash", new RemoveFromInventory());
-            bottle.AddInteraction("smash", new AddToLocation(brokenGlass));
+            var smash = new ItemInteraction(this, "smash", "break");
+            smash.RegisteredInteractions.Add(new Display("You smash the bottle and glass flies everywhere!"));
+            smash.RegisteredInteractions.Add(new RemoveFromInventory());
+            smash.RegisteredInteractions.Add(new AddToLocation(brokenGlass));
+
+            bottle.Interactions.Add(smash);
 
             var building = new AdventureLocation {
                 LocationId = "building",

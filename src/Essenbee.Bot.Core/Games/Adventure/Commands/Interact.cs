@@ -35,33 +35,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            var requestedAction = ResolveInteractionAlias(itemInInventory, args[0]);
+            var actionWasMatched = itemInInventory.Interact(args[0], player);
 
-            if (IsValidInteraction(itemInInventory, requestedAction))
+            if (!actionWasMatched)
             {
-                itemInInventory.Interact(requestedAction, player);
-                return;
+                player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to `{args[0]}` a `{itemToUse}`. Can you be clearer?");
             }
-
-            player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to `{requestedAction}` a `{itemToUse}`. Can you be clearer?");
-        }
-
-        private string ResolveInteractionAlias(AdventureItem item, string originalRequest)
-        {
-            if (item.InteractionAlias != null && item.InteractionAlias.ContainsKey(originalRequest))
-            {
-                return item.InteractionAlias[originalRequest];
-            }
-
-            return originalRequest;
-        }
-
-        private bool IsValidInteraction(AdventureItem item, string requestedAction)
-        {
-            if (item is null || item.Interactions is null) return false;
-
-            requestedAction += "-";
-            return item.Interactions.Keys.Where(key => key.StartsWith(requestedAction)).Count() > 0;
         }
     }
 }

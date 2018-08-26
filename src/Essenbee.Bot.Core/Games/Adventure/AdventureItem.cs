@@ -1,5 +1,4 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
@@ -16,44 +15,30 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
-        public IDictionary<string, IAction> Interactions { get; set; }
-        public IDictionary<string, string> InteractionAlias { get; set; }
+        public IList<ItemInteraction> Interactions { get; set; }
 
         public AdventureItem()
         {
             Contents = new List<AdventureItem>();
-            Interactions = new Dictionary<string, IAction>();
+            Interactions = new List<ItemInteraction>();
         }
 
-        public void Interact(string requestedAction, AdventurePlayer player)
+        public bool Interact(string verb, AdventurePlayer player)
         {
-            requestedAction = requestedAction.ToLower();
+            verb = verb.ToLower();
+            var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb));
 
-            foreach (var action in Interactions.OrderBy(i => i.Key))
+            if (interaction != null)
             {
-                var keyword = action.Key.Split('-')[0];
-
-                if (keyword.Equals(requestedAction))
+                foreach (var action in interaction.RegisteredInteractions)
                 {
-                    action.Value.Do(player, this);
+                    action.Do(player, this);
                 }
-            }
-        }
 
-        public void AddInteraction(string keyword, IAction value)
-        {
-            // Add numeric suffix to key
-            var n = Interactions.Keys.Where(k => k.StartsWith(keyword)).Count();
-            var key = keyword + $"-{++n}";
-            Interactions.Add(key, value);
-        }
-
-        public void RemoveInteractions(string interactionKey)
-        {
-            foreach (var action in Interactions.Where(i => i.Key.StartsWith(interactionKey)))
-            {
-                Interactions.Remove(action.Key);
+                return true;
             }
+
+            return false;
         }
     }
 }
