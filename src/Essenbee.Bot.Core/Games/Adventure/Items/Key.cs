@@ -2,7 +2,7 @@
 {
     public class Key : AdventureItem
     {
-        public Key(IReadonlyAdventureGame game) : base(game)
+        internal Key(IReadonlyAdventureGame game) : base(game)
         {
             ItemId = "key";
             Name = "large iron *key*";

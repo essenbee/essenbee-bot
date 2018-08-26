@@ -4,7 +4,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Mailbox : AdventureItem
     {
-        public Mailbox(IReadonlyAdventureGame game) : base(game)
+        internal Mailbox(IReadonlyAdventureGame game) : base(game)
         {
             ItemId = "mailbox";
             Name = "small mailbox";

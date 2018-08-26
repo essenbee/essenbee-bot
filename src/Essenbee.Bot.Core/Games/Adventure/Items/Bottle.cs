@@ -5,7 +5,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Bottle : AdventureItem
     {
-        public Bottle(IReadonlyAdventureGame game) : base(game)
+        internal Bottle(IReadonlyAdventureGame game) : base(game)
         {
             ItemId = "bottle";
             Name = "small glass *bottle*";
@@ -17,12 +17,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             smash.RegisteredInteractions.Add(new Display("You smash the bottle and glass flies everywhere!"));
             smash.RegisteredInteractions.Add(new RemoveFromInventory());
             smash.RegisteredInteractions.Add(new AddToLocation(new BrokenGlass(Game)));
-
             Interactions.Add(smash);
 
             var fill = new ItemInteraction(Game, "fill");
             fill.RegisteredInteractions.Add(new Display("You reach down and fill the bottle with water."));
             fill.RegisteredInteractions.Add(new AddToItemContents(new PintOfWater(Game)));
+            Interactions.Add(fill);
+
+            //var empty = new ItemInteraction(Game, "empty", "pour"););
+            //Interactions.Add(empty);
         }
 
         public override bool Interact(string verb, AdventurePlayer player)
@@ -38,14 +41,21 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     {
                         var msg = new Display("There is no water here!");
                         msg.Do(player);
-                        return false;
+                        return true;
+                    }
+
+                    if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(ItemId)))
+                    {
+                        var msg = new Display($"You are not carrying a {ItemId}!");
+                        msg.Do(player);
+                        return true;
                     }
 
                     if (Contents.Any(c => c.ItemId.Equals("water")))
                     {
-                        var msg = new Display("The bottl is already full!");
+                        var msg = new Display("The bottle is already full!");
                         msg.Do(player);
-                        return false;
+                        return true;
                     }
                 }
 

@@ -42,9 +42,24 @@ namespace Essenbee.Bot.Core.Games.Adventure
             foreach (var item in _items)
             {
                 inventory.AppendLine($"\ta {item.Name}");
+
+                if (item.Contents.Any())
+                {
+                    inventory.AppendLine($"The {item.Name} contains:");
+
+                    foreach (var content in item.Contents)
+                    {
+                        inventory.AppendLine($"\tA {content.Name}");
+                    }
+                }
             }
 
             return inventory.ToString();
+        }
+
+        internal bool Any()
+        {
+            throw new NotImplementedException();
         }
     }
 }

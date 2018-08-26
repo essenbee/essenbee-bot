@@ -103,7 +103,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             var dungeon = new Dictionary<int, AdventureLocation>();
 
-            var mailbox = new Mailbox(this);
+            var mailbox = ItemFactory.GetInstance(this, "mailbox");
 
             var startingLocation = new AdventureLocation {
                 LocationId = "road",
@@ -122,10 +122,10 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     }
             };
 
-            var bottle = new Bottle(this);
-            var lamp = new Lamp(this);
-            var key = new Key(this);
-            var food = new FoodRation(this);
+            var bottle = ItemFactory.GetInstance(this, "bottle");
+            var lamp = ItemFactory.GetInstance(this, "lamp");
+            var key = ItemFactory.GetInstance(this, "key");
+            var food = ItemFactory.GetInstance(this, "food");
 
             var building = new AdventureLocation {
                 LocationId = "building",
@@ -174,16 +174,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 }
             };
 
-            var grate = new Grate(this);
-
-            var open = new ItemInteraction(this, "open");
-            open.RegisteredInteractions.Add(new Open());
-            grate.Interactions.Add(open);
-
-            var unlock = new ItemInteraction(this, "unlock");
-            unlock.RegisteredInteractions.Add(new Unlock());
-            unlock.RegisteredInteractions.Add(new Display("You open the grate and see a dark spce below it. A rusty iron ladder leads down into pitch blackness!"));
-            grate.Interactions.Add(unlock);
+            var grate = ItemFactory.GetInstance(this, "grate");
 
             var depression = new AdventureLocation {
                 LocationId = "depression",

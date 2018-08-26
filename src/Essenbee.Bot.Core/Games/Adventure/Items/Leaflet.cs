@@ -5,9 +5,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Leaflet : AdventureItem
     {
-        public IReadonlyAdventureGame Game { get; }
-
-        public Leaflet(IReadonlyAdventureGame game)
+        internal Leaflet(IReadonlyAdventureGame game) : base(game)
         {
             ItemId = "leaflet";
             Name = "*leaflet*";

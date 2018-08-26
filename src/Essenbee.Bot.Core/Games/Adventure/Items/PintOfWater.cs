@@ -2,12 +2,13 @@
 {
     public class PintOfWater : AdventureItem
     {
-        public PintOfWater(IReadonlyAdventureGame game) : base(game)
+        internal PintOfWater(IReadonlyAdventureGame game) : base(game)
         {
             ItemId = "water";
             Name = "pint of *water*";
             PluralName = "pin of *water*";
             IsPortable = false;
+            IsEndlessSupply = true;
         }
     }
 }

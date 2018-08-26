@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Essenbee.Bot.Core.Games.Adventure.Items;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
@@ -49,14 +50,16 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            player.Inventory.AddItem(locationItem);
+            player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
 
-            if (!locationItem.IsEndlessSupply)
+            if (locationItem.IsEndlessSupply)
             {
-                player.CurrentLocation.Items.Remove(locationItem);
+                player.Inventory.AddItem(ItemFactory.GetInstance(_game, locationItem.ItemId));
+                return;
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
+            player.Inventory.AddItem(locationItem);
+            player.CurrentLocation.Items.Remove(locationItem);
         }
     }
 }
