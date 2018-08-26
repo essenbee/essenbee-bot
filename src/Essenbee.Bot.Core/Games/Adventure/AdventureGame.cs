@@ -139,6 +139,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                         {"in", "building" },
                         {"inside", "building" },
                         {"building", "building" },
+                        { "south" , "stream"}
                     }
             };
 
@@ -214,8 +215,56 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 }
             };
 
+            var valley = new AdventureLocation {
+                LocationId = "valley",
+                Name = "Valley",
+                ShortDescription = "in a valley",
+                LongDescription = "in a valley in the forest beside a stream tumbling along a rocky bed.",
+                Items = new List<AdventureItem>(),
+                Moves = new Dictionary<string, string> {
+                        {"north", "road" },
+                        {"south", "slit" },
+                }
+            };
+
+            var slit = new AdventureLocation {
+                LocationId = "slit",
+                Name = "Slit",
+                ShortDescription = "at the slit in the streambed",
+                LongDescription = "besides the stream. At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock.",
+                Items = new List<AdventureItem>(),
+                Moves = new Dictionary<string, string> {
+                        {"north", "valley" },
+                        {"south", "depression" },
+                }
+            };
+
+            var grate = new AdventureItem {
+                ItemId = "grate",
+                Name = "strong steel grate",
+                PluralName = "strong steel grates",
+                IsPortable = false,
+                IsOpen = false,
+                IsLocked = true,
+            };
+
+            var depression = new AdventureLocation {
+                LocationId = "depression",
+                Name = "Depression",
+                ShortDescription = "outside the grate",
+                LongDescription = "in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression.",
+                Items = new List<AdventureItem> {
+                        grate,
+                },
+                Moves = new Dictionary<string, string> {
+                        {"north", "slit" },
+                }
+            };
+
             dungeon.Add(0, startingLocation);
             dungeon.Add(1, building);
+            dungeon.Add(2, valley);
+            dungeon.Add(3, slit);
 
             return dungeon;
         }
