@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public class AdventureItem
+    public abstract class AdventureItem
     {
         public Guid UniqueId { get; }
         public string ItemId { get; set; }
