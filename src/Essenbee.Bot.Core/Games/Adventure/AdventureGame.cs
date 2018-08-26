@@ -98,7 +98,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             return _players.First(x => x.Id == userId);
         }
 
-        // Temporary method - need to build this from stored data
         private Dictionary<int, AdventureLocation> BuildDungeon()
         {
             var dungeon = new Dictionary<int, AdventureLocation>();
@@ -108,12 +107,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var valley = new Valley(this);
             var slit = new Slit(this);
             var depression = new Depression(this);
+            var entranceCave = new EntranceCave(this);
 
             dungeon.Add(0, startingLocation);
             dungeon.Add(1, building);
             dungeon.Add(2, valley);
             dungeon.Add(3, slit);
             dungeon.Add(4, depression);
+            dungeon.Add(5, entranceCave);
 
             return dungeon;
         }
