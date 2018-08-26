@@ -1,6 +1,6 @@
 ﻿namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
-    public class AddToItemContents
+    public class AddToItemContents : IAction
     {
         private readonly AdventureItem _itemToAdd;
 

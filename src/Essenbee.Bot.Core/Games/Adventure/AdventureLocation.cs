@@ -11,6 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public string LongDescription { get; set; }
         public IList<AdventureItem> Items { get; set; }
         public IDictionary<string, string> Moves { get; set; }
+        public bool WaterPresent { get; set; }
 
         public AdventureLocation()
         {

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventureItem
     {
+        public Guid UniqueId { get; }
         public string ItemId { get; set; }
         public string Name { get; set; }
         public string PluralName { get; set; }
@@ -17,9 +19,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
         public IList<IInteraction> Interactions { get; set; }
+        public IReadonlyAdventureGame Game { get; }
 
-        public AdventureItem()
+        public AdventureItem(IReadonlyAdventureGame game)
         {
+            UniqueId = Guid.NewGuid();
+            Game = game;
             Contents = new List<AdventureItem>();
             Interactions = new List<IInteraction>();
         }

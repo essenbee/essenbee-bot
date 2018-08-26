@@ -4,11 +4,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class BrokenGlass : AdventureItem
     {
-        public IReadonlyAdventureGame Game { get; }
-
-        public BrokenGlass(IReadonlyAdventureGame game)
+        public BrokenGlass(IReadonlyAdventureGame game) : base(game)
         {
-            Game = game;
             ItemId = "glass";
             Name = "spread of broken glass";
             PluralName = "spread of broken glass";

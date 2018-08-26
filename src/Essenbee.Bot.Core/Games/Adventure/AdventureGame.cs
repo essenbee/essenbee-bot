@@ -124,31 +124,21 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             var bottle = new Bottle(this);
             var lamp = new Lamp(this);
+            var key = new Key(this);
+            var food = new FoodRation(this);
 
             var building = new AdventureLocation {
                 LocationId = "building",
                 Name = "Small Brick Building",
                 ShortDescription = "inside a small brick building.",
                 LongDescription = " inside a small brick building, a well house for a bubbling spring.",
+                WaterPresent = true,
                 Items = new List<AdventureItem>
                 {
-                    new AdventureItem
-                        {
-                            ItemId = "key",
-                            Name = "large iron *key*",
-                            PluralName = "large iron *keys*",
-                            IsPortable = true,
-                        },
-                        lamp,
-                        bottle,
-                        new AdventureItem
-                        {
-                            ItemId = "food",
-                            Name = "packet of dried *food* rations",
-                            PluralName = "packets of dried *food* rations",
-                            IsPortable = true,
-                            IsEndlessSupply = false, // ToDo: how to handle endless items
-                        },
+                    key,
+                    lamp,
+                    bottle,
+                    food,
                 },
                 Moves = new Dictionary<string, string> {
                         {"west", "road" },
@@ -163,6 +153,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 Name = "Valley",
                 ShortDescription = "in a valley",
                 LongDescription = "in a valley in the forest beside a stream tumbling along a rocky bed.",
+                WaterPresent = true,
                 Items = new List<AdventureItem>(),
                 Moves = new Dictionary<string, string> {
                         {"north", "road" },
@@ -175,6 +166,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 Name = "Slit",
                 ShortDescription = "at the slit in the streambed",
                 LongDescription = "besides the stream. At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock.",
+                WaterPresent = true,
                 Items = new List<AdventureItem>(),
                 Moves = new Dictionary<string, string> {
                         {"north", "valley" },
@@ -182,15 +174,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 }
             };
 
-            var grate = new AdventureItem {
-                ItemId = "grate",
-                Name = "strong steel grate",
-                PluralName = "strong steel grates",
-                IsPortable = false,
-                IsOpen = false,
-                IsLocked = true,
-                ItemIdToUnlock = "key",
-            };
+            var grate = new Grate(this);
 
             var open = new ItemInteraction(this, "open");
             open.RegisteredInteractions.Add(new Open());

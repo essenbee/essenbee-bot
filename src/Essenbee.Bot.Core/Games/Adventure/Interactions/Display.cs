@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Essenbee.Bot.Core.Games.Adventure.Interactions
+﻿namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class Display : IAction
     {
@@ -11,7 +9,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             _message = message;
         }
 
-        public bool Do(AdventurePlayer player, AdventureItem item)
+        public bool Do(AdventurePlayer player, AdventureItem item = null)
         {
             player.ChatClient.PostDirectMessage(player.Id, _message);
 

@@ -1,15 +1,10 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Lamp : AdventureItem
     {
-        public IReadonlyAdventureGame Game { get; }
-
-        public Lamp(IReadonlyAdventureGame game)
+        public Lamp(IReadonlyAdventureGame game) : base(game)
         {
             ItemId = "lamp";
             Name = "battered *lamp*";
@@ -22,7 +17,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             light.RegisteredInteractions.Add(new AddPlayerStatus(PlayerStatus.HasLight));
 
             Interactions.Add(light);
-            Game = game;
         }
     }
 }

@@ -9,7 +9,7 @@
             _status = status;
         }
 
-        public bool Do(AdventurePlayer player, AdventureItem item)
+        public bool Do(AdventurePlayer player, AdventureItem item = null)
         {
             if (player.Statuses.Contains(_status)) return false;
 
