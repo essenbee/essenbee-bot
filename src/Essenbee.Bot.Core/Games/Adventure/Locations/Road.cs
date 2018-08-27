@@ -22,6 +22,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                         {"building", Location.Building },
                         {"south" , Location.Valley },
                         {"s" , Location.Valley },
+                        {"west" , Location.Hill },
+                        {"w" , Location.Hill },
+                        {"road" , Location.Hill },
+                        {"up" , Location.Hill },
                     };
         }
     }
