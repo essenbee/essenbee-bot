@@ -15,9 +15,16 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<AdventureItem>();
             Moves = new Dictionary<string, Location> {
                         {"north", Location.Valley },
+                        {"upstream", Location.Valley },
                         {"south", Location.Depression },
                         {"n", Location.Valley },
                         {"s", Location.Depression },
+                        {"downstream", Location.Depression },
+                        {"forest", Location.Forest },
+                        {"east", Location.Forest },
+                        {"e", Location.Forest },
+                        {"west", Location.Forest },
+                        {"w", Location.Forest },
                 };
         }
     }

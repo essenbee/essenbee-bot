@@ -18,6 +18,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Moves = new Dictionary<string, Location> {
                         {"north", Location.Slit },
                         {"n", Location.Slit },
+                        {"east", Location.Forest2 },
+                        {"e", Location.Forest2 },
+                        {"west", Location.Forest },
+                        {"w", Location.Forest },
+                        {"south", Location.Forest2 },
+                        {"s", Location.Forest2 },
             };
         }
     }
