@@ -13,5 +13,6 @@
         Mailbox,
         PintOfWater,
         ShardOfGlass,
+        Cage,
     }
 }

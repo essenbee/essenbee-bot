@@ -28,6 +28,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new PintOfWater(game, "water");
                 case Item.BrokenGlass:
                     return new BrokenGlass(game, "glass");
+                case Item.Cage:
+                    return new Cage(game, "cage");
                 case Item.Unknown:
                 default:
                     break;
