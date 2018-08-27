@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
@@ -21,21 +22,21 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 }
             }
 
-            if (player.CurrentLocation.Moves.ContainsKey(direction))
+            if (player.CurrentLocation.ValidMoves.Any(d => d.IsMatch(direction)))
             {
-                var moveTo = player.CurrentLocation.Moves[direction];
+                var moveTo = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction)).Destination;
                 canMove = _game.TryGetLocation(moveTo, out var place);
-                player.CurrentLocation = place;
+
+                if (canMove)
+                {
+                    player.CurrentLocation = place;
+                    player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
+
+                    return;
+                }
             }
 
-            if (canMove)
-            {
-                player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
-            }
-            else
-            {
-                player.ChatClient.PostDirectMessage(player.Id, "You cannot go in that direction!");
-            }
+            player.ChatClient.PostDirectMessage(player.Id, "You cannot go in that direction!");
         }
     }
 }

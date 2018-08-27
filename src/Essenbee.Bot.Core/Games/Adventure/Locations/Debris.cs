@@ -15,12 +15,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             WaterPresent = false;
             IsDark = true;
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, Location>
-            {
-                { "e", Location.Cobbles },
-                { "east", Location.Cobbles },
-                //{ "west", "" },
-                //{ "w", "" },
+            ValidMoves = new List<PlayerMove> {
+                new PlayerMove(Location.Cobbles, "east", "e"),
             };
         }
     }

@@ -12,20 +12,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in open forest";
             LongDescription = "in open forest, with a deep valley to one side.";
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, Location>
-            {
-                {"valley", Location.Valley },
-                {"east", Location.Valley },
-                {"e", Location.Valley },
-                {"down", Location.Valley },
-                {"d", Location.Valley },
-                {"west", Location.Forest },
-                {"south", Location.Forest },
-                {"w", Location.Forest },
-                {"s", Location.Forest },
-
-                // ToDo: if forest, north or forward, 50% -> forest, 50% - forest2
-             };
+            ValidMoves = new List<PlayerMove> {
+                new PlayerMove(Location.Valley, "valley", "east", "east", "down", "d"),
+                new PlayerMove(Location.Forest, "west", "w", "south", "s"),
+            };
+            // ToDo: if forest, north or forward, 50% -> forest, 50% - forest2
         }
     }
 }

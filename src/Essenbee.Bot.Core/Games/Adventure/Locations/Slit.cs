@@ -13,19 +13,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "besides the stream. At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock.";
             WaterPresent = true;
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, Location> {
-                        {"north", Location.Valley },
-                        {"upstream", Location.Valley },
-                        {"south", Location.Depression },
-                        {"n", Location.Valley },
-                        {"s", Location.Depression },
-                        {"downstream", Location.Depression },
-                        {"forest", Location.Forest },
-                        {"east", Location.Forest },
-                        {"e", Location.Forest },
-                        {"west", Location.Forest },
-                        {"w", Location.Forest },
-                };
+            ValidMoves = new List<PlayerMove> {
+                new PlayerMove(Location.Valley, "valley", "north", "n", "upstream"),
+                new PlayerMove(Location.Depression, "downstream", "south", "s"),
+                new PlayerMove(Location.Forest, "forest", "east", "west", "e", "w"),
+            };
         }
     }
 }

@@ -13,27 +13,27 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public string LongDescription { get; set; }
         public IReadonlyAdventureGame Game { get; }
         public IList<AdventureItem> Items { get; set; }
-        public IDictionary<string, Location> Moves { get; set; }
+        public IList<PlayerMove> ValidMoves { get; set; }
         public bool WaterPresent { get; set; }
         public bool IsDark { get; set; }
 
         public AdventureLocation(IReadonlyAdventureGame game)
         {
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, Location>();
+            ValidMoves = new List<PlayerMove>();
             Game = game;
         }
 
-        public virtual void AddMoves(Dictionary<string, Location> newMoves)
+        public virtual void AddMoves(List<PlayerMove> newMoves)
         {
-            newMoves.ToList().ForEach(x => Moves.Add(x.Key, x.Value));
+            newMoves.ToList().ForEach(x => ValidMoves.Add(x));
         }
 
         public virtual void RemoveDestination(Location destination)
         {
-            foreach (var move in Moves.Where(x => x.Value == destination).ToList())
+            foreach (var move in ValidMoves.Where(x => x.Destination == destination).ToList())
             {
-                Moves.Remove(move.Key);
+                ValidMoves.Remove(move);
             }
         }
 

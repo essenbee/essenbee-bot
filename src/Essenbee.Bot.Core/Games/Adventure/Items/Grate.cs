@@ -44,15 +44,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             unlock.RegisteredInteractions.Add(new Unlock());
             unlock.RegisteredInteractions.Add(new DisplayForLocation("You open the grate and see a dark space below it. A rusty iron ladder leads down into pitch blackness!", Location.Depression));
             unlock.RegisteredInteractions.Add(new DisplayForLocation("You open the grate and see the way out of the caves above you. A rusty iron ladder leads up to the daylight!", Location.Cave1));
-            unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, Location>
+            unlock.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
             {
-                    { "down", Location.Cave1 },
-                    { "d", Location.Cave1 },
+               { new PlayerMove(Location.Cave1, "down", "d", "ladder", "underground") },
             }, Game, Location.Depression));
-            unlock.RegisteredInteractions.Add(new AddMoves(new Dictionary<string, Location>
-            {
-                    { "up", Location.Depression},
-                    { "u", Location.Depression },
+            unlock.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
+{
+               { new PlayerMove(Location.Depression, "up", "ladder", "surface") },
             }, Game, Location.Cave1));
             
             Interactions.Add(unlock);

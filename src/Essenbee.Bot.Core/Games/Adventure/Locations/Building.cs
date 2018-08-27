@@ -25,12 +25,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 bottle,
                 food,
             };
-            Moves = new Dictionary<string, Location> {
-                        {"west", Location.Road },
-                        {"w", Location.Road },
-                        {"road", Location.Road },
-                        {"out", Location.Road },
-                        {"outside", Location.Road }
+            ValidMoves = new List<PlayerMove> {
+                new PlayerMove(Location.Road, "west", "w", "road", "out", "outside"),
             };
         }
     }

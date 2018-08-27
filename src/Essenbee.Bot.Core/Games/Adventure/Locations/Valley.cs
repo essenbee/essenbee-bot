@@ -13,20 +13,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a valley in the forest beside a stream tumbling along a rocky bed.";
             WaterPresent = true;
             Items = new List<AdventureItem>();
-            Moves = new Dictionary<string, Location> {
-                        {"north", Location.Road },
-                        {"n", Location.Road },
-                        {"upstream", Location.Road },
-                        {"south", Location.Slit },
-                        {"downstream", Location.Slit },
-                        {"s", Location.Slit },
-                        {"forest", Location.Forest },
-                        {"east", Location.Forest },
-                        {"e", Location.Forest },
-                        {"west", Location.Forest },
-                        {"w", Location.Forest },
-                        {"up", Location.Forest },
-                };
+            ValidMoves = new List<PlayerMove> {
+                new PlayerMove(Location.Forest, "forest", "west", "w", "up", "east", "e"),
+                new PlayerMove(Location.Slit, "downstream", "south", "s"),
+                new PlayerMove(Location.Road, "upstream", "n", "north"),
+            };
+
         }
     }
 }
