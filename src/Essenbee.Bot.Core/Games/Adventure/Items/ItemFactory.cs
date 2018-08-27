@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 case Item.FoodRation:
                     return new FoodRation(game, "food", "ration");
                 case Item.Grate:
-                    return new Grate(game, "grate");
+                    return Grate.GetInstance(game, "grate"); // Singleton
                 case Item.Key:
                     return new Key(game, "key");
                 case Item.Lamp:

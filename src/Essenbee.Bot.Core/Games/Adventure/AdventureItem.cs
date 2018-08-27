@@ -45,7 +45,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             {
                 foreach (var action in interaction.RegisteredInteractions)
                 {
-                    action.Do(player, this);
+                    if (!action.Do(player, this)) break;
                 }
 
                 return true;
