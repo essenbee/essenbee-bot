@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using System.Text;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {

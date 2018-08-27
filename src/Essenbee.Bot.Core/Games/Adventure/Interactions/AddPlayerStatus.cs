@@ -1,4 +1,6 @@
-﻿namespace Essenbee.Bot.Core.Games.Adventure.Interactions
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+
+namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class AddPlayerStatus : IAction
     {

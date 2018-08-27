@@ -1,7 +1,6 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Essenbee.Bot.Core.Games.Adventure
+namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
 {
     public interface IInteraction
     {

@@ -1,7 +1,7 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Collections.ObjectModel;
 
-namespace Essenbee.Bot.Core.Games.Adventure
+namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
 {
     public interface IReadonlyAdventureGame
     {

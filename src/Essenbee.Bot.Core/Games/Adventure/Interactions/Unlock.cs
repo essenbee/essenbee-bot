@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {

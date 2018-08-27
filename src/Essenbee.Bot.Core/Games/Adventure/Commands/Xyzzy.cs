@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Locations;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {

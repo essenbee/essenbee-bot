@@ -1,4 +1,6 @@
-﻿namespace Essenbee.Bot.Core.Games.Adventure.Commands
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+
+namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
     public class Move : BaseAdventureCommand
     {

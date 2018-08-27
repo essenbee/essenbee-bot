@@ -1,4 +1,6 @@
-﻿namespace Essenbee.Bot.Core.Games.Adventure.Items
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+
+namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class PintOfWater : AdventureItem
     {

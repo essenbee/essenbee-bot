@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands

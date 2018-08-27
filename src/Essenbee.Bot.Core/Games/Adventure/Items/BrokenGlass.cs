@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Items

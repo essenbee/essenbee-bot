@@ -1,4 +1,4 @@
-﻿namespace Essenbee.Bot.Core.Games.Adventure.Commands
+﻿namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
 {
     public interface IAdventureCommand
     {
