@@ -7,8 +7,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
     {
         internal Lamp(IReadonlyAdventureGame game) : base(game)
         {
+            var lit = "battered *lamp* which is lit";
+            var unlit = "battered *lamp*";
+
             ItemId = "lamp";
-            Name = "battered *lamp*";
+            Name = $"{(IsActive ? lit : unlit)}";
             PluralName = "battered *lamps*";
             IsPortable = true;
             IsEndlessSupply = true;
@@ -22,6 +25,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
         public override bool Interact(string verb, AdventurePlayer player)
         {
+            if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(ItemId)))
+            {
+                var msg = new Display($"You are not carrying a {ItemId}!");
+                msg.Do(player);
+                return true;
+            }
+
             verb = verb.ToLower();
             var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());
 
@@ -29,9 +39,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             {
                 if (interaction.Verbs.Contains("light"))
                 {
-                    if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(ItemId)))
+                    if (IsActive)
                     {
-                        var msg = new Display($"You are not carrying a {ItemId}!");
+                        var msg = new Display($"Your{ItemId} is already lit!");
                         msg.Do(player);
                         return true;
                     }
