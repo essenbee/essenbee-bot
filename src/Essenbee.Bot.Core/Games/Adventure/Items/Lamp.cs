@@ -7,17 +7,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
     {
         internal Lamp(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            var lit = "battered *lamp* which is lit";
-            var unlit = "battered *lamp*";
-
             ItemId = Item.Lamp;
-            Name = $"{(IsActive ? lit : unlit)}";
+            Name = "battered *lamp*"; ;
             PluralName = "battered *lamps*";
             IsPortable = true;
             IsEndlessSupply = true;
 
             var light = new ItemInteraction(Game, "light");
             light.RegisteredInteractions.Add(new ActivateItem("The lamp shines brightly."));
+            light.RegisteredInteractions.Add(new UpdateItemName("battered *lamp* which is lit"));
             light.RegisteredInteractions.Add(new AddPlayerStatus(PlayerStatus.HasLight));
 
             Interactions.Add(light);

@@ -38,13 +38,14 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             var actionWasMatched = false;
 
-            if (itemAtLocation != null)
+            // Interact with inventory items as a preference ...
+            if (itemInInventory != null)
             {
-                actionWasMatched = itemAtLocation.Interact(args[0], player);
+                actionWasMatched = itemInInventory.Interact(args[0], player);
             }
             else
             {
-                actionWasMatched = itemInInventory.Interact(args[0], player);
+                actionWasMatched = itemAtLocation.Interact(args[0], player);
             }
 
             if (!actionWasMatched)
