@@ -19,7 +19,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             }
 
             var itemToDrop = args[1];
-            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToDrop || i.ItemId == itemToDrop);
+            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.IsMatch(itemToDrop));
 
             if (itemInInventory == null)
             {

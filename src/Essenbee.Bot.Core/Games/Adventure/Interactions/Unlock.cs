@@ -20,16 +20,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
                 return false;
             }
 
-            if (!string.IsNullOrEmpty(item.ItemIdToUnlock))
+            if (player.Inventory.GetItems().All(i => i.ItemId != item.ItemIdToUnlock))
             {
-                if (player.Inventory.GetItems().All(i => i.ItemId != item.ItemIdToUnlock))
-                {
-                    player.ChatClient.PostDirectMessage(player.Id, $"You need a {item.ItemIdToUnlock} to unlock the {item.Name}!");
-                    return false;
-                }
-
-                player.ChatClient.PostDirectMessage(player.Id, $"You try your {item.ItemIdToUnlock} ...");
+                player.ChatClient.PostDirectMessage(player.Id, $"You need to find something with which to unlock the {item.Name}!");
+                return false;
             }
+
+            player.ChatClient.PostDirectMessage(player.Id, $"You try your {item.ItemIdToUnlock} ...");
 
             item.IsLocked = false;
             player.ChatClient.PostDirectMessage(player.Id, $"The {item.Name} is now unlocked!");

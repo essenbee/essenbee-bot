@@ -7,10 +7,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public Building(IReadonlyAdventureGame game) : base(game)
         {
-            var bottle = ItemFactory.GetInstance(Game, "bottle");
-            var lamp = ItemFactory.GetInstance(Game, "lamp");
-            var key = ItemFactory.GetInstance(Game, "key");
-            var food = ItemFactory.GetInstance(Game, "food");
+            var bottle = ItemFactory.GetInstance(Game, Item.Bottle);
+            var lamp = ItemFactory.GetInstance(Game, Item.Lamp);
+            var key = ItemFactory.GetInstance(Game, Item.Key);
+            var food = ItemFactory.GetInstance(Game, Item.FoodRation);
 
             LocationId = Location.Building;
             Name = "Small Brick Building";

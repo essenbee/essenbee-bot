@@ -6,15 +6,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Grate : AdventureItem
     {
-        internal Grate(IReadonlyAdventureGame game) : base(game)
+        internal Grate(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            ItemId = "grate";
+            ItemId = Item.Grate;
             Name = "strong steel grate";
             PluralName = "strong steel grates";
             IsPortable = false;
             IsOpen = false;
             IsLocked = true;
-            ItemIdToUnlock = "key";
+            ItemIdToUnlock = Item.Key;
 
             var open = new ItemInteraction(Game, "open");
             open.RegisteredInteractions.Add(new Open());

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Essenbee.Bot.Core.Games.Adventure.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,27 +8,32 @@ namespace Essenbee.Bot.Core.Games.Adventure
     public abstract class AdventureItem
     {
         public Guid UniqueId { get; }
-        public string ItemId { get; set; }
+        public Item ItemId { get; set; }
+        public List<string> Nouns { get; }
         public string Name { get; set; }
         public string PluralName { get; set; }
         public bool IsContainer { get; set; }
         public bool IsOpen { get; set; }
         public bool IsLocked { get; set; }
         public bool IsActive { get; set; }
-        public string ItemIdToUnlock { get; set; }
+        public Item ItemIdToUnlock { get; set; }
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public IList<AdventureItem> Contents { get; set; }
         public IList<IInteraction> Interactions { get; set; }
         public IReadonlyAdventureGame Game { get; }
 
-        public AdventureItem(IReadonlyAdventureGame game)
+        public AdventureItem(IReadonlyAdventureGame game, params string[] nouns)
         {
             UniqueId = Guid.NewGuid();
             Game = game;
             Contents = new List<AdventureItem>();
             Interactions = new List<IInteraction>();
+            ItemIdToUnlock = Item.Unknown;
+            Nouns = nouns.ToList();
         }
+
+        public bool IsMatch(string noun) => Nouns.Any(v => noun.Equals(v));
 
         public virtual bool Interact(string verb, AdventurePlayer player)
         {

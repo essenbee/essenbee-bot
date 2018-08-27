@@ -6,7 +6,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public Forest2(IReadonlyAdventureGame game) : base(game)
         {
-            LocationId = Location.Forest;
+            LocationId = Location.Forest2;
             Name = "Forest";
             ShortDescription = "in open forest";
             LongDescription = "in open forest near both a valley and a road.";

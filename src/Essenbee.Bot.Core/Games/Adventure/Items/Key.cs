@@ -2,9 +2,9 @@
 {
     public class Key : AdventureItem
     {
-        internal Key(IReadonlyAdventureGame game) : base(game)
+        internal Key(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            ItemId = "key";
+            ItemId = Item.Key;
             Name = "large iron *key*";
             PluralName = "large iron *keys*";
             IsPortable = true;

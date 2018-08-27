@@ -2,9 +2,9 @@
 {
     public class PintOfWater : AdventureItem
     {
-        internal PintOfWater(IReadonlyAdventureGame game) : base(game)
+        internal PintOfWater(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            ItemId = "water";
+            ItemId = Item.PintOfWater;
             Name = "pint of *water*";
             PluralName = "pin of *water*";
             IsPortable = false;

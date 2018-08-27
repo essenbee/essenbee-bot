@@ -5,12 +5,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     internal class Lamp : AdventureItem
     {
-        internal Lamp(IReadonlyAdventureGame game) : base(game)
+        internal Lamp(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             var lit = "battered *lamp* which is lit";
             var unlit = "battered *lamp*";
 
-            ItemId = "lamp";
+            ItemId = Item.Lamp;
             Name = $"{(IsActive ? lit : unlit)}";
             PluralName = "battered *lamps*";
             IsPortable = true;

@@ -101,14 +101,22 @@ namespace Essenbee.Bot.Core.Games.Adventure
         private Dictionary<Location, AdventureLocation> BuildDungeon()
         {
             var dungeon = new Dictionary<Location, AdventureLocation>();
-            var locations = GetType().Assembly.GetTypes().Where(t => typeof(AdventureLocation).IsAssignableFrom(t));
 
-            foreach (var type in locations)
+            try
             {
-                if (type.Name == "AdventureLocation") continue;
+                var locations = GetType().Assembly.GetTypes().Where(t => typeof(AdventureLocation).IsAssignableFrom(t));
 
-                var loc = Activator.CreateInstance(type, this) as AdventureLocation;
-                dungeon.Add(loc.LocationId, loc);
+                foreach (var type in locations)
+                {
+                    if (type.Name == "AdventureLocation") continue;
+
+                    var loc = Activator.CreateInstance(type, this) as AdventureLocation;
+                    dungeon.Add(loc.LocationId, loc);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + ": " + ex.StackTrace);
             }
 
             return dungeon;

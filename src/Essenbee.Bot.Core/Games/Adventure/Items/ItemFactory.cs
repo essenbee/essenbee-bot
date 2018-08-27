@@ -2,30 +2,30 @@
 {
     public static class ItemFactory
     {
-        public static AdventureItem GetInstance(IReadonlyAdventureGame game, string itemType)
+        public static AdventureItem GetInstance(IReadonlyAdventureGame game, Item itemType)
         {
             switch(itemType)
             {
-                case "bottle":
-                    return new Bottle(game);
-                case "shard":
-                    return new ShardOfGlass(game);
-                case "food":
-                    return new FoodRation(game);
-                case "grate":
-                    return new Grate(game);
-                case "key":
-                    return new Key(game);
-                case "lamp":
-                    return new Lamp(game);
-                case "leaflet":
-                    return new Leaflet(game);
-                case "mailbox":
-                    return new Mailbox(game);
-                case "water":
-                    return new PintOfWater(game);
-                case "glass":
-                    return new BrokenGlass(game);
+                case Item.Bottle:
+                    return new Bottle(game, "bottle");
+                case Item.ShardOfGlass:
+                    return new ShardOfGlass(game, "glass", "shard");
+                case Item.FoodRation:
+                    return new FoodRation(game, "food", "ration");
+                case Item.Grate:
+                    return new Grate(game, "grate");
+                case Item.Key:
+                    return new Key(game, "key");
+                case Item.Lamp:
+                    return new Lamp(game, "lamp");
+                case Item.Leaflet:
+                    return new Leaflet(game, "leaflet", "flyer");
+                case Item.Mailbox:
+                    return new Mailbox(game, "mailbox");
+                case Item.PintOfWater:
+                    return new PintOfWater(game, "water");
+                case Item.BrokenGlass:
+                    return new BrokenGlass(game, "glass");
                 default:
                     break;
             }

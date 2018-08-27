@@ -27,8 +27,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             }
 
             var itemToInteractWith = args[1];
-            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.Name == itemToInteractWith || i.ItemId == itemToInteractWith);
-            var itemAtLocation = player.CurrentLocation.Items.FirstOrDefault(i => i.Name == itemToInteractWith || i.ItemId == itemToInteractWith);
+            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.IsMatch(itemToInteractWith));
+            var itemAtLocation = player.CurrentLocation.Items.FirstOrDefault(i => i.IsMatch(itemToInteractWith));
 
             if (itemInInventory is null && itemAtLocation is null)
             {

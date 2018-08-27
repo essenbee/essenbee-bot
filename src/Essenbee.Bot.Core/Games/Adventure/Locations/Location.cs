@@ -2,6 +2,7 @@
 {
     public enum Location
     {
+        Nowhere,
         Road,
         Hill,
         Building,

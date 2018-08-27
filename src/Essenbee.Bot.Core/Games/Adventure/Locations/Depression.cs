@@ -7,7 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public Depression(IReadonlyAdventureGame game) : base(game)
         {
-            var grate = ItemFactory.GetInstance(Game, "grate");
+            var grate = ItemFactory.GetInstance(Game, Item.Grate);
 
             LocationId = Location.Depression;
             Name = "Depression";

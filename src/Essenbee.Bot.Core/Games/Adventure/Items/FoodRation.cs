@@ -2,9 +2,9 @@
 {
     public class FoodRation : AdventureItem
     {
-        internal FoodRation(IReadonlyAdventureGame game) : base(game)
+        internal FoodRation(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            ItemId = "food";
+            ItemId = Item.FoodRation;
             Name = "packet of dried *food* rations";
             PluralName = "packets of dried *food* rations";
             IsPortable = true;

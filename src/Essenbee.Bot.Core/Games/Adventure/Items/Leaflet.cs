@@ -5,9 +5,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Leaflet : AdventureItem
     {
-        internal Leaflet(IReadonlyAdventureGame game) : base(game)
+        internal Leaflet(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            ItemId = "leaflet";
+            ItemId = Item.Leaflet;
             Name = "*leaflet*";
             PluralName = "*leaflets*";
             IsPortable = true;

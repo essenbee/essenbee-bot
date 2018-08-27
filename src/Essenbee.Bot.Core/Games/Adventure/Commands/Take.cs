@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             var location = player.CurrentLocation;
             var item = e.ArgsAsList[1].ToLower();
 
-            var locationItem = location.Items.FirstOrDefault(i => i.Name == item || i.ItemId == item);
+            var locationItem = location.Items.FirstOrDefault(i => i.IsMatch(item));
             var containers = location.Items.Where(i => i.IsContainer && i.Contents.Count > 0).ToList();
 
             if (locationItem != null && player.Inventory.GetItems().Any(i => i.ItemId.Equals(locationItem.ItemId)))
@@ -27,7 +27,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             {
                 foreach (var containedItem in container.Contents)
                 {
-                    if (containedItem.ItemId == item && containedItem.IsPortable)
+                    if (containedItem.IsMatch(item) && containedItem.IsPortable)
                     {
                         player.Inventory.AddItem(containedItem);
                         container.Contents.Remove(containedItem);

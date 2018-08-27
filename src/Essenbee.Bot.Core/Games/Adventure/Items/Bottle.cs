@@ -5,9 +5,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Bottle : AdventureItem
     {
-        internal Bottle(IReadonlyAdventureGame game) : base(game)
+        internal Bottle(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            ItemId = "bottle";
+            ItemId = Item.Bottle;
             Name = "small glass *bottle*";
             PluralName = "small glass *bottles*";
             IsContainer = true;

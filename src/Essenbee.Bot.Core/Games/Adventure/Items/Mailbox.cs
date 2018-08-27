@@ -4,14 +4,14 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Mailbox : AdventureItem
     {
-        internal Mailbox(IReadonlyAdventureGame game) : base(game)
+        internal Mailbox(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
-            ItemId = "mailbox";
+            ItemId = Item.Mailbox;
             Name = "small mailbox";
             PluralName = "small mailboxes";
             IsOpen = true;
             IsContainer = true;
-            Contents = new List<AdventureItem> { new Leaflet(Game) };
+            Contents = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Leaflet) };
         }
     }
 }

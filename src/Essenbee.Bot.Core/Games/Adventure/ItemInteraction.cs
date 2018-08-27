@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public ItemInteraction(IReadonlyAdventureGame game, params string[] verbs)
         {
             Game = game;
-            Verbs = new List<string>(verbs);
+            Verbs = verbs.ToList();
             RegisteredInteractions = new List<IAction>();
         }
         
