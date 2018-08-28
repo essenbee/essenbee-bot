@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             var lookCommand = new Look(_game, "look", "l");
             var helpCommand = new Help(_game, "help");
-            var moveCommand = new Move(_game, "move", "go", "walk", "run");
+            var moveCommand = new Move(_game, "move", "go", "walk", "run", "climb", "crawl");
             var takeCommand = new Take(_game, "take", "get", "grab");
             var magicWord1 = new Xyzzy(_game, "xyzzy");
             var inventoryCommand = new Carrying(_game, "inventory", "inv");

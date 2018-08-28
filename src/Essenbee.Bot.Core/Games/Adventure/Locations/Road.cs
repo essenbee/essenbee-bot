@@ -17,6 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 new PlayerMove(Location.Building, "east", "e", "enter", "in", "inside", "building"),
                 new PlayerMove(Location.Valley, "south", "s", "valley"),
                 new PlayerMove(Location.Hill, "west", "w", "hill", "road", "up"),
+                new PlayerMove(Location.Forest, "north", "n", "forest"),
             };
         }
     }
