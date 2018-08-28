@@ -51,20 +51,36 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     var advCommands = e.ArgsAsList;
                     var cmd = advCommands[0].ToLower();
 
-                    var command = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(cmd));
+                    var command = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(cmd)) ??
+                                  _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("use"));
 
-                    if (command is null)
+                    command?.Invoke(player, e);
+
+                    if (player.Statuses.Contains(PlayerStatus.HasWon))
                     {
-                        command = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("use"));
+                        GameWon(player);
                     }
 
-                    command.Invoke(player, e);
+                    if (player.Statuses.Contains(PlayerStatus.IsDead))
+                    {
+                        GameLost(player);
+                    }
                 }
                 else
                 {
                     player.ChatClient.PostDirectMessage(player.Id, "What would you like me to do?");
                 }
             }
+        }
+
+        private void GameLost(AdventurePlayer player)
+        {
+            
+        }
+
+        private void GameWon(AdventurePlayer player)
+        {
+            
         }
 
         public bool TryGetLocation(Location locationId, out AdventureLocation place)
