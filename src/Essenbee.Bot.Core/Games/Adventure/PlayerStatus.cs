@@ -2,6 +2,11 @@
 {
     public enum PlayerStatus
     {
+        IsDead,
         HasLight,
+        IsHungry,
+        IsThirsty,
+        IsHurt,
+        HasWon,
     }
 }
