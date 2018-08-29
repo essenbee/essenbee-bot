@@ -78,7 +78,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             interaction.RegisteredInteractions.Add(new Display("After a furious battle, the snake lies dead on the floor!"));
             //interaction.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
             //{
-            //    { new PlayerMove() },
+            //    { new PlayerMove(string.Empty, ) },
             //}, Game, Location.HallOfTheMountainKing));
         }
     }

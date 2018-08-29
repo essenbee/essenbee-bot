@@ -16,9 +16,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression.";
             Items = new List<AdventureItem> { grate, };
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(Location.Forest2, "east", "e", "south", "s"),
-                new PlayerMove(Location.Forest, "west", "w"),
-                new PlayerMove(Location.Slit, "north", "n"),
+                new PlayerMove(string.Empty, Location.Forest2, "east", "e", "south", "s"),
+                new PlayerMove(string.Empty, Location.Forest, "west", "w"),
+                new PlayerMove(string.Empty, Location.Slit, "north", "n"),
             };
         }
     }

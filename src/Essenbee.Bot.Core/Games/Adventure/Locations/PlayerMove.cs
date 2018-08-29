@@ -7,11 +7,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public List<string> Moves { get; }
         public Location Destination { get; }
-        
-        public PlayerMove(Location destination, params string[] moves)
+        public string MoveText { get; set; }
+
+        public PlayerMove(string moveText, Location destination, params string[] moves)
         {
             Destination = destination;
             Moves = moves.ToList();
+            MoveText = moveText;
         }
 
         public bool IsMatch(string move) => Moves.Any(v => move.Equals(v));

@@ -25,11 +25,18 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             if (player.CurrentLocation.ValidMoves.Any(d => d.IsMatch(direction)))
             {
                 var moveTo = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction)).Destination;
+                var moveText = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction)).MoveText;
+
                 canMove = _game.TryGetLocation(moveTo, out var place);
 
                 if (canMove)
                 {
                     player.CurrentLocation = place;
+                    if (!string.IsNullOrWhiteSpace(moveText))
+                    {
+                        player.ChatClient.PostDirectMessage(player.Id, moveText);
+                    }
+
                     player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
 
                     return;

@@ -13,8 +13,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in open forest, with a deep valley to one side.";
             Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(Location.Valley, "valley", "east", "east", "down", "d"),
-                new PlayerMove(Location.Forest, "west", "w", "south", "s"),
+                new PlayerMove(string.Empty, Location.Valley, "valley", "east", "east", "down", "d"),
+                new PlayerMove(string.Empty, Location.Forest, "west", "w", "south", "s"),
             };
             // ToDo: if forest, north or forward, 50% -> forest, 50% - forest2
         }

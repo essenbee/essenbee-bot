@@ -14,10 +14,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.";
             Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Mailbox) };
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(Location.Building, "east", "e", "enter", "in", "inside", "building"),
-                new PlayerMove(Location.Valley, "south", "s", "valley"),
-                new PlayerMove(Location.Hill, "west", "w", "hill", "road", "up"),
-                new PlayerMove(Location.Forest, "north", "n", "forest"),
+                new PlayerMove("You enter the building.", Location.Building, "east", "e", "enter", "in", "inside", "building"),
+                new PlayerMove(string.Empty, Location.Valley, "south", "s", "valley"),
+                new PlayerMove(string.Empty, Location.Hill, "west", "w", "hill", "road", "up"),
+                new PlayerMove(string.Empty, Location.Forest, "north", "n", "forest"),
             };
         }
     }

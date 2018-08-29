@@ -17,8 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             IsDark = true;
             Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Rod) };
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(Location.Cobbles, "east", "e"),
-                new PlayerMove(Location.Canyon, "west", "w", "up"),
+                new PlayerMove(string.Empty, Location.Cobbles, "east", "e"),
+                new PlayerMove(string.Empty, Location.Canyon, "west", "w", "up"),
             };
         }
     }

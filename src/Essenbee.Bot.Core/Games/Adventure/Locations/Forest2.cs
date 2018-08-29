@@ -13,9 +13,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in open forest near both a valley and a road.";
             Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(Location.Valley, "valley", "west", "w", "down", "d", "east", "e"),
-                new PlayerMove(Location.Forest, "forest", "south", "s"),
-                new PlayerMove(Location.Road, "road", "n", "north"),
+                new PlayerMove(string.Empty, Location.Valley, "valley", "west", "w", "down", "d", "east", "e"),
+                new PlayerMove(string.Empty, Location.Forest, "forest", "south", "s"),
+                new PlayerMove(string.Empty, Location.Road, "road", "n", "north"),
             };
         }
     }

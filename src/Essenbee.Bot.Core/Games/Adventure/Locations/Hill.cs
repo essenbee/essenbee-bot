@@ -13,8 +13,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "atop hill, still in the forest. The road slopes back down the other side of the hill.There is a building in the distance.";
             Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(Location.Forest, "forest", "south", "s", "north", "n"),
-                new PlayerMove(Location.Road, "road", "e", "east", "forward"),
+                new PlayerMove(string.Empty, Location.Forest, "forest", "south", "s", "north", "n"),
+                new PlayerMove(string.Empty, Location.Road, "road", "e", "east", "forward"),
             };
         }
     }

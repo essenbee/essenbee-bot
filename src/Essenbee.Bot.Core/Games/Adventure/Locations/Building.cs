@@ -26,7 +26,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 food,
             };
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(Location.Road, "west", "w", "road", "out", "outside"),
+                new PlayerMove("You leave the building.", Location.Road, "west", "w", "road", "out", "outside"),
             };
         }
     }
