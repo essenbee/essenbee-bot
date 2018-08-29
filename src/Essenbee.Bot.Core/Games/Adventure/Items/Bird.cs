@@ -33,7 +33,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 {
                     if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(Item.Cage)))
                     {
-                        var msg = new Display($"You are not carrying a caged bird!");
+                        var msg = new Display("You are not carrying a caged bird!");
                         msg.Do(player);
                         return true;
                     }
@@ -46,6 +46,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                         msg.Do(player);
                         return true;
                     }
+
+                    var snake = GetSnakeIfPresent(player);
+
+                    if (snake != null)
+                    {
+                        SnakeKilled(interaction, snake);
+                    }
                 }
 
                 foreach (var action in interaction.RegisteredInteractions)
@@ -57,6 +64,22 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             }
 
             return false;
+        }
+
+        private AdventureItem GetSnakeIfPresent(AdventurePlayer player) => 
+            player.CurrentLocation.Items.FirstOrDefault(i => i.ItemId.Equals(Item.Snake));
+
+        private void SnakeKilled(IInteraction interaction, AdventureItem snake)
+        {
+            interaction.RegisteredInteractions.Add(new Display("The bird spots the snake, and attacks it..."));
+            interaction.RegisteredInteractions.Add(new RemoveFromLocation(snake));
+            interaction.RegisteredInteractions.Add(
+                new AddToLocation(ItemFactory.GetInstance(Game, Item.DeadSnake)));
+            interaction.RegisteredInteractions.Add(new Display("After a furious battle, the snake lies dead on the floor!"));
+            //interaction.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
+            //{
+            //    { new PlayerMove() },
+            //}, Game, Location.HallOfTheMountainKing));
         }
     }
 }

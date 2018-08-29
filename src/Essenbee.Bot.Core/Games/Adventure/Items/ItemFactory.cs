@@ -34,6 +34,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new Rod(game, "rod");
                 case Item.Bird:
                     return new Bird(game, "bird");
+                case Item.Snake:
+                    return new Snake(game, "snake", "serpent");
+                case Item.DeadSnake:
+                    return new DeadSnake(game, "snake", "serpent");
             }
 
             return null;

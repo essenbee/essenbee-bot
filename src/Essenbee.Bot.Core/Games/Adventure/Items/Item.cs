@@ -16,5 +16,7 @@
         Cage,
         Rod,
         Bird,
+        Snake,
+        DeadSnake,
     }
 }
