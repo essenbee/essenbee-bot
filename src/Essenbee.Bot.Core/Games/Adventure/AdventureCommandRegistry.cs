@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var helpCommand = new Help(game, "help");
             var moveCommand = new Move(game, "move", "go", "walk", "run", "climb", "crawl");
             var takeCommand = new Take(game, "take", "get", "grab");
+            var dropCommand = new Take(game, "drop");
             var magicWord1 = new Xyzzy(game, "xyzzy");
             var inventoryCommand = new Carrying(game, "inventory", "inv");
             var interactCommand = new Interact(game, "use"); // Do not add aliases for this command
@@ -23,6 +24,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 helpCommand,
                 moveCommand,
                 takeCommand,
+                dropCommand,
                 magicWord1,
                 inventoryCommand,
                 interactCommand,

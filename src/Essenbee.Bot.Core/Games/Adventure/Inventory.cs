@@ -37,7 +37,32 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             intoContainer.Contents.Add(item);
             return true;
+        }
 
+        public bool RemoveItemContainer(AdventureItem item, Item containerId)
+        {
+            var fromContainer = _items.FirstOrDefault(i => i.IsContainer && i.ItemId.Equals(containerId));
+
+            if (fromContainer is null)
+            {
+                return false;
+            }
+
+            fromContainer.Contents.Remove(item);
+            return true;
+        }
+
+        public bool RemoveItemContainer(AdventureItem item)
+        {
+            var fromContainer = _items.FirstOrDefault(i => i.IsContainer && i.Contents.Contains(item));
+
+            if (fromContainer is null)
+            {
+                return false;
+            }
+
+            fromContainer.Contents.Remove(item);
+            return true;
         }
 
         public int Count() => _items.Count;

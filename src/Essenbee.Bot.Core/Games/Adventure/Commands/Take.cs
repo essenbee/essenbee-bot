@@ -51,7 +51,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            if (!HasRequiredContainerIfAny(player, locationItem))
+            if (ContainerRequired(locationItem) && !HasRequiredContainer(player, locationItem))
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You have no way of carrying a {item} with you...");
                 return;
@@ -65,19 +65,18 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            var success = locationItem.MustBeContainedIn == Item.None 
-                ? player.Inventory.AddItem(locationItem)
-                : player.Inventory.AddItemToContainer(locationItem, locationItem.MustBeContainedIn);
+            var success = ContainerRequired(locationItem)
+                ? player.Inventory.AddItemToContainer(locationItem, locationItem.MustBeContainedIn)
+                : player.Inventory.AddItem(locationItem);
 
             player.CurrentLocation.Items.Remove(locationItem);
         }
 
-        private static bool HasRequiredContainerIfAny(AdventurePlayer player, AdventureItem locationItem)
-        {
-            return locationItem.MustBeContainedIn == Item.None ||
-                   player.Inventory.GetItems().Any(i => i.ItemId == locationItem.MustBeContainedIn);
-        }
+        private static bool ContainerRequired(AdventureItem locationItem) => locationItem.MustBeContainedIn != Item.None;
 
+        private static bool HasRequiredContainer(AdventurePlayer player, AdventureItem locationItem) =>
+            player.Inventory.GetItems().Any(i => i.ItemId == locationItem.MustBeContainedIn);
+        
         private void CreateNewInstance(AdventurePlayer player, AdventureItem locationItem)
         {
             if (locationItem.MustBeContainedIn != Item.None)
