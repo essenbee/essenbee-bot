@@ -15,5 +15,6 @@
         ShardOfGlass,
         Cage,
         Rod,
+        Bird,
     }
 }

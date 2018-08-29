@@ -28,6 +28,18 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public ReadOnlyCollection<AdventureItem> GetItems() => _items.ToList().AsReadOnly();
 
+        public ReadOnlyCollection<AdventureItem> GetContainedItems()
+        {
+            var containedItems = new List<AdventureItem>();
+
+            foreach (var container in _items.Where(i => i.IsContainer))
+            {
+                containedItems.AddRange(container.Contents);
+            }
+
+            return containedItems.AsReadOnly();
+        }
+
         public string ListItems()
         {
             if (!_items.Any())

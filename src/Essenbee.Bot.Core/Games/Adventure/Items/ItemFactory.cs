@@ -30,6 +30,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new BrokenGlass(game, "glass");
                 case Item.Cage:
                     return new Cage(game, "cage");
+                case Item.Rod:
+                    return new Rod(game, "rod");
+                case Item.Bird:
+                    return new Bird(game, "bird");
                 case Item.Unknown:
                 default:
                     break;

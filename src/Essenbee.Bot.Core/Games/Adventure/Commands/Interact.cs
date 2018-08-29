@@ -15,20 +15,22 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (args.Count == 1)
             {
-                if (Verbs.Contains(args[0]))
-                {
-                    player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to just `{args[0]}`. Can you be a little more explicit?");
-                }
-                else
-                {
-                    player.ChatClient.PostDirectMessage(player.Id, $"Sorry, I don't understand `{args[0]}`.");
-                }
+                player.ChatClient.PostDirectMessage(player.Id, Verbs.Contains(args[0])
+                        ? $"I don't know how to just `{args[0]}`. Can you be a little more explicit?"
+                        : $"Sorry, I don't understand the verb `{args[0]}`.");
 
                 return;
             }
 
             var itemToInteractWith = args[1];
             var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.IsMatch(itemToInteractWith));
+
+            if (itemInInventory is null)
+            {
+                var containedItems = player.Inventory.GetContainedItems();
+                itemInInventory = containedItems.FirstOrDefault(i => i.IsMatch(itemToInteractWith));
+            }
+
             var itemAtLocation = player.CurrentLocation.Items.FirstOrDefault(i => i.IsMatch(itemToInteractWith));
 
             if (itemInInventory is null && itemAtLocation is null)
@@ -37,17 +39,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            var actionWasMatched = false;
+            bool actionWasMatched;
 
             // Interact with inventory items as a preference ...
-            if (itemInInventory != null)
-            {
-                actionWasMatched = itemInInventory.Interact(args[0], player);
-            }
-            else
-            {
-                actionWasMatched = itemAtLocation.Interact(args[0], player);
-            }
+            actionWasMatched = itemInInventory?.Interact(args[0], player) ?? itemAtLocation.Interact(args[0], player);
 
             if (!actionWasMatched)
             {
