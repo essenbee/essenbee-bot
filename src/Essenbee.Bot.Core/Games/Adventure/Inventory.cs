@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -14,14 +15,29 @@ namespace Essenbee.Bot.Core.Games.Adventure
             _items = new List<AdventureItem>();
         }
 
-        public void AddItem(AdventureItem item)
+        public bool AddItem(AdventureItem item)
         {
             _items.Add(item);
+            return true;
         }
 
         public void RemoveItem(AdventureItem item)
         {
             _items.Remove(item);
+        }
+
+        public bool AddItemToContainer(AdventureItem item, Item containerId)
+        {
+            var intoContainer = _items.FirstOrDefault(i => i.IsContainer && i.ItemId.Equals(containerId));
+
+            if (intoContainer is null)
+            {
+                return false;
+            }
+
+            intoContainer.Contents.Add(item);
+            return true;
+
         }
 
         public int Count() => _items.Count;

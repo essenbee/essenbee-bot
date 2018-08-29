@@ -7,7 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public Canyon(IReadonlyAdventureGame game) : base(game)
         {
-            LocationId = Location.Cobbles;
+            LocationId = Location.Canyon;
             Name = "Awkward Canyon";
             ShortDescription = "in awkward canyon";
             LongDescription = "in an awkward sloping east/west canyon.";

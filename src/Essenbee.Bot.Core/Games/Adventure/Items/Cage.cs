@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsContainer = true;
             Contents = new List<AdventureItem>();
             IsPortable = true;
+            IsTransparent = true;
 
             var open = new ItemInteraction(Game, "open");
             open.RegisteredInteractions.Add(new Open());

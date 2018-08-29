@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "small glass *bottles*";
             IsContainer = true;
             IsPortable = true;
+            IsTransparent = true;
 
             var smash = new ItemInteraction(Game, "smash", "break");
             smash.RegisteredInteractions.Add(new Display("You smash the bottle and glass flies everywhere!"));
@@ -38,6 +39,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             {
                 if (interaction.Verbs.Contains("fill"))
                 {
+                    if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(ItemId)))
+                    {
+                        var msg = new Display($"You are not carrying a bottle!");
+                        msg.Do(player);
+                        return true;
+                    }
+
                     if (!player.CurrentLocation.WaterPresent)
                     {
                         var msg = new Display("There is no water here!");
@@ -45,14 +53,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                         return true;
                     }
 
-                    if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(ItemId)))
-                    {
-                        var msg = new Display($"You are not carrying a {ItemId}!");
-                        msg.Do(player);
-                        return true;
-                    }
-
-                    if (Contents.Any(c => c.ItemId.Equals("water")))
+                    if (Contents.Any(c => c.ItemId.Equals(Item.PintOfWater)))
                     {
                         var msg = new Display("The bottle is already full!");
                         msg.Do(player);

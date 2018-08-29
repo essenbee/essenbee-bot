@@ -34,9 +34,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new Rod(game, "rod");
                 case Item.Bird:
                     return new Bird(game, "bird");
-                case Item.Unknown:
-                default:
-                    break;
             }
 
             return null;

@@ -1,4 +1,6 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+﻿using System.Linq;
+using Essenbee.Bot.Core.Games.Adventure.Interactions;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
@@ -7,52 +9,54 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal Bird(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.Bird;
-            Name = "little *bird* singling cheerfully";
+            Name = "little *bird* singing cheerfully";
             PluralName = "little *birds* singing cheerfully";
             IsPortable = true;
             IsActive = true;
+            MustBeContainedIn = Item.Cage;
+
+            var free = new ItemInteraction(Game, "use", "free", "release");
+            free.RegisteredInteractions.Add(new Display("You open the cage and the bird flies out."));
+            free.RegisteredInteractions.Add(new RemoveFromInventory());
+            free.RegisteredInteractions.Add(new AddToLocation(this));
+            Interactions.Add(free);
         }
 
-        //public override bool Interact(string verb, AdventurePlayer player)
-        //{
-        //    verb = verb.ToLower();
-        //    var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());
+        public override bool Interact(string verb, AdventurePlayer player)
+        {
+            verb = verb.ToLower();
+            var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());
 
-        //    if (interaction != null)
-        //    {
-        //        if (interaction.Verbs.Contains("fill"))
-        //        {
-        //            if (!player.CurrentLocation.WaterPresent)
-        //            {
-        //                var msg = new Display("There is no water here!");
-        //                msg.Do(player);
-        //                return true;
-        //            }
+            if (interaction != null)
+            {
+                if (interaction.Verbs.Contains("free"))
+                {
+                    if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(Item.Cage)))
+                    {
+                        var msg = new Display($"You are not carrying a caged bird!");
+                        msg.Do(player);
+                        return true;
+                    }
 
-        //            if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(ItemId)))
-        //            {
-        //                var msg = new Display($"You are not carrying a {ItemId}!");
-        //                msg.Do(player);
-        //                return true;
-        //            }
+                    var cage = player.Inventory.GetItems().First(x => x.ItemId.Equals(Item.Cage));
 
-        //            if (Contents.Any(c => c.ItemId.Equals("water")))
-        //            {
-        //                var msg = new Display("The bottle is already full!");
-        //                msg.Do(player);
-        //                return true;
-        //            }
-        //        }
+                    if (cage.Contents.All(c => c.ItemId != Item.Bird))
+                    {
+                        var msg = new Display("There is no bird in the cage for you to free!");
+                        msg.Do(player);
+                        return true;
+                    }
+                }
 
-        //        foreach (var action in interaction.RegisteredInteractions)
-        //        {
-        //            action.Do(player, this);
-        //        }
+                foreach (var action in interaction.RegisteredInteractions)
+                {
+                    action.Do(player, this);
+                }
 
-        //        return true;
-        //    }
+                return true;
+            }
 
-        //    return false;
-        //}
+            return false;
+        }
     }
 }

@@ -2,7 +2,7 @@
 {
     public enum Item
     {
-        Unknown,
+        None,
         Bottle,
         BrokenGlass,
         FoodRation,

@@ -17,9 +17,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsOpen { get; set; }
         public bool IsLocked { get; set; }
         public bool IsActive { get; set; }
-        public Item ItemIdToUnlock { get; set; }
+        public Item ItemIdToUnlock { get; set; } = Item.None;
+        public Item MustBeContainedIn { get; set; } = Item.None;
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
+        public bool IsTransparent { get; set; }
         public IList<AdventureItem> Contents { get; set; }
         public IList<IInteraction> Interactions { get; set; }
         public IReadonlyAdventureGame Game { get; }
@@ -30,7 +32,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             Game = game;
             Contents = new List<AdventureItem>();
             Interactions = new List<IInteraction>();
-            ItemIdToUnlock = Item.Unknown;
             Nouns = nouns.ToList();
         }
 

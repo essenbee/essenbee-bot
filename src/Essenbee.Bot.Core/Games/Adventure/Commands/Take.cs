@@ -47,7 +47,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (!locationItem.IsPortable)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You cannot carry a {item} with you!");
+                player.ChatClient.PostDirectMessage(player.Id, $"You cannot carry the {item} with you!");
+                return;
+            }
+
+            if (!HasRequiredContainerIfAny(player, locationItem))
+            {
+                player.ChatClient.PostDirectMessage(player.Id, $"You have no way of carrying a {item} with you...");
                 return;
             }
 
@@ -55,12 +61,34 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (locationItem.IsEndlessSupply)
             {
-                player.Inventory.AddItem(ItemFactory.GetInstance(_game, locationItem.ItemId));
+                CreateNewInstance(player, locationItem);
                 return;
             }
 
-            player.Inventory.AddItem(locationItem);
+            var success = locationItem.MustBeContainedIn == Item.None 
+                ? player.Inventory.AddItem(locationItem)
+                : player.Inventory.AddItemToContainer(locationItem, locationItem.MustBeContainedIn);
+
             player.CurrentLocation.Items.Remove(locationItem);
+        }
+
+        private static bool HasRequiredContainerIfAny(AdventurePlayer player, AdventureItem locationItem)
+        {
+            return locationItem.MustBeContainedIn == Item.None ||
+                   player.Inventory.GetItems().Any(i => i.ItemId == locationItem.MustBeContainedIn);
+        }
+
+        private void CreateNewInstance(AdventurePlayer player, AdventureItem locationItem)
+        {
+            if (locationItem.MustBeContainedIn != Item.None)
+            {
+                player.Inventory.AddItemToContainer(ItemFactory.GetInstance(_game, locationItem.ItemId),
+                    locationItem.MustBeContainedIn);
+            }
+            else
+            {
+                player.Inventory.AddItem(ItemFactory.GetInstance(_game, locationItem.ItemId));
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                         ? $"There are several {item.PluralName} here."
                         : $"There is a {item.Name} here.");
 
-                    if (item.Contents.Any() && item.IsOpen)
+                    if (item.Contents.Any() && (item.IsOpen || item.IsTransparent))
                     {
                         description.AppendLine($"The {item.Name} contains:");
 
