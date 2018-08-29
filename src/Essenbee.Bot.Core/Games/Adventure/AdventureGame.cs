@@ -32,7 +32,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     UserName = e.UserName,
                     CurrentLocation = _locations[Location.Road],
                     Score = 0,
-                    Moves = 1,
+                    Moves = 0,
                     ChatClient = chatClient,
                 };
 

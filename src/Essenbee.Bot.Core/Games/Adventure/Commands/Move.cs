@@ -32,6 +32,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 if (canMove)
                 {
                     player.CurrentLocation = place;
+                    player.Moves++;
+
                     if (!string.IsNullOrWhiteSpace(moveText))
                     {
                         player.ChatClient.PostDirectMessage(player.Id, moveText);
