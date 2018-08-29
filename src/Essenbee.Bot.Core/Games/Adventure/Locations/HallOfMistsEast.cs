@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
-using Essenbee.Bot.Core.Games.Adventure.Items;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
 {
@@ -15,11 +14,17 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "to either side. Nearby, a wide, natural stone staircase leads downward. The hall is filled with wisps of white " +
                 "mist swaying to and fro, almost as if alive. A cold wind blows up the staircase. There is a passage at the top" +
                 "of a dome behind you.";
-            Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Snake) };
+            Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove>
             {
                 new PlayerMove("You follow a low, winding passage to the base of a pit, then struggle upwards...", 
                     Location.SmallPit, "up", "e", "east"),
+                //new PlayerMove("",
+                //    Location.HallOfMountainKing, "north", "n", "down", "d"),
+                //new PlayerMove("",
+                //    Location.GoldRoom, "south", "s"),
+                new PlayerMove("",
+                    Location.FissureEast, "west", "w"),
             };
         }
     }

@@ -18,5 +18,10 @@
         BirdChamber,
         SmallPit,
         HallOfMistsEast,
+        HallOfMistsWest,
+        FissureEast,
+        FissureWest,
+        HallOfMountainKing,
+        GoldRoom,
     }
 }

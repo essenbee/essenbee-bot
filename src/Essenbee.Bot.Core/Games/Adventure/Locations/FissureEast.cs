@@ -1,0 +1,22 @@
+﻿using System.Collections.Generic;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+
+namespace Essenbee.Bot.Core.Games.Adventure.Locations
+{
+    public class FissureEast : AdventureLocation
+    {
+        public FissureEast(IReadonlyAdventureGame game) : base(game)
+        {
+            LocationId = Location.FissureEast;
+            Name = "East Bank of Fissure";
+            ShortDescription = "on the edge of a deep fissure";
+            LongDescription = "standing on the eastern side of a wide, impassible fissure in the rock.";
+            WaterPresent = false;
+            IsDark = true;
+            Items = new List<AdventureItem>();
+            ValidMoves = new List<PlayerMove> {
+                new PlayerMove(string.Empty, Location.HallOfMistsEast, "east", "e"),
+            };
+        }
+    }
+}

@@ -18,5 +18,6 @@
         Bird,
         Snake,
         DeadSnake,
+        CrystalBridge,
     }
 }
