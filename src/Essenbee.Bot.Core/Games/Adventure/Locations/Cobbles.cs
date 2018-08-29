@@ -16,8 +16,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             IsDark = true;
             Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
             ValidMoves = new List<PlayerMove> {
-                new PlayerMove(string.Empty, Location.Cave1, "east", "e"),
-                 new PlayerMove(string.Empty, Location.Debris, "west", "w"),
+                new PlayerMove("It is a very tight squeeze, but you manage to pull yourself towards the dim light ahead.", 
+                    Location.Cave1, "east", "e"),
+                 new PlayerMove("You wriggle and squirm your way deeper underground...", 
+                     Location.Debris, "west", "w"),
             };
         }
     }

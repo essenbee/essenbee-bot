@@ -10,7 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LocationId = Location.Hill;
             Name = "Hill";
             ShortDescription = "atop a hill";
-            LongDescription = "atop hill, still in the forest. The road slopes back down the other side of the hill.There is a building in the distance.";
+            LongDescription = "atop hill, still in the forest. The road slopes back down the other side of the hill. There is a building in the distance.";
             Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove> {
                 new PlayerMove(string.Empty, Location.Forest, "forest", "south", "s", "north", "n"),

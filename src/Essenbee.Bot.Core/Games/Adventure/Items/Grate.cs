@@ -46,11 +46,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             unlock.RegisteredInteractions.Add(new DisplayForLocation("You open the grate and see the way out of the caves above you. A rusty iron ladder leads up to the daylight!", Location.Cave1));
             unlock.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
             {
-               new PlayerMove(string.Empty, Location.Cave1, "down", "d", "ladder", "underground"),
+               new PlayerMove("With growing trepidation, you descend the ladder...", Location.Cave1, "down", "d", "ladder", "underground"),
             }, Game, Location.Depression));
             unlock.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
             {
-               new PlayerMove(string.Empty, Location.Depression, "up", "ladder", "surface"),
+               new PlayerMove("You climb the rusty ladder and emerge into the light!", Location.Depression, "up", "ladder", "surface"),
             }, Game, Location.Cave1));
             
             Interactions.Add(unlock);

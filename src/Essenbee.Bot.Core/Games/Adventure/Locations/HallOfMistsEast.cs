@@ -19,11 +19,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             {
                 new PlayerMove("You follow a low, winding passage to the base of a pit, then struggle upwards...", 
                     Location.SmallPit, "up", "e", "east"),
-                //new PlayerMove("",
+                //new PlayerMove("You descend a majestic staircase of natural rock, worn smooth by water flowing in the past...",
                 //    Location.HallOfMountainKing, "north", "n", "down", "d"),
                 //new PlayerMove("",
                 //    Location.GoldRoom, "south", "s"),
-                new PlayerMove("",
+                new PlayerMove("You make your way deeper into the mists...",
                     Location.FissureEast, "west", "w"),
             };
         }
