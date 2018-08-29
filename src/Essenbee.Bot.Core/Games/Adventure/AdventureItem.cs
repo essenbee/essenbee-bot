@@ -24,7 +24,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IList<IInteraction> Interactions { get; set; }
         public IReadonlyAdventureGame Game { get; }
 
-        public AdventureItem(IReadonlyAdventureGame game, params string[] nouns)
+        protected AdventureItem(IReadonlyAdventureGame game, params string[] nouns)
         {
             UniqueId = Guid.NewGuid();
             Game = game;

@@ -1,6 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure;
 using Essenbee.Bot.Core.Interfaces;
-using System;
 
 namespace Essenbee.Bot.Core.Games
 {
@@ -11,7 +10,7 @@ namespace Essenbee.Bot.Core.Games
         public string HelpText => "Play an old school text adventure game";
 
         private AdventureGame _adventureGame;
-        private object thisLock = new object();
+        private object _mutex = new object();
         private readonly IBot _bot;
 
         public AdventureGameCommand(IBot bot)
@@ -21,7 +20,7 @@ namespace Essenbee.Bot.Core.Games
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            lock (thisLock)
+            lock (_mutex)
             {
                 if (chatClient.GetType().ToString() == e.ClientType)
                 {

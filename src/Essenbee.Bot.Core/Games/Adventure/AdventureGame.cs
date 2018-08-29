@@ -14,8 +14,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public ReadOnlyCollection<AdventurePlayer> Players => _players.AsReadOnly();
 
         private List<AdventurePlayer> _players;
-        private AdventureCommandRegistry _commandRegistry;
-        private readonly Dictionary<Location, AdventureLocation> _locations = new Dictionary<Location, AdventureLocation>();
+        private readonly AdventureCommandRegistry _commandRegistry;
+        private readonly Dictionary<Location, AdventureLocation> _locations;
 
         public AdventureGame()
         {
@@ -105,7 +105,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             player.ChatClient.PostDirectMessage(player.Id, welcome.ToString());
 
             var look = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("look"));
-            look.Invoke(player, e);
+            look?.Invoke(player, e);
         }
 
         private bool IsNewPlayer(ChatCommandEventArgs e) => _players.All(p => p.Id != e.UserId);
@@ -128,7 +128,10 @@ namespace Essenbee.Bot.Core.Games.Adventure
                     if (type.Name == "AdventureLocation") continue;
 
                     var loc = Activator.CreateInstance(type, this) as AdventureLocation;
-                    dungeon.Add(loc.LocationId, loc);
+                    if (loc != null)
+                    {
+                        dungeon.Add(loc.LocationId, loc);
+                    }
                 }
             }
             catch (Exception ex)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -31,7 +30,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public string ListItems()
         {
-            if (_items.Count() == 0)
+            if (!_items.Any())
             {
                 return "You are not carrying anything with you at the moment.";
             }
@@ -56,11 +55,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             return inventory.ToString();
-        }
-
-        internal bool Any()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool WaterPresent { get; set; }
         public bool IsDark { get; set; }
 
-        public AdventureLocation(IReadonlyAdventureGame game)
+        protected AdventureLocation(IReadonlyAdventureGame game)
         {
             Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove>();
