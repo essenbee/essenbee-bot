@@ -17,5 +17,6 @@
         Canyon,
         BirdChamber,
         SmallPit,
+        HallOfMistsEast,
     }
 }

@@ -18,6 +18,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove> {
                 new PlayerMove(string.Empty, Location.BirdChamber, "east", "e"),
+                new PlayerMove("You carefully climb down into the pit. At the bottom, you follow a low, winding passageway...", 
+                    Location.HallOfMistsEast, "down", "d"),
             };
         }
     }
