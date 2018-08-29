@@ -14,5 +14,6 @@
         Cave1,
         Cobbles,
         Debris,
+        Canyon,
     }
 }

@@ -14,5 +14,6 @@
         PintOfWater,
         ShardOfGlass,
         Cage,
+        Rod,
     }
 }
