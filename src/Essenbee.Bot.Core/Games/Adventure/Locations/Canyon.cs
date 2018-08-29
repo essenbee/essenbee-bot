@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<AdventureItem>();
             ValidMoves = new List<PlayerMove> {
                 new PlayerMove(Location.Debris, "east", "e", "down", "d"),
+                new PlayerMove(Location.BirdChamber, "west", "w"),
             };
         }
     }

@@ -15,5 +15,7 @@
         Cobbles,
         Debris,
         Canyon,
+        BirdChamber,
+        SmallPit,
     }
 }
