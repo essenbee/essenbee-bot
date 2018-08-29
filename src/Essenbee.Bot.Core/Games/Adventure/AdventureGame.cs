@@ -1,7 +1,6 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Locations;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             _players = new List<AdventurePlayer>();
             _commandRegistry = new AdventureCommandRegistry(this);
-            _locations = BuildDungeon();
+            _locations = new ColossalCave().Build();
         }
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
@@ -113,33 +112,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
         private AdventurePlayer GetPlayer(string userId)
         {
             return _players.First(x => x.Id == userId);
-        }
-
-        private Dictionary<Location, AdventureLocation> BuildDungeon()
-        {
-            var dungeon = new Dictionary<Location, AdventureLocation>();
-
-            try
-            {
-                var locations = GetType().Assembly.GetTypes().Where(t => typeof(AdventureLocation).IsAssignableFrom(t));
-
-                foreach (var type in locations)
-                {
-                    if (type.Name == "AdventureLocation") continue;
-
-                    var loc = Activator.CreateInstance(type, this) as AdventureLocation;
-                    if (loc != null)
-                    {
-                        dungeon.Add(loc.LocationId, loc);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message + ": " + ex.StackTrace);
-            }
-
-            return dungeon;
         }
     }
 }
