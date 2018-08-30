@@ -7,7 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class ColossalCave
     {
-        public Dictionary<Location, AdventureLocation> Build()
+        public Dictionary<Location, AdventureLocation> Build(AdventureGame game)
         {
             var dungeon = new Dictionary<Location, AdventureLocation>();
 
@@ -20,7 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 {
                     if (type.Name == nameof(AdventureLocation)) continue;
 
-                    var loc = Activator.CreateInstance(type, this) as AdventureLocation;
+                    var loc = Activator.CreateInstance(type, game) as AdventureLocation;
                     if (loc != null)
                     {
                         dungeon.Add(loc.LocationId, loc);

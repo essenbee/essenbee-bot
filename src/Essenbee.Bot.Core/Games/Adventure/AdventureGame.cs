@@ -20,7 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             _players = new List<AdventurePlayer>();
             _commandRegistry = new AdventureCommandRegistry(this);
-            _locations = new ColossalCave().Build();
+            _locations = new ColossalCave().Build(this);
         }
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
