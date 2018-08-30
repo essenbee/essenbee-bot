@@ -20,7 +20,5 @@ namespace Essenbee.Bot.Core.Games.Adventure
             Inventory = new Inventory();
             Statuses = new List<PlayerStatus>();
         }
-
-        public bool HasRequiredContainer(AdventureItem item) => Inventory.GetItems().Any(i => i.ItemId == item.MustBeContainedIn);
     }
 }

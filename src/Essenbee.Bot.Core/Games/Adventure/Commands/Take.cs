@@ -51,7 +51,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            if (locationItem.ContainerRequired() && !player.HasRequiredContainer(locationItem))
+            if (locationItem.ContainerRequired() && !player.Inventory.HasRequiredContainer(locationItem))
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You have no way of carrying a {item} with you...");
                 return;

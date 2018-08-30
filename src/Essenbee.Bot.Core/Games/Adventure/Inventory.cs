@@ -67,6 +67,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public int Count() => _items.Count;
 
+        public bool HasRequiredContainer(AdventureItem item) => _items.Any(i => i.ItemId == item.MustBeContainedIn);
+
         public ReadOnlyCollection<AdventureItem> GetItems() => _items.ToList().AsReadOnly();
 
         public ReadOnlyCollection<AdventureItem> GetContainedItems()
