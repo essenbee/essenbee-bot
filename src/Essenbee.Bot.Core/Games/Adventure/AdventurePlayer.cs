@@ -1,5 +1,6 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -19,5 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             Inventory = new Inventory();
             Statuses = new List<PlayerStatus>();
         }
+
+        public bool HasRequiredContainer(AdventureItem item) => Inventory.GetItems().Any(i => i.ItemId == item.MustBeContainedIn);
     }
 }

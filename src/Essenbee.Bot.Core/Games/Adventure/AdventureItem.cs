@@ -37,6 +37,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public bool IsMatch(string noun) => Nouns.Any(v => noun.Equals(v));
 
+        public bool ContainerRequired() => MustBeContainedIn != Item.None;
+
         public virtual bool Interact(string verb, AdventurePlayer player)
         {
             verb = verb.ToLower();

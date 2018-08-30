@@ -15,9 +15,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Mailbox) };
             ValidMoves = new List<PlayerMove> {
                 new PlayerMove("You enter the building.", Location.Building, "east", "e", "enter", "in", "inside", "building"),
-                new PlayerMove(string.Empty, Location.Valley, "south", "s", "valley"),
-                new PlayerMove(string.Empty, Location.Hill, "west", "w", "hill", "road", "up"),
-                new PlayerMove(string.Empty, Location.Forest, "north", "n", "forest"),
+                new PlayerMove("You follow the stream.", Location.Valley, "south", "s", "valley", "gully"),
+                new PlayerMove("You move along the road up a hill.", Location.Hill, "west", "w", "hill", "road", "up"),
+                new PlayerMove("You head off into the woods...", Location.Forest, "north", "n", "forest"),
             };
         }
     }
