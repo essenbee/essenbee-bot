@@ -1,6 +1,7 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -19,6 +20,17 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             Inventory = new Inventory();
             Statuses = new List<PlayerStatus>();
+        }
+
+        public AdventurePlayer(string userId, string userName, IChatClient chatClient)
+        {
+            Inventory = new Inventory();
+            Statuses = new List<PlayerStatus>();
+            Id = userId;
+            UserName = userName;
+            Score = 0;
+            Moves = 0;
+            ChatClient = chatClient;
         }
     }
 }

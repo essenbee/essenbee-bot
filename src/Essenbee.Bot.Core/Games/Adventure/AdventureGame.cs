@@ -13,13 +13,13 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public ReadOnlyCollection<AdventurePlayer> Players => _players.AsReadOnly();
 
         private List<AdventurePlayer> _players;
-        private readonly AdventureCommandRegistry _commandRegistry;
+        private readonly CommandHandler _commandHandler;
         private readonly Dictionary<Location, AdventureLocation> _locations;
 
         public AdventureGame()
         {
             _players = new List<AdventurePlayer>();
-            _commandRegistry = new AdventureCommandRegistry(this);
+            _commandHandler = new CommandHandler(this);
             _locations = new ColossalCave().Build(this);
         }
 
@@ -27,18 +27,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             if (IsNewPlayer(e))
             {
-                var player = new AdventurePlayer {
-                    Id = e.UserId,
-                    UserName = e.UserName,
-                    CurrentLocation = _locations[Location.Road],
-                    Score = 0,
-                    Moves = 0,
-                    ChatClient = chatClient,
-                };
+                var player = new AdventurePlayer(e.UserId, e.UserName, chatClient)
+                    { CurrentLocation = _locations[Location.Road] };
 
                 _players.Add(player);
-                chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
 
+                chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
                 DisplayIntroText(player, e);
             }
             else
@@ -47,13 +41,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
                 if (e.ArgsAsList.Count > 0)
                 {
-                    var advCommands = e.ArgsAsList;
-                    var cmd = advCommands[0].ToLower();
-
-                    var command = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(cmd)) ??
-                                  _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("use"));
-
-                    command?.Invoke(player, e);
+                    _commandHandler.ExecutePlayerCommand(player, e);
 
                     if (player.Statuses.Contains(PlayerStatus.HasWon))
                     {
@@ -103,7 +91,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             welcome.AppendLine("Use `!adv help` to get some help.");
             player.ChatClient.PostDirectMessage(player.Id, welcome.ToString());
 
-            var look = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("look"));
+            var look = _commandHandler.GetCommand("look");
             look?.Invoke(player, e);
         }
 
