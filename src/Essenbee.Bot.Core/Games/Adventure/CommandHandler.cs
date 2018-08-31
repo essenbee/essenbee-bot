@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using Essenbee.Bot.Core.Games.Adventure.Commands;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public class CommandHandler
+    public class CommandHandler : ICommandHandler
     {
         private readonly AdventureGame _game;
         private readonly AdventureCommandRegistry _commandRegistry;
@@ -25,6 +25,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             command?.Invoke(player, e);
         }
 
-        public BaseAdventureCommand GetCommand(string verb) => _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(verb));
+        public IAdventureCommand GetCommand(string verb) => _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(verb));
     }
 }
