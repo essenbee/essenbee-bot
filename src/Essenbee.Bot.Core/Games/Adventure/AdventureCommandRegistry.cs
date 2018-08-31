@@ -6,7 +6,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class AdventureCommandRegistry
     {
-        public IList<BaseAdventureCommand> RegisteredCommands { get; }
+        public IList<IAdventureCommand> RegisteredCommands { get; }
 
         public AdventureCommandRegistry(IReadonlyAdventureGame game)
         {
@@ -19,7 +19,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var inventoryCommand = new Carrying(game, "inventory", "inv");
             var interactCommand = new Interact(game, "use"); // Do not add aliases for this command
 
-            RegisteredCommands = new List<BaseAdventureCommand> {
+            RegisteredCommands = new List<IAdventureCommand> {
                 lookCommand,
                 helpCommand,
                 moveCommand,
