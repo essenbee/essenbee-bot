@@ -27,13 +27,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             if (IsNewPlayer(e))
             {
-                var player = new AdventurePlayer(e.UserId, e.UserName, chatClient)
-                    { CurrentLocation = _locations[Location.Road] };
-
-                _players.Add(player);
-
-                chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
-                DisplayIntroText(player, e);
+                JoinGame(chatClient, e);
             }
             else
             {
@@ -42,32 +36,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 if (e.ArgsAsList.Count > 0)
                 {
                     _commandHandler.ExecutePlayerCommand(player, e);
-
-                    if (player.Statuses.Contains(PlayerStatus.HasWon))
-                    {
-                        GameWon(player);
-                    }
-
-                    if (player.Statuses.Contains(PlayerStatus.IsDead))
-                    {
-                        GameLost(player);
-                    }
                 }
                 else
                 {
                     player.ChatClient.PostDirectMessage(player.Id, "What would you like me to do?");
                 }
             }
-        }
-
-        private void GameLost(AdventurePlayer player)
-        {
-            
-        }
-
-        private void GameWon(AdventurePlayer player)
-        {
-            
         }
 
         public bool TryGetLocation(Location locationId, out AdventureLocation place)
@@ -85,8 +59,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
             return true;
         }
 
-        private void DisplayIntroText(AdventurePlayer player, ChatCommandEventArgs e)
+        private void JoinGame(IChatClient chatClient, ChatCommandEventArgs e)
         {
+            var player = new AdventurePlayer(e.UserId, e.UserName, chatClient) { CurrentLocation = _locations[Location.Road] };
+            _players.Add(player);
+            chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
+
             var welcome = new StringBuilder("Welcome to Adventure!");
             welcome.AppendLine("Use `!adv help` to get some help.");
             player.ChatClient.PostDirectMessage(player.Id, welcome.ToString());
