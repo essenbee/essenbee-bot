@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "End of a Road";
             ShortDescription = "standing at the end of a road.";
             LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.";
+            WaterPresent = true;
             Items = new List<IAdventureItem> 
             {
                 ItemFactory.GetInstance(Game, Item.Mailbox),

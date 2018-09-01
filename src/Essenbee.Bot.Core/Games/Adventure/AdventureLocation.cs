@@ -1,5 +1,4 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
-using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IReadonlyAdventureGame Game { get; }
         public IList<IAdventureItem> Items { get; set; }
         public IList<IPlayerMove> ValidMoves { get; set; }
-        public bool WaterPresent => Items.Any(i => i.ItemId.Equals(Item.Water));
+        public bool WaterPresent { get; set; }
         public bool IsDark { get; set; }
 
         protected AdventureLocation(IReadonlyAdventureGame game)

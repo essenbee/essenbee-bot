@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Valley";
             ShortDescription = "in a valley";
             LongDescription = "in a valley in the forest beside a stream tumbling along a rocky bed.";
+            WaterPresent = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Water) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Forest, "forest", "west", "w", "up", "east", "e"),
