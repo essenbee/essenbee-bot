@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public abstract class AdventureLocation
+    public abstract class AdventureLocation : IAdventureLocation
     {
         public Location LocationId { get; set; }
         public string Name { get; set; }

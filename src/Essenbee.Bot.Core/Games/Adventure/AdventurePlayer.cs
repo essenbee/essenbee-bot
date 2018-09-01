@@ -1,7 +1,6 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -9,7 +8,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
     {
         public string Id { get; set; }
         public string UserName { get; set; }
-        public AdventureLocation CurrentLocation { get; set; }
+        public IAdventureLocation CurrentLocation { get; set; }
         public IChatClient ChatClient { get; set; }
         public int Score { get; set; }
         public int Moves { get; set; }

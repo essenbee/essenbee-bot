@@ -6,6 +6,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
     public interface IReadonlyAdventureGame
     {
         ReadOnlyCollection<AdventurePlayer> Players { get; }
-        bool TryGetLocation(Location locationId, out AdventureLocation place);
+        bool TryGetLocation(Location locationId, out IAdventureLocation place);
     }
 }

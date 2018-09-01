@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private List<AdventurePlayer> _players;
         private readonly ICommandHandler _commandHandler;
-        private readonly Dictionary<Location, AdventureLocation> _locations;
+        private readonly Dictionary<Location, IAdventureLocation> _locations;
 
         public AdventureGame()
         {
@@ -44,7 +44,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
         }
 
-        public bool TryGetLocation(Location locationId, out AdventureLocation place)
+        public bool TryGetLocation(Location locationId, out IAdventureLocation place)
         {
             var location = _locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
             place = null;
