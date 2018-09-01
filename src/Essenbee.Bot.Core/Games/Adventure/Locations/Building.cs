@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             var lamp = ItemFactory.GetInstance(Game, Item.Lamp);
             var key = ItemFactory.GetInstance(Game, Item.Key);
             var food = ItemFactory.GetInstance(Game, Item.FoodRation);
+            var water = ItemFactory.GetInstance(Game, Item.Water);
 
             LocationId = Location.Building;
             Name = "Small Brick Building";
@@ -24,6 +25,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 lamp,
                 bottle,
                 food,
+                water,
             };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You leave the building.", Location.Road, "west", "w", "road", "out", "outside"),

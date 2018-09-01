@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
@@ -12,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "at the slit in the streambed";
             LongDescription = "besides the stream. At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock.";
             WaterPresent = true;
-            Items = new List<IAdventureItem>();
+            Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Water) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Valley, "valley", "north", "n", "upstream"),
                 new PlayerMove(string.Empty, Location.Depression, "downstream", "south", "s"),

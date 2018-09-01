@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
@@ -12,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in a valley";
             LongDescription = "in a valley in the forest beside a stream tumbling along a rocky bed.";
             WaterPresent = true;
-            Items = new List<IAdventureItem>();
+            Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Water) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Forest, "forest", "west", "w", "up", "east", "e"),
                 new PlayerMove(string.Empty, Location.Slit, "downstream", "south", "s"),

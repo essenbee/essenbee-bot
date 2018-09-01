@@ -3,6 +3,7 @@
     public enum Item
     {
         None,
+        Water,
         Bottle,
         BrokenGlass,
         FoodRation,

@@ -10,7 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         {
             ItemId = Item.PintOfWater;
             Name = "pint of *water*";
-            PluralName = "pin of *water*";
+            PluralName = "pints of *water*";
             IsPortable = false;
             IsEndlessSupply = true;
             MustBeContainedIn = Item.Bottle;

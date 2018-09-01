@@ -8,6 +8,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         {
             switch(itemType)
             {
+                case Item.Water:
+                    return new Water(game, "water");
                 case Item.Bottle:
                     return new Bottle(game, "bottle");
                 case Item.ShardOfGlass:
