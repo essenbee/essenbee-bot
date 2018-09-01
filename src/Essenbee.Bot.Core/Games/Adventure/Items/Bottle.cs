@@ -23,7 +23,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
             var fill = new ItemInteraction(Game, "fill");
             fill.RegisteredInteractions.Add(new Display("You reach down and fill the bottle with water."));
-            fill.RegisteredInteractions.Add(new AddToItemContents(new PintOfWater(Game)));
+            fill.RegisteredInteractions.Add(new AddToItemContents(ItemFactory.GetInstance(Game, Item.PintOfWater)));
             Interactions.Add(fill);
 
             //var empty = new ItemInteraction(Game, "empty", "pour"););
