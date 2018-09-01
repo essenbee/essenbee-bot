@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             WaterPresent = false;
             IsDark = true;
             Items = new List<AdventureItem>();
-            ValidMoves = new List<PlayerMove> {
+            ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.BirdChamber, "east", "e"),
                 new PlayerMove("You carefully climb down into the misty pit. At the bottom, you follow a low, winding passageway...", 
                     Location.HallOfMistsEast, "down", "d"),

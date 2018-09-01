@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
 {
-    public class PlayerMove
+    public class PlayerMove : IPlayerMove
     {
         public List<string> Moves { get; }
         public Location Destination { get; }

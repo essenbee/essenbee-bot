@@ -6,11 +6,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class AddMoves : IAction
     {
-        private List<PlayerMove> _moves;
+        private List<IPlayerMove> _moves;
         private readonly Location _toLocation;
         private readonly IReadonlyAdventureGame _game;
 
-        public AddMoves(List<PlayerMove> moves, IReadonlyAdventureGame game, Location toLocation = Location.Nowhere)
+        public AddMoves(List<IPlayerMove> moves, IReadonlyAdventureGame game, Location toLocation = Location.Nowhere)
         {
             _game = game;
             _moves = moves;

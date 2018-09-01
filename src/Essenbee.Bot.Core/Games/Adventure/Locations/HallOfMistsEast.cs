@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "mist swaying to and fro, almost as if alive. A cold wind blows up the staircase. There is a passage at the top" +
                 "of a dome behind you.";
             Items = new List<AdventureItem>();
-            ValidMoves = new List<PlayerMove>
+            ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove("You follow a low, winding passage to the base of a pit, then struggle upwards...", 
                     Location.SmallPit, "up", "e", "east"),

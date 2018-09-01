@@ -13,9 +13,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "standing at the end of a road.";
             LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.";
             Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Mailbox) };
-            ValidMoves = new List<PlayerMove> {
+            ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You enter the building.", Location.Building, "east", "e", "enter", "in", "inside", "building"),
-                new PlayerMove("You follow the stream.", Location.Valley, "south", "s", "valley", "gully"),
+                new PlayerMove("You follow the stream.", Location.Valley, "south", "s", "valley", "gully", "downstream"),
                 new PlayerMove("You move along the road up a hill.", Location.Hill, "west", "w", "hill", "road", "up"),
                 new PlayerMove("You head off into the woods...", Location.Forest, "north", "n", "forest"),
             };

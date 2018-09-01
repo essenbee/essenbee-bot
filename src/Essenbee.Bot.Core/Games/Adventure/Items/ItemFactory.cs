@@ -19,7 +19,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 case Item.Key:
                     return new Key(game, "key");
                 case Item.Lamp:
-                    return new Lamp(game, "lamp");
+                    return new Lamp(game, "lamp", "lantern", "headlamp");
                 case Item.Leaflet:
                     return new Leaflet(game, "leaflet", "flyer");
                 case Item.Mailbox:

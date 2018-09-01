@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             WaterPresent = false;
             IsDark = true;
             Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Grate) };
-            ValidMoves = new List<PlayerMove> {
+            ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You get down on your belly and start to crawl, inching your way forwards...", Location.Cobbles, "west", "w"),
             };
         }

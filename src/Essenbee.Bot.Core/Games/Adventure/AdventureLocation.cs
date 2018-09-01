@@ -13,18 +13,18 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public string LongDescription { get; set; }
         public IReadonlyAdventureGame Game { get; }
         public IList<AdventureItem> Items { get; set; }
-        public IList<PlayerMove> ValidMoves { get; set; }
+        public IList<IPlayerMove> ValidMoves { get; set; }
         public bool WaterPresent { get; set; }
         public bool IsDark { get; set; }
 
         protected AdventureLocation(IReadonlyAdventureGame game)
         {
             Items = new List<AdventureItem>();
-            ValidMoves = new List<PlayerMove>();
+            ValidMoves = new List<IPlayerMove>();
             Game = game;
         }
 
-        public virtual void AddMoves(List<PlayerMove> newMoves)
+        public virtual void AddMoves(List<IPlayerMove> newMoves)
         {
             newMoves.ToList().ForEach(x => ValidMoves.Add(x));
         }

@@ -25,11 +25,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 Location.FissureWest));
             use.RegisteredInteractions.Add(new AddToLocation(ItemFactory.GetInstance(Game, Item.CrystalBridge)));
 
-            use.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
+            use.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
             {
                 new PlayerMove("You cautiously cross the crystal bridge...", Location.FissureWest, "west", "w", "bridge"),
             }, Game, Location.FissureEast));
-            use.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
+            use.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
             {
                 new PlayerMove("You step out onto the crystal bridge...", Location.FissureEast, "east", "e", "bridge"),
             }, Game, Location.FissureWest));
