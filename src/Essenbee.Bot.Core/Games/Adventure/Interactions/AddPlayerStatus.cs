@@ -11,7 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             _status = status;
         }
 
-        public bool Do(AdventurePlayer player, AdventureItem item = null)
+        public bool Do(AdventurePlayer player, IAdventureItem item = null)
         {
             if (player.Statuses.Contains(_status)) return false;
 

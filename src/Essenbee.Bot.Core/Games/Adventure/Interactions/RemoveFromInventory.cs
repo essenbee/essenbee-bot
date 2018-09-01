@@ -6,7 +6,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class RemoveFromInventory : IAction
     {
-        public bool Do(AdventurePlayer player, AdventureItem item)
+        public bool Do(AdventurePlayer player, IAdventureItem item)
         {
             if (ContainerRequired(item))
             {
@@ -21,6 +21,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             return true;
         }
 
-        private static bool ContainerRequired(AdventureItem locationItem) => locationItem.MustBeContainedIn != Item.None;
+        private static bool ContainerRequired(IAdventureItem locationItem) => locationItem.MustBeContainedIn != Item.None;
     }
 }

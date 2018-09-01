@@ -72,7 +72,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             player.CurrentLocation.Items.Remove(locationItem);
         }
        
-        private void CreateNewInstance(AdventurePlayer player, AdventureItem locationItem)
+        private void CreateNewInstance(AdventurePlayer player, IAdventureItem locationItem)
         {
             if (locationItem.ContainerRequired())
             {

@@ -11,7 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             _itemToAdd = itemToAdd;
         }
 
-        public bool Do(AdventurePlayer player, AdventureItem item)
+        public bool Do(AdventurePlayer player, IAdventureItem item)
         {
             item.Contents.Add(_itemToAdd);
             return true;

@@ -12,14 +12,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
         public IReadonlyAdventureGame Game { get; }
-        public IList<AdventureItem> Items { get; set; }
+        public IList<IAdventureItem> Items { get; set; }
         public IList<IPlayerMove> ValidMoves { get; set; }
         public bool WaterPresent { get; set; }
         public bool IsDark { get; set; }
 
         protected AdventureLocation(IReadonlyAdventureGame game)
         {
-            Items = new List<AdventureItem>();
+            Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>();
             Game = game;
         }
@@ -37,12 +37,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
         }
 
-        public virtual void AddItem(AdventureItem item)
+        public virtual void AddItem(IAdventureItem item)
         {
             Items.Add(item);
         }
 
-        public virtual void RemoveItem(AdventureItem item)
+        public virtual void RemoveItem(IAdventureItem item)
         {
             Items.Remove(item);
         }

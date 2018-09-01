@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsPortable = false;
             IsContainer = true;
             IsOpen = true;
-            Contents = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.ShardOfGlass) };
+            Contents = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.ShardOfGlass) };
         }
     }
 }

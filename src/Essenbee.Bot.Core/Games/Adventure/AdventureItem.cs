@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public abstract class AdventureItem
+    public abstract class AdventureItem : IAdventureItem
     {
         public Guid UniqueId { get; }
         public Item ItemId { get; set; }
@@ -22,7 +22,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public bool IsTransparent { get; set; }
-        public IList<AdventureItem> Contents { get; set; }
+        public IList<IAdventureItem> Contents { get; set; }
         public IList<IInteraction> Interactions { get; set; }
         public IReadonlyAdventureGame Game { get; }
 
@@ -30,7 +30,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             UniqueId = Guid.NewGuid();
             Game = game;
-            Contents = new List<AdventureItem>();
+            Contents = new List<IAdventureItem>();
             Interactions = new List<IInteraction>();
             Nouns = nouns.ToList();
         }

@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "crawling over cobbles in a low passage. There is some very feint light visible at the east end of the passage.";
             WaterPresent = false;
             IsDark = true;
-            Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
+            Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("It is a very tight squeeze, but you manage to pull yourself towards the dim light ahead.", 
                     Location.Cave1, "east", "e"),

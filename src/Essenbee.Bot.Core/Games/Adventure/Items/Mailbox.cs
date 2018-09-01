@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "small mailboxes";
             IsOpen = true;
             IsContainer = true;
-            Contents = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Leaflet) };
+            Contents = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Leaflet) };
         }
     }
 }

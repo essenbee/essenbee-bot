@@ -66,10 +66,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             return false;
         }
 
-        private AdventureItem GetSnakeIfPresent(AdventurePlayer player) => 
+        private IAdventureItem GetSnakeIfPresent(AdventurePlayer player) => 
             player.CurrentLocation.Items.FirstOrDefault(i => i.ItemId.Equals(Item.Snake));
 
-        private void SnakeKilled(IInteraction interaction, AdventureItem snake)
+        private void SnakeKilled(IInteraction interaction, IAdventureItem snake)
         {
             interaction.RegisteredInteractions.Add(new Display("The bird spots the snake, and attacks it..."));
             interaction.RegisteredInteractions.Add(new RemoveFromLocation(snake));

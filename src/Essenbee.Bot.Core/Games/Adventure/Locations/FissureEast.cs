@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "standing on the eastern side of a wide, impassible fissure in the rock.";
             WaterPresent = false;
             IsDark = true;
-            Items = new List<AdventureItem>();
+            Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.HallOfMistsEast, "east", "e"),
             };

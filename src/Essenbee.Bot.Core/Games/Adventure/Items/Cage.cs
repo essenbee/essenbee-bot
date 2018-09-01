@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "wicker *cages*";
             IsOpen = true;
             IsContainer = true;
-            Contents = new List<AdventureItem>();
+            Contents = new List<IAdventureItem>();
             IsPortable = true;
             IsTransparent = true;
 

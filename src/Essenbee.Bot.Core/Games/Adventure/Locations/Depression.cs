@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Depression";
             ShortDescription = "outside the grate";
             LongDescription = "in a 20-foot depression floored with bare dirt. Set into the dirt is a strong steel grate mounted in concrete. A dry streambed leads into the depression.";
-            Items = new List<AdventureItem> { grate, };
+            Items = new List<IAdventureItem> { grate, };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Forest2, "east", "e", "south", "s"),
                 new PlayerMove(string.Empty, Location.Forest, "west", "w"),

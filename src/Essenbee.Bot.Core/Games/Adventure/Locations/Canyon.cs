@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in an awkward sloping east/west canyon.";
             WaterPresent = false;
             IsDark = true;
-            Items = new List<AdventureItem>();
+            Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You struggle through several tight spots...", Location.Debris, "east", "e", "down", "d"),
                 new PlayerMove("You have to contort your body in order to make your way forward...", Location.BirdChamber, "west", "w"),

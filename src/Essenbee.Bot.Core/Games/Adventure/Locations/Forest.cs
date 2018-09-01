@@ -11,7 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Forest";
             ShortDescription = "in open forest";
             LongDescription = "in open forest, with a deep valley to one side.";
-            Items = new List<AdventureItem>();
+            Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Valley, "valley", "east", "east", "down", "d"),
                 new PlayerMove(string.Empty, Location.Forest, "west", "w", "south", "s"),

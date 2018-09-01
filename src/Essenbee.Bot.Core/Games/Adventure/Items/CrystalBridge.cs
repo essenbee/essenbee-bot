@@ -28,7 +28,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             ItemId = Item.Cage;
             Name = "crystal bridge";
             PluralName = "crystal bridges";
-            Contents = new List<AdventureItem>();
+            Contents = new List<IAdventureItem>();
             IsActive = true;
         }
     }

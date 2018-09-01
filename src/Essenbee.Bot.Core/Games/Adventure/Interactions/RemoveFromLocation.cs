@@ -4,14 +4,14 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class RemoveFromLocation : IAction
     {
-        private readonly AdventureItem _itemToRemove;
+        private readonly IAdventureItem _itemToRemove;
 
-        public RemoveFromLocation(AdventureItem itemToRemove)
+        public RemoveFromLocation(IAdventureItem itemToRemove)
         {
             _itemToRemove = itemToRemove;
         }
 
-        public bool Do(AdventurePlayer player, AdventureItem item)
+        public bool Do(AdventurePlayer player, IAdventureItem item)
         {
             player.CurrentLocation.RemoveItem(_itemToRemove);
             return true;

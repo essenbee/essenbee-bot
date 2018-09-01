@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "standing on the western side of a wide fissure in the rock.";
             WaterPresent = false;
             IsDark = true;
-            Items = new List<AdventureItem>();
+            Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> ();
         }
     }

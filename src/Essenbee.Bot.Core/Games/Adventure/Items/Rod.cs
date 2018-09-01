@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "black *rod* with a rusty star on one end";
             PluralName = "black *rods* with rusty stars on the ends";
             IsActive = true;
-            Contents = new List<AdventureItem>();
+            Contents = new List<IAdventureItem>();
             IsPortable = true;
 
             // Using the rod when at the fissure, creates a crystal bridge

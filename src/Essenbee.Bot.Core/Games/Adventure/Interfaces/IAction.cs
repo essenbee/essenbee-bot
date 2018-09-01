@@ -2,6 +2,6 @@
 {
     public interface IAction
     {
-        bool Do(AdventurePlayer player, AdventureItem item);
+        bool Do(AdventurePlayer player, IAdventureItem item);
     }
 }

@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                               " An awkward canyon and a good passage exit from east and west sides of the chamber.";
             WaterPresent = false;
             IsDark = true;
-            Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Bird) };
+            Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Bird) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Canyon, "east", "e"),
                 new PlayerMove(string.Empty, Location.SmallPit, "west", "w"),

@@ -4,21 +4,21 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class AddToLocation : IAction
     {
-        private readonly AdventureItem _itemToAddToLocation;
+        private readonly IAdventureItem _itemToAddToLocation;
         private readonly AdventureLocation _location;
 
-        public AddToLocation(AdventureItem itemToAddToLocation)
+        public AddToLocation(IAdventureItem itemToAddToLocation)
         {
             _itemToAddToLocation = itemToAddToLocation;
         }
 
-        public AddToLocation(AdventureItem itemToAddToLocation, AdventureLocation location)
+        public AddToLocation(IAdventureItem itemToAddToLocation, AdventureLocation location)
         {
             _itemToAddToLocation = itemToAddToLocation;
             _location = location;
         }
 
-        public bool Do(AdventurePlayer player, AdventureItem item)
+        public bool Do(AdventurePlayer player, IAdventureItem item)
         {
             if (_location is null)
             {

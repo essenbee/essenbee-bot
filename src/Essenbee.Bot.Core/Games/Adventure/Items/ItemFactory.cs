@@ -4,7 +4,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public static class ItemFactory
     {
-        public static AdventureItem GetInstance(IReadonlyAdventureGame game, Item itemType)
+        public static IAdventureItem GetInstance(IReadonlyAdventureGame game, Item itemType)
         {
             switch(itemType)
             {

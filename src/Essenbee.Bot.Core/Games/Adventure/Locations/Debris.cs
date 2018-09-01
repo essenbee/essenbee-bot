@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 " here, but an awkward canyon leads upward and to the west. Scrawled on the wall is a cryptic note: `XYZZY`.";
             WaterPresent = false;
             IsDark = true;
-            Items = new List<AdventureItem> { ItemFactory.GetInstance(Game, Item.Rod) };
+            Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Rod) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Cobbles, "east", "e"),
                 new PlayerMove(string.Empty, Location.Canyon, "west", "w", "up"),

@@ -2,31 +2,32 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Items;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class Inventory
     {
-        private IList<AdventureItem> _items;
+        private IList<IAdventureItem> _items;
 
         public Inventory()
         {
-            _items = new List<AdventureItem>();
+            _items = new List<IAdventureItem>();
         }
 
-        public bool AddItem(AdventureItem item)
+        public bool AddItem(IAdventureItem item)
         {
             _items.Add(item);
             return true;
         }
 
-        public void RemoveItem(AdventureItem item)
+        public void RemoveItem(IAdventureItem item)
         {
             _items.Remove(item);
         }
 
-        public bool AddItemToContainer(AdventureItem item, Item containerId)
+        public bool AddItemToContainer(IAdventureItem item, Item containerId)
         {
             var intoContainer = _items.FirstOrDefault(i => i.IsContainer && i.ItemId.Equals(containerId));
 
@@ -39,7 +40,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             return true;
         }
 
-        public bool RemoveItemContainer(AdventureItem item, Item containerId)
+        public bool RemoveItemContainer(IAdventureItem item, Item containerId)
         {
             var fromContainer = _items.FirstOrDefault(i => i.IsContainer && i.ItemId.Equals(containerId));
 
@@ -52,7 +53,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             return true;
         }
 
-        public bool RemoveItemContainer(AdventureItem item)
+        public bool RemoveItemContainer(IAdventureItem item)
         {
             var fromContainer = _items.FirstOrDefault(i => i.IsContainer && i.Contents.Contains(item));
 
@@ -67,13 +68,13 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public int Count() => _items.Count;
 
-        public bool HasRequiredContainer(AdventureItem item) => _items.Any(i => i.ItemId == item.MustBeContainedIn);
+        public bool HasRequiredContainer(IAdventureItem item) => _items.Any(i => i.ItemId == item.MustBeContainedIn);
 
-        public ReadOnlyCollection<AdventureItem> GetItems() => _items.ToList().AsReadOnly();
+        public ReadOnlyCollection<IAdventureItem> GetItems() => _items.ToList().AsReadOnly();
 
-        public ReadOnlyCollection<AdventureItem> GetContainedItems()
+        public ReadOnlyCollection<IAdventureItem> GetContainedItems()
         {
-            var containedItems = new List<AdventureItem>();
+            var containedItems = new List<IAdventureItem>();
 
             foreach (var container in _items.Where(i => i.IsContainer))
             {
