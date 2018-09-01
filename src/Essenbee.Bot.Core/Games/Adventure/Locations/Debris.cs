@@ -13,7 +13,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in debris room";
             LongDescription = "in a debris room filled with stuff washed in from the surface. A low wide passage with cobbles becomes plugged with mud and debris" +
                 " here, but an awkward canyon leads upward and to the west. Scrawled on the wall is a cryptic note: `XYZZY`.";
-            WaterPresent = false;
             IsDark = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Rod) };
             ValidMoves = new List<IPlayerMove> {

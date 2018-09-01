@@ -11,7 +11,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Awkward Canyon";
             ShortDescription = "in awkward canyon";
             LongDescription = "in an awkward sloping east/west canyon.";
-            WaterPresent = false;
             IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {

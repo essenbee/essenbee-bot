@@ -13,7 +13,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in bird chamber";
             LongDescription = "You are in a splendid chamber thirty feet high. The walls are frozen rivers of orange flowstone." + 
                               " An awkward canyon and a good passage exit from east and west sides of the chamber.";
-            WaterPresent = false;
             IsDark = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Bird) };
             ValidMoves = new List<IPlayerMove> {

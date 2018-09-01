@@ -11,7 +11,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "West Bank of Fissure";
             ShortDescription = "on the edge of a deep fissure";
             LongDescription = "standing on the western side of a wide fissure in the rock.";
-            WaterPresent = false;
             IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> ();

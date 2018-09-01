@@ -10,7 +10,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
         {
             LocationId = Location.Road;
             Name = "End of a Road";
-            WaterPresent = true;
             ShortDescription = "standing at the end of a road.";
             LongDescription = "standing at the end of a road before a small brick building. Around you is a forest.  A small stream flows out of the building and down a gully.";
             Items = new List<IAdventureItem> 

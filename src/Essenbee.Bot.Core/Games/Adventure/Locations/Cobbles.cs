@@ -12,7 +12,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Cobble Crawl";
             ShortDescription = "in cobble crawl";
             LongDescription = "crawling over cobbles in a low passage. There is some very feint light visible at the east end of the passage.";
-            WaterPresent = false;
             IsDark = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
             ValidMoves = new List<IPlayerMove> {

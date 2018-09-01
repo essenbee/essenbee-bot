@@ -11,7 +11,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Top of Small Pit";
             ShortDescription = "at the top of a small pit";
             LongDescription = "at the top of a small pit. Wisps of white mist emerge from its mouth. An eastern passage ends here, except for a small crack leading on.";
-            WaterPresent = false;
             IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
