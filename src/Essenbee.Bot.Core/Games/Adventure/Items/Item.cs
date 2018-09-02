@@ -23,5 +23,6 @@
         Diamond,
         Nugget,
         PirateChest,
+        BarsOfSilver,
     }
 }

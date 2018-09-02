@@ -48,6 +48,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new Nugget(game, "nugget", "gold");
                 case Item.PirateChest:
                     return new PirateChest(game, "chest");
+                case Item.BarsOfSilver:
+                    return new BarsOfSilver(game, "silver", "bars");
             }
 
             return null;

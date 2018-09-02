@@ -81,7 +81,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             interaction.RegisteredInteractions.Add(new RemoveDestination(Game, Location.HallOfMountainKing));
             interaction.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
             {
-                new PlayerMove(string.Empty, Location.LowPassage, "north", "n"),
+                new PlayerMove("You get down on hands and knees and crawl into a low-ceilinged passage...", Location.LowPassage, "north", "n"),
                 new PlayerMove(string.Empty, Location.SouthSideChamber, "south", "s"),
                 new PlayerMove(string.Empty, Location.WestSideChamber, "west", "w")
             }, Game, Location.HallOfMountainKing));
