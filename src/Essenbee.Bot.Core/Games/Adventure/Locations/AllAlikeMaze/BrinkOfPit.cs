@@ -10,7 +10,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations.AllAlikeMaze
             LocationId = Location.BrinkOfPit;
             Name = "Brink of Pit";
             ShortDescription = "on the brink of a pit";
-            LongDescription = "standing on the brink of a pit. Tunnels lead off tot he north, south, east and west.";
+            LongDescription = "standing on the brink of a thirty foot pit with a massive orange column down one wall." +
+                "You could climb down here but you could not get back up. The maze continues at this level.";
             IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
