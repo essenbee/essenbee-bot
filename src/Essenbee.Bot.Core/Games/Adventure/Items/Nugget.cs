@@ -7,8 +7,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal Nugget(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.Nugget;
-            Name = "large golden *nugget*";
-            PluralName = "large *nuggets*";
+            Name = "large sparkling *nugget* of gold";
+            PluralName = "large sparkling nuggets of *gold*";
             IsPortable = true;
         }
     }
