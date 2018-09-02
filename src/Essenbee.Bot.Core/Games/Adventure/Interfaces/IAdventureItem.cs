@@ -21,7 +21,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         Item ItemId { get; set; }
         Item ItemIdToUnlock { get; set; }
         Item MustBeContainedIn { get; set; }
-        Item PrevenTtakeItemId { get; set; }
+        Item PreventTakeItemId { get; set; }
         string PreventTakeText { get; set; }
         string Name { get; set; }
         List<string> Nouns { get; }

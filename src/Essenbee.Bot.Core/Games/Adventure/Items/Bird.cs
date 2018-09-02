@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsActive = true;
             MustBeContainedIn = Item.Cage;
 
-            PrevenTtakeItemId = Item.Rod;
+            PreventTakeItemId = Item.Rod;
             PreventTakeText = "The *bird* is afraid and evades your grasp!";
 
             var free = new ItemInteraction(Game, "use", "free", "release");

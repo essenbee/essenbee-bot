@@ -25,7 +25,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IList<IAdventureItem> Contents { get; set; }
         public IList<IInteraction> Interactions { get; set; }
         public IReadonlyAdventureGame Game { get; }
-        public Item PrevenTtakeItemId { get; set; } = Item.None;
+        public Item PreventTakeItemId { get; set; } = Item.None;
         public string PreventTakeText { get; set; } = "";
 
         protected AdventureItem(IReadonlyAdventureGame game, params string[] nouns)

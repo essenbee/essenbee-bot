@@ -57,7 +57,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
-            if (player.Inventory.Has(locationItem.PrevenTtakeItemId))
+            if (player.Inventory.Has(locationItem.PreventTakeItemId))
             {
                 player.ChatClient.PostDirectMessage(player.Id, locationItem.PreventTakeText);
                 return;
