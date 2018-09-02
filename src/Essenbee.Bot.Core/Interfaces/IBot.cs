@@ -1,5 +1,4 @@
-﻿using Essenbee.Bot.Core.Commands;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Interfaces
 {
