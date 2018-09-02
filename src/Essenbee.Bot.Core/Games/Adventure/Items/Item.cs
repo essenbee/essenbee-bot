@@ -22,5 +22,6 @@
         CrystalBridge,
         Diamond,
         Nugget,
+        PirateChest,
     }
 }

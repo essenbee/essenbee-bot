@@ -43,9 +43,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 case Item.CrystalBridge:
                     return CrystalBridge.GetInstance(game, "bridge"); // Singleton
                 case Item.Diamond:
-                    return new Rod(game, "diamond", "gem");
+                    return new Diamond(game, "diamond", "gem");
                 case Item.Nugget:
-                    return new Rod(game, "nugget", "gold");
+                    return new Nugget(game, "nugget", "gold");
+                case Item.PirateChest:
+                    return new PirateChest(game, "chest");
             }
 
             return null;
