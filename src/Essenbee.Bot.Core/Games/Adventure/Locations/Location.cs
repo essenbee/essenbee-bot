@@ -45,5 +45,7 @@
         PirateChestCave,
         LongHallEast,
         LongHallWest,
+        Y2,
+        BrokenPassage,
     }
 }

@@ -10,12 +10,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LocationId = Location.WestSideChamber;
             Name = "West Side Chamber";
             ShortDescription = "in west side chamber";
-            LongDescription = "in the west side chamber of the Hall of the Mountain King.";
-            Items = new List<IAdventureItem>();
+            LongDescription = "in the west side chamber of the Hall of the Mountain King. A passage continues west and up here.";
+            Items = new List<IAdventureItem>(); // Coins
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove(string.Empty, Location.HallOfMountainKing, "east", "e"),
-
+                // new PlayerMove(string.Empty, Location., "west", "w", "up"),
             };
         }
     }
