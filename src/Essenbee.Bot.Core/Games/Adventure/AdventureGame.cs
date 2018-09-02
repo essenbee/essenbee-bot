@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public ReadOnlyCollection<AdventurePlayer> Players => _players.AsReadOnly();
 
         private List<AdventurePlayer> _players;
-        private readonly ICommandHandler _commandHandler;
+        private readonly IAdventureCommandHandler _commandHandler;
         private readonly Dictionary<Location, IAdventureLocation> _locations;
 
         public AdventureGame()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Essenbee.Bot.Core.Commands;
+using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Interfaces
 {
@@ -8,6 +9,7 @@ namespace Essenbee.Bot.Core.Interfaces
         IActionScheduler ActionScheduler { get; }
         IAnswerSearchEngine AnswerSearchEngine { get; }
         IBotSettings Settings { get; }
+        ICommandHandler CommandHandler { get; set; }
 
         void SetRepository(IRepository repository);
         void Start();

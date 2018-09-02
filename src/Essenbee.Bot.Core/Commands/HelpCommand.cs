@@ -25,7 +25,7 @@ namespace Essenbee.Bot.Core.Commands
 
             if (e.ArgsAsList.Count == 0)
             {
-                var allCommands = Bot._CommandsAvailable.Select(x => x.Key).ToList();
+                var allCommands = _bot.CommandHandler.CommandRegistry.Select(x => x.Key).ToList();
                 var sb = new StringBuilder("The following commands are available: ");
 
                 foreach(var cmd in allCommands)
@@ -40,7 +40,7 @@ namespace Essenbee.Bot.Core.Commands
             {
                 var helpForCommand = e.ArgsAsList[0];
                 // Check command name against available commands ...
-                if (Bot._CommandsAvailable.TryGetValue(helpForCommand, out ICommand cmd))
+                if (_bot.CommandHandler.CommandRegistry.TryGetValue(helpForCommand, out ICommand cmd))
                 {
                     helpMsg = cmd.HelpText;
                 }

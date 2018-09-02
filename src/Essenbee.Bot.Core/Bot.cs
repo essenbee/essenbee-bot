@@ -6,6 +6,7 @@ using Essenbee.Bot.Core.Messaging;
 using static System.Console;
 using System.Linq;
 using Essenbee.Bot.Core.Data;
+using Essenbee.Bot.Core.Commands;
 
 namespace Essenbee.Bot.Core
 {
@@ -17,7 +18,7 @@ namespace Essenbee.Bot.Core
         public IBotSettings Settings { get; }
 
         public static readonly string DefaultChannel = "general";
-        public static readonly Dictionary<string, ICommand> _CommandsAvailable = new Dictionary<string, ICommand>();
+        public ICommandHandler CommandHandler { get; set; }
 
         private bool _endProgram = false;
         private IRepository _repository;
@@ -45,7 +46,7 @@ namespace Essenbee.Bot.Core
 
             CancelKeyPress += OnCtrlC;
 
-            LoadCommands();
+            CommandHandler = new BotCommandHandler(this);
             ScheduleRepeatedMessages();
             ShowStartupMessage();
 
@@ -91,38 +92,11 @@ namespace Essenbee.Bot.Core
             }
         }
 
-        private void LoadCommands()
-        {
-            if (_CommandsAvailable.Count > 0)
-            {
-                return;
-            }
-
-            var commandTypes = GetType().Assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(ICommand)));
-
-            foreach (var type in commandTypes)
-            {
-                if (type.Name == "ICommand") continue;
-
-                var cmd = Activator.CreateInstance(type, this) as ICommand;
-                cmd.Status = ItemStatus.Active;
-                _CommandsAvailable.Add(cmd.CommandName, cmd);
-            }
-        }
-
         private void OnCommandReceived(object sender, ChatCommandEventArgs e)
         {
             foreach (var chatClient in ConnectedClients)
             {
-                // Check command name against available commands ...
-                if (_CommandsAvailable.TryGetValue(e.Command, out ICommand cmd))
-                {
-                    cmd.Execute(chatClient, e);
-                }
-                else
-                {
-                    chatClient.PostMessage(e.Channel, $"The command {e.Command} has not been implemented.");
-                }
+                CommandHandler.ExecuteCommand(chatClient, e);
             }
         }
 

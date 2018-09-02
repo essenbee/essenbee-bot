@@ -3,7 +3,7 @@ using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public class CommandHandler : ICommandHandler
+    public class CommandHandler : IAdventureCommandHandler
     {
         private readonly AdventureGame _game;
         private readonly AdventureCommandRegistry _commandRegistry;
