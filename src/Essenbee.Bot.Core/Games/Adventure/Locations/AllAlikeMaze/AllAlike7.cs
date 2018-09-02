@@ -17,7 +17,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 new PlayerMove("", Location.AllAlike11, "south", "s"),
                 new PlayerMove("", Location.AllAlike4, "east", "e"),
                 new PlayerMove("", Location.AllAlike8, "west", "w"),
-                new PlayerMove("You carefully ascend and suddenly find yourself climbing up a huge stalactite!", Location.StalactiteRoom, "up"),
                 new PlayerMove("", Location.AllAlike9, "down", "d"),
             };
         }
