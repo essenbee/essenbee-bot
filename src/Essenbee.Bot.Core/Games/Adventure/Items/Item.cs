@@ -20,5 +20,7 @@
         Snake,
         DeadSnake,
         CrystalBridge,
+        Diamond,
+        Nugget,
     }
 }
