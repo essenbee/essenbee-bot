@@ -15,7 +15,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Snake) };
             ValidMoves = new List<IPlayerMove>
             {
-                // ToDo: how do we handle movement in this room if the snake is alive?
+                new PlayerMove("A vicious-looking snake bars your way!", Location.HallOfMountainKing, "south", "s", "north", "n", "west", "w", "down", "d"),
+                new PlayerMove("You ascend a majestic staircase of natural rock...", Location.HallOfMistsEast, "up", "east", "e"),
             };
         }
     }

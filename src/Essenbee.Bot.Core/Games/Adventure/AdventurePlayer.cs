@@ -9,6 +9,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public string Id { get; set; }
         public string UserName { get; set; }
         public IAdventureLocation CurrentLocation { get; set; }
+        public IAdventureLocation PriorLocation { get; set; }
         public IChatClient ChatClient { get; set; }
         public int Score { get; set; }
         public int Moves { get; set; }

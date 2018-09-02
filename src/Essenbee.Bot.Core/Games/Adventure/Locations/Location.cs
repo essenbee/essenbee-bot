@@ -22,6 +22,9 @@
         FissureEast,
         FissureWest,
         HallOfMountainKing,
+        LowPassage,
+        SouthSideChamber,
+        WestSideChamber,
         GoldRoom,
         AllAlike1,
         AllAlike2,
@@ -40,5 +43,7 @@
         StalactiteRoom,
         BrinkOfPit,
         PirateChestCave,
+        LongHallEast,
+        LongHallWest,
     }
 }

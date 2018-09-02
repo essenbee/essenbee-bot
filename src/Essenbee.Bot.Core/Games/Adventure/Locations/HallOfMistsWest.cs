@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 new PlayerMove("You follow a long winding tunnel...",
                     Location.AllAlike1, "south", "s"),
                 //new PlayerMove("",
-                //    Location.LongHall, "west", "w"),
+                //    Location.LongHallEast, "west", "w"),
             };
         }
     }

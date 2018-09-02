@@ -17,6 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 new PlayerMove(string.Empty, Location.BirdChamber, "east", "e"),
                 new PlayerMove("You carefully climb down into the misty pit. At the bottom, you follow a low, winding passageway...", 
                     Location.HallOfMistsEast, "down", "d"),
+                new PlayerMove("You squirm your way into the crack, but it soon closes up and it is clear that you cannot climb up. You are forced to go back.", 
+                Location.SmallPit, "west", "w", "crack"),
             };
         }
     }

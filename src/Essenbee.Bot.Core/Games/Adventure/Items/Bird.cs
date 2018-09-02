@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
@@ -51,7 +53,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
                     if (snake != null)
                     {
-                        SnakeKilled(interaction, snake);
+                        AddInteractionsWhenSnakeKilled(interaction, snake);
                     }
                 }
 
@@ -69,17 +71,20 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         private IAdventureItem GetSnakeIfPresent(AdventurePlayer player) => 
             player.CurrentLocation.Items.FirstOrDefault(i => i.ItemId.Equals(Item.Snake));
 
-        private void SnakeKilled(IInteraction interaction, IAdventureItem snake)
+        private void AddInteractionsWhenSnakeKilled(IInteraction interaction, IAdventureItem snake)
         {
-            interaction.RegisteredInteractions.Add(new Display("The bird spots the snake, and attacks it..."));
+            interaction.RegisteredInteractions.Add(new Display("The bird spots the snake, and darts to attack it..."));
             interaction.RegisteredInteractions.Add(new RemoveFromLocation(snake));
             interaction.RegisteredInteractions.Add(
                 new AddToLocation(ItemFactory.GetInstance(Game, Item.DeadSnake)));
             interaction.RegisteredInteractions.Add(new Display("After a furious battle, the snake lies dead on the floor!"));
-            //interaction.RegisteredInteractions.Add(new AddMoves(new List<PlayerMove>
-            //{
-            //    { new PlayerMove(string.Empty, ) },
-            //}, Game, Location.HallOfTheMountainKing));
+            interaction.RegisteredInteractions.Add(new RemoveDestination(Game, Location.HallOfMountainKing));
+            interaction.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
+            {
+                new PlayerMove(string.Empty, Location.LowPassage, "north", "n"),
+                new PlayerMove(string.Empty, Location.SouthSideChamber, "south", "s"),
+                new PlayerMove(string.Empty, Location.WestSideChamber, "west", "w")
+            }, Game, Location.HallOfMountainKing));
         }
     }
 }

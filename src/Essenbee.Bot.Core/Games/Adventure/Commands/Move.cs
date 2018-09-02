@@ -31,6 +31,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                 if (canMove)
                 {
+                    player.PriorLocation = player.CurrentLocation;
                     player.CurrentLocation = place;
                     player.Moves++;
 
