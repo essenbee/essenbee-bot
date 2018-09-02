@@ -7,7 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations.AllAlikeMaze
     {
         public BrinkOfPit(IReadonlyAdventureGame game) : base(game)
         {
-            LocationId = Location.AllAlike1;
+            LocationId = Location.BrinkOfPit;
             Name = "Brink of Pit";
             ShortDescription = "on the brink of a pit";
             LongDescription = "standing on the brink of a pit. Tunnels lead off tot he north, south, east and west.";
