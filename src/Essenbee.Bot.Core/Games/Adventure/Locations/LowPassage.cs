@@ -17,8 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             IsDark = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.BarsOfSilver) };
             ValidMoves = new List<IPlayerMove> {
-                new PlayerMove("", Location.HallOfMountainKing, "south", "s"),
-                //new PlayerMove("", Location.Y2, "north", "n"),
+                new PlayerMove("You crawl into a large open, echoing space...", Location.HallOfMountainKing, "south", "s"),
+                new PlayerMove("", Location.Y2, "north", "n"),
                 //new PlayerMove("", Location.BrokenPassage, "down", "d"),
             };
         }

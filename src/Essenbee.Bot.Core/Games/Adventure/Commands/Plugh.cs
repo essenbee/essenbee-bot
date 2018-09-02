@@ -3,9 +3,9 @@ using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
-    public class Xyzzy : BaseAdventureCommand
+    public class Plugh : BaseAdventureCommand
     {
-        public Xyzzy(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
+        public Plugh(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
         }
 
@@ -15,11 +15,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (player.CurrentLocation.LocationId.Equals(Location.Building))
             {
-                var moveTo = Location.Debris;
+                var moveTo = Location.Y2;
                 canMove = _game.TryGetLocation(moveTo, out var place);
                 player.CurrentLocation = place;
             }
-            else if (player.CurrentLocation.LocationId.Equals(Location.Debris))
+            else if (player.CurrentLocation.LocationId.Equals(Location.Y2))
             {
                 var moveTo = Location.Building;
                 canMove = _game.TryGetLocation(moveTo, out var place);
@@ -28,7 +28,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (canMove)
             {
-                player.ChatClient.PostDirectMessage(player.Id, "You suddenly feel dizzy and space seems to warp around you!");
+                player.ChatClient.PostDirectMessage(player.Id, "You suddenly feel nauseous as space seems to fold around you!");
                 return;
             }
 

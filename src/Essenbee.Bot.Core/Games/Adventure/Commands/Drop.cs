@@ -20,15 +20,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             }
 
             var itemToDrop = args[1];
-            var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.IsMatch(itemToDrop));
-            var itemInContainer = player.Inventory.GetContainedItems().FirstOrDefault(i => i.IsMatch(itemToDrop));
 
-            if (itemInInventory is null && itemInContainer is null)
+            if (!player.Inventory.Has(itemToDrop))
             {
                 player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToDrop} to drop!");
             }
             else
             {
+                var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.IsMatch(itemToDrop));
+
                 if (itemInInventory != null)
                 {
                     player.Inventory.RemoveItem(itemInInventory);

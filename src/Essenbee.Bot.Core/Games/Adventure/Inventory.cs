@@ -23,6 +23,14 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 containedItems.Any(y => y.ItemId.Equals(item));
         }
 
+        public bool Has(string noun)
+        {
+            var itemInInventory = _items.FirstOrDefault(i => i.IsMatch(noun));
+            var itemInContainer = GetContainedItems().FirstOrDefault(i => i.IsMatch(noun));
+
+            return !(itemInInventory is null && itemInContainer is null);
+        }
+
         public bool AddItem(IAdventureItem item)
         {
             _items.Add(item);

@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Coins) };
             ValidMoves = new List<IPlayerMove>
             {
-                new PlayerMove(string.Empty, Location.HallOfMountainKing, "east", "e"),
+                new PlayerMove("Your footsetps echo around you...", Location.HallOfMountainKing, "east", "e"),
                 // new PlayerMove(string.Empty, Location.HighPassage, "west", "w", "up"),
             };
         }
