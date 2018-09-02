@@ -24,6 +24,7 @@
         Nugget,
         PirateChest,
         BarsOfSilver,
-        Jewellry,
+        Jewelry,
+        Coins,
     }
 }
