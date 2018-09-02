@@ -39,18 +39,25 @@ namespace Essenbee.Bot.Core
 
         public void Start()
         {
+            CommandHandler = new BotCommandHandler(this);
+
             foreach (var chatClient in ConnectedClients)
             {
-                chatClient.OnChatCommandReceived += OnCommandReceived;
+                chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) => {
+                    ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
+                };
             }
 
             CancelKeyPress += OnCtrlC;
-
-            CommandHandler = new BotCommandHandler(this);
             ScheduleRepeatedMessages();
             ShowStartupMessage();
 
-            BeginLoop();
+            while (true)
+            {
+                Thread.Sleep(1000);
+
+                if (_endProgram) break;
+            }
         }
 
         private void ShowStartupMessage()
@@ -82,31 +89,9 @@ namespace Essenbee.Bot.Core
             }
         }
 
-        private void BeginLoop()
-        {
-            while (true)
-            {
-                Thread.Sleep(1000);
-
-                if (_endProgram) break;
-            }
-        }
-
-        private void OnCommandReceived(object sender, ChatCommandEventArgs e)
-        {
-            foreach (var chatClient in ConnectedClients)
-            {
-                CommandHandler.ExecuteCommand(chatClient, e);
-            }
-        }
-
         private void OnCtrlC(object sender, ConsoleCancelEventArgs e)
         {
-            foreach (var client in ConnectedClients)
-            {
-                client.Disconnect();
-            }
-
+            ConnectedClients.ForEach(client => client.Disconnect());
             _endProgram = true;
         }
     }
