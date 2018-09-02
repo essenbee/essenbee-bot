@@ -57,6 +57,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 return;
             }
 
+            if (player.Inventory.Has(locationItem.PrevenTtakeItemId))
+            {
+                player.ChatClient.PostDirectMessage(player.Id, locationItem.PreventTakeText);
+                return;
+            }
+
             player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
 
             if (locationItem.IsEndlessSupply)

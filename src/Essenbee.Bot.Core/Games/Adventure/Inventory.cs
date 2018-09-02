@@ -16,6 +16,13 @@ namespace Essenbee.Bot.Core.Games.Adventure
             _items = new List<IAdventureItem>();
         }
 
+        public bool Has(Item item)
+        {
+            var containedItems = GetContainedItems();
+            return _items.Any(x => x.ItemId.Equals(item)) ||
+                containedItems.Any(y => y.ItemId.Equals(item));
+        }
+
         public bool AddItem(IAdventureItem item)
         {
             _items.Add(item);
