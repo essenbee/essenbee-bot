@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You climb down the stalactite and jump down...", Location.AllAlike7, "down", "d"),
-
+                // new PlayerMove("", Location., "north", "n"),
             };
         }
     }
