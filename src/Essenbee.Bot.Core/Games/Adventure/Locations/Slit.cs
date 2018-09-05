@@ -18,6 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 new PlayerMove(string.Empty, Location.Valley, "valley", "north", "n", "upstream"),
                 new PlayerMove(string.Empty, Location.Depression, "downstream", "south", "s"),
                 new PlayerMove(string.Empty, Location.Forest, "forest", "east", "west", "e", "w"),
+                new PlayerMove("You can't fit through a 2-inch slit!", Location.Slit, "down", "d"),
             };
         }
     }
