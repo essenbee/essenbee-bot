@@ -86,7 +86,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             {
                 new PlayerMove("You get down on hands and knees and crawl into a low-ceilinged passage...", Location.LowPassage, "north", "n"),
                 new PlayerMove(string.Empty, Location.SouthSideChamber, "south", "s"),
-                new PlayerMove(string.Empty, Location.WestSideChamber, "west", "w")
+                new PlayerMove(string.Empty, Location.WestSideChamber, "west", "w"),
+                new RandomMove("", new List<Location>
+                    { Location.HallOfMountainKing, Location.HallOfMountainKing, Location.SecretEastWestCanyon }, 
+                    "southwest", "sw"),
             }, Game, Location.HallOfMountainKing));
         }
     }

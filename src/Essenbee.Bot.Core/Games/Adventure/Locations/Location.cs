@@ -25,6 +25,7 @@
         LowPassage,
         SouthSideChamber,
         WestSideChamber,
+        SecretEastWestCanyon,
         GoldRoom,
         AllAlike1,
         AllAlike2,

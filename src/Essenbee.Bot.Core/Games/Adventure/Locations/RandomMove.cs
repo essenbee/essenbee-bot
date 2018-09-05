@@ -25,7 +25,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
         private Location GetRandomLocation()
         {
-            var loc = GetRandomNumber(0, _possibleDestinations.Count - 1);
+            var loc = GetRandomNumber(0, _possibleDestinations.Count);
             return _possibleDestinations[loc];
         }
 
