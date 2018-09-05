@@ -15,8 +15,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Valley, "valley", "east", "east", "down", "d"),
                 new PlayerMove(string.Empty, Location.Forest, "west", "w", "south", "s"),
+                new RandomMove(string.Empty, new List<Location> { Location.Forest, Location.Forest2 }, "north", "n", "forest", "forward")
             };
-            // ToDo: if forest, north or forward, 50% -> forest, 50% - forest2
         }
     }
 }
