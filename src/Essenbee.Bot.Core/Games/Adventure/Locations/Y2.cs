@@ -16,7 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove(string.Empty, Location.LowPassage, "south", "s"),
-                // new PlayerMove(string.Empty, Location., "east", "e"),
+                new PlayerMove(string.Empty, Location.JumbleOfRocks, "east", "e"),
                 // new PlayerMove(string.Empty, Location., "west", "w"),
             };
         }

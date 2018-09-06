@@ -48,5 +48,6 @@
         LongHallWest,
         Y2,
         BrokenPassage,
+        JumbleOfRocks,
     }
 }
