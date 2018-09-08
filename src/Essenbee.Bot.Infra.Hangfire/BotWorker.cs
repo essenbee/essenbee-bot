@@ -23,7 +23,7 @@ namespace Essenbee.Bot.Infra.Hangfire
         {
             try
             {
-                _bot.Start();
+                //_bot.Start();
             }
             catch (Exception ex)
             {

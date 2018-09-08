@@ -20,7 +20,7 @@ namespace Essenbee.Bot.Core
         public static readonly string DefaultChannel = "general";
         public ICommandHandler CommandHandler { get; set; }
 
-        private bool _endProgram = false;
+        public static bool IsRunning = false;
         private IRepository _repository;
         
         public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, IBotSettings settings)
@@ -39,6 +39,7 @@ namespace Essenbee.Bot.Core
 
         public void Start()
         {
+            IsRunning = true;
             CommandHandler = new BotCommandHandler(this);
 
             foreach (var chatClient in ConnectedClients)
@@ -56,8 +57,13 @@ namespace Essenbee.Bot.Core
             {
                 Thread.Sleep(1000);
 
-                if (_endProgram) break;
+                if (!IsRunning) break;
             }
+        }
+
+        public void Stop()
+        {
+            IsRunning = false;
         }
 
         private void ShowStartupMessage()
@@ -92,7 +98,7 @@ namespace Essenbee.Bot.Core
         private void OnCtrlC(object sender, ConsoleCancelEventArgs e)
         {
             ConnectedClients.ForEach(client => client.Disconnect());
-            _endProgram = true;
+            IsRunning = false;
         }
     }
 }

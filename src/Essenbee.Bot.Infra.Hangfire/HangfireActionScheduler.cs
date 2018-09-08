@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using Hangfire;
+using Hangfire.Storage;
 using Hangfire.Storage.Monitoring;
 
 namespace Essenbee.Bot.Infra.Hangfire
@@ -21,7 +22,14 @@ namespace Essenbee.Bot.Infra.Hangfire
 
         public void Enqueue(Expression<Action> action)
         {
-            BackgroundJob.Enqueue(action);
+            try
+            {
+                BackgroundJob.Enqueue(action);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message} :: {ex.StackTrace}");
+            }
         }
 
         public void Schedule(IScheduledAction action)
@@ -89,7 +97,14 @@ namespace Essenbee.Bot.Infra.Hangfire
                 foreach (var job in jobs)
                 {
                     BackgroundJob.Delete(job);
-                    RecurringJob.RemoveIfExists(job);
+                }
+            }
+
+            using (var connection = JobStorage.Current.GetConnection())
+            {
+                foreach (var recurringJob in connection.GetRecurringJobs())
+                {
+                    RecurringJob.RemoveIfExists(recurringJob.Id);
                 }
             }
         }

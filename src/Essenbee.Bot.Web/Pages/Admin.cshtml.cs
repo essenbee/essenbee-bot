@@ -53,6 +53,7 @@ namespace Essenbee.Bot.Web.Pages
 
                 if (runningJobs.Any())
                 {
+                    _bot.Stop();
                     _actionScheduler.StopRunningJobs<Core.Bot>();
                     IsRunning = false;
                 }

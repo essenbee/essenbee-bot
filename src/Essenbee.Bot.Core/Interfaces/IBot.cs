@@ -12,5 +12,6 @@ namespace Essenbee.Bot.Core.Interfaces
 
         void SetRepository(IRepository repository);
         void Start();
+        void Stop();
     }
 }
