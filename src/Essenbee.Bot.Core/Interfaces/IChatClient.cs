@@ -7,14 +7,12 @@ namespace Essenbee.Bot.Core.Interfaces
     {
         event EventHandler<ChatCommandEventArgs> OnChatCommandReceived;
 
+        string DefaultChannel { get; }
         IDictionary<string, string> Channels { get; set; }
 
         void PostMessage(string channel, string text);
-
         void PostMessage(string text);
-
         void PostDirectMessage(string username, string text);
-
         void Disconnect();
     }
 }

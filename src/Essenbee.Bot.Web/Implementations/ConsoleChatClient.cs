@@ -7,6 +7,7 @@ namespace Essenbee.Bot.Web
 {
     public class ConsoleChatClient : IChatClient
     {
+        public string DefaultChannel => string.Empty;
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
 
         public IDictionary<string, string> Channels

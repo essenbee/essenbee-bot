@@ -15,8 +15,8 @@ namespace Essenbee.Bot.Infra.Slack
         private bool _isReady = false;
         private SlackConfig _settings;
 
+        public string DefaultChannel => "general";
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
-        
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
 
         public SlackChatClient(SlackConfig settings)

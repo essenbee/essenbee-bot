@@ -16,8 +16,6 @@ namespace Essenbee.Bot.Core
         public IActionScheduler ActionScheduler { get; }
         public IAnswerSearchEngine AnswerSearchEngine { get; }
         public IBotSettings Settings { get; }
-
-        public static readonly string DefaultChannel = "general";
         public ICommandHandler CommandHandler { get; set; }
 
         public static bool IsRunning = false;
@@ -92,7 +90,7 @@ namespace Essenbee.Bot.Core
                 // ToDo: Allow configurable channel selection per message
                 foreach (var message in messages)
                 {
-                    var action = new RepeatingMessage(DefaultChannel, message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
+                    var action = new RepeatingMessage(message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
                     ActionScheduler.Schedule(action);
                 }
             }

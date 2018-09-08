@@ -53,7 +53,7 @@ namespace Essenbee.Bot.Infra.Hangfire
                         }
                         else
                         {
-                            BackgroundJob.Schedule(() => chatClient.PostMessage(msg), delayedMsg.Delay);
+                            BackgroundJob.Schedule(() => chatClient.PostMessage(chatClient.DefaultChannel, msg), delayedMsg.Delay);
                         }
                     }
                     break;
@@ -75,7 +75,7 @@ namespace Essenbee.Bot.Infra.Hangfire
                         {
                             RecurringJob.AddOrUpdate(
                             repeatingMsg.Name,
-                            () => chatClient.PostMessage(message),
+                            () => chatClient.PostMessage(chatClient.DefaultChannel, message),
                             Cron.MinuteInterval(repeatingMsg.IntervalInMinutes));
                         }
                     }
