@@ -59,7 +59,7 @@ namespace Essenbee.Bot.Web.Pages
                 }
                 else
                 {
-                    //BackgroundJob.Enqueue<BotWorker>(bw => bw.Start());
+                    _bot.Init(_repository);
                     _actionScheduler.Enqueue(() => _bot.Start());
                     IsRunning = true;
                 }

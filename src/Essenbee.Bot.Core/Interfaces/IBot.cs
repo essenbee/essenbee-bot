@@ -10,7 +10,7 @@ namespace Essenbee.Bot.Core.Interfaces
         IBotSettings Settings { get; }
         ICommandHandler CommandHandler { get; set; }
 
-        void SetRepository(IRepository repository);
+        void Init(IRepository repository);
         void Start();
         void Stop();
     }

@@ -32,9 +32,14 @@ namespace Essenbee.Bot.Core
             ConnectedClients = clients.ChatClients;
         }
 
-        public void SetRepository(IRepository repository)
+        public void Init(IRepository repository)
         {
-            _repository = repository;
+            if (_repository is null)
+            {
+                _repository = repository;
+                ScheduleRepeatedMessages();
+                ShowStartupMessage();
+            }
         }
 
         public void Start()
@@ -50,8 +55,8 @@ namespace Essenbee.Bot.Core
             }
 
             CancelKeyPress += OnCtrlC;
-            ScheduleRepeatedMessages();
-            ShowStartupMessage();
+            //ScheduleRepeatedMessages();
+            //ShowStartupMessage();
 
             while (true)
             {

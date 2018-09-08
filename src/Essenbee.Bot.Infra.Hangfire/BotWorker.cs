@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Infra.Hangfire
         {
             _bot = bot;
             _repository = repository;
-            bot.SetRepository(_repository);
+            bot.Init(_repository);
         }
 
         [DisableConcurrentExecution(60)]
