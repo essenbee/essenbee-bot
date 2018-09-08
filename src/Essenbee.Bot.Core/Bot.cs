@@ -30,6 +30,7 @@ namespace Essenbee.Bot.Core
             AnswerSearchEngine = answerSearchEngine;
             AnswerSearchEngine.SetApiKey(Settings.AnswerSerachApiKey);
             ConnectedClients = clients.ChatClients;
+            CommandHandler = new BotCommandHandler(this);
         }
 
         public void Init(IRepository repository)
@@ -45,8 +46,7 @@ namespace Essenbee.Bot.Core
         public void Start()
         {
             IsRunning = true;
-            CommandHandler = new BotCommandHandler(this);
-
+            
             foreach (var chatClient in ConnectedClients)
             {
                 chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) => {
@@ -55,8 +55,6 @@ namespace Essenbee.Bot.Core
             }
 
             CancelKeyPress += OnCtrlC;
-            //ScheduleRepeatedMessages();
-            //ShowStartupMessage();
 
             while (true)
             {
