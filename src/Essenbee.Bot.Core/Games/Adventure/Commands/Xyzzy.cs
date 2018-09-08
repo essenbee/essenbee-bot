@@ -16,13 +16,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             if (player.CurrentLocation.LocationId.Equals(Location.Building))
             {
                 var moveTo = Location.Debris;
-                canMove = _game.TryGetLocation(moveTo, out var place);
+                canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
                 player.CurrentLocation = place;
             }
             else if (player.CurrentLocation.LocationId.Equals(Location.Debris))
             {
                 var moveTo = Location.Building;
-                canMove = _game.TryGetLocation(moveTo, out var place);
+                canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
                 player.CurrentLocation = place;
             }
 

@@ -46,7 +46,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             {
                 if (interaction.Verbs.Contains("use"))
                 {
-                    var success = Game.TryGetLocation(Location.FissureWest, out var fissureWest);
+                    var success = Game.Dungeon.TryGetLocation(Location.FissureWest, out var fissureWest);
 
                     if (success)
                     {

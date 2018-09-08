@@ -25,7 +25,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             }
             else
             {
-                var found = _game.TryGetLocation(_toLocation, out var loc);
+                var found = _game.Dungeon.TryGetLocation(_toLocation, out var loc);
 
                 if (found)
                 {

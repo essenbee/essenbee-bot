@@ -27,7 +27,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 var moveTo = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction)).Destination;
                 var moveText = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction)).MoveText;
 
-                canMove = _game.TryGetLocation(moveTo, out var place);
+                canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
 
                 if (canMove)
                 {

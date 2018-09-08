@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         string ShortDescription { get; set; }
         IList<IPlayerMove> ValidMoves { get; set; }
         bool WaterPresent { get; set; }
+        bool IsStart { get; set; }
 
         void AddItem(IAdventureItem item);
         void AddMoves(List<IPlayerMove> newMoves);

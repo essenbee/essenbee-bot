@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IList<IPlayerMove> ValidMoves { get; set; }
         public bool WaterPresent { get; set; }
         public bool IsDark { get; set; }
+        public bool IsStart { get; set; }
 
         protected AdventureLocation(IReadonlyAdventureGame game)
         {
