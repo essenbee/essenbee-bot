@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             _location = location;
         }
 
-        public bool Do(AdventurePlayer player, IAdventureItem item)
+        public bool Do(IAdventurePlayer player, IAdventureItem item)
         {
             if (_location is null)
             {

@@ -11,7 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             _message = message;
         }
 
-        public bool Do(AdventurePlayer player, IAdventureItem item)
+        public bool Do(IAdventurePlayer player, IAdventureItem item)
         {
             item.IsActive = true;
             player.ChatClient.PostDirectMessage(player.Id, _message);

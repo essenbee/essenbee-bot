@@ -11,7 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
             _itemToRemove = itemToRemove;
         }
 
-        public bool Do(AdventurePlayer player, IAdventureItem item)
+        public bool Do(IAdventurePlayer player, IAdventureItem item)
         {
             player.CurrentLocation.RemoveItem(_itemToRemove);
             return true;

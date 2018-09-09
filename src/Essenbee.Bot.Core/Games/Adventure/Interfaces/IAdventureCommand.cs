@@ -2,7 +2,7 @@
 {
     public interface IAdventureCommand
     {
-        void Invoke(AdventurePlayer player, ChatCommandEventArgs e);
+        void Invoke(IAdventurePlayer player, ChatCommandEventArgs e);
         bool IsMatch(string verb);
     }
 }

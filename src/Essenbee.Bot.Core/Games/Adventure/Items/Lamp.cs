@@ -22,7 +22,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Interactions.Add(light);
         }
 
-        public override bool Interact(string verb, AdventurePlayer player)
+        public override bool Interact(string verb, IAdventurePlayer player)
         {
             if (!player.Inventory.GetItems().Any(x => x.ItemId.Equals(ItemId)))
             {

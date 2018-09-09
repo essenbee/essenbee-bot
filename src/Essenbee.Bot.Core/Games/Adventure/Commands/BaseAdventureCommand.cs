@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             Verbs = new List<string>(verbs);
         }
 
-        public abstract void Invoke(AdventurePlayer player, ChatCommandEventArgs e);
+        public abstract void Invoke(IAdventurePlayer player, ChatCommandEventArgs e);
 
         public virtual bool IsMatch(string verb)
         {

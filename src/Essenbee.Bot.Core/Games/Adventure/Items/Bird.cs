@@ -27,7 +27,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Interactions.Add(free);
         }
 
-        public override bool Interact(string verb, AdventurePlayer player)
+        public override bool Interact(string verb, IAdventurePlayer player)
         {
             verb = verb.ToLower();
             var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());
@@ -71,7 +71,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             return false;
         }
 
-        private IAdventureItem GetSnakeIfPresent(AdventurePlayer player) => 
+        private IAdventureItem GetSnakeIfPresent(IAdventurePlayer player) => 
             player.CurrentLocation.Items.FirstOrDefault(i => i.ItemId.Equals(Item.Snake));
 
         private void AddInteractionsWhenSnakeKilled(IInteraction interaction, IAdventureItem snake)

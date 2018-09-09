@@ -4,7 +4,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
     public class Close : IAction
     {
-        public bool Do(AdventurePlayer player, IAdventureItem item)
+        public bool Do(IAdventurePlayer player, IAdventureItem item)
         {
             var location = player.CurrentLocation;
 

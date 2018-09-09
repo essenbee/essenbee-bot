@@ -41,7 +41,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public bool ContainerRequired() => MustBeContainedIn != Item.None;
 
-        public virtual bool Interact(string verb, AdventurePlayer player)
+        public virtual bool Interact(string verb, IAdventurePlayer player)
         {
             verb = verb.ToLower();
             var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());

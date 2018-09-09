@@ -37,7 +37,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Interactions.Add(use);
         }
 
-        public override bool Interact(string verb, AdventurePlayer player)
+        public override bool Interact(string verb, IAdventurePlayer player)
         {
             verb = verb.ToLower();
             var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());

@@ -10,7 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         {
         }
 
-        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
             var location = player.CurrentLocation;
             var item = e.ArgsAsList[1].ToLower();
@@ -78,7 +78,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             player.CurrentLocation.Items.Remove(locationItem);
         }
        
-        private void CreateNewInstance(AdventurePlayer player, IAdventureItem locationItem)
+        private void CreateNewInstance(IAdventurePlayer player, IAdventureItem locationItem)
         {
             if (locationItem.ContainerRequired())
             {

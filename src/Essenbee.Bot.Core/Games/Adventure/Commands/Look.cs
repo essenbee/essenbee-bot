@@ -10,7 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         {
         }
 
-        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
             var canSee = true;
             var description = new StringBuilder("*" + player.CurrentLocation.Name + "*");

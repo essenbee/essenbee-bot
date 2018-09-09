@@ -29,7 +29,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         Guid UniqueId { get; }
 
         bool ContainerRequired();
-        bool Interact(string verb, AdventurePlayer player);
+        bool Interact(string verb, IAdventurePlayer player);
         bool IsMatch(string noun);
     }
 }

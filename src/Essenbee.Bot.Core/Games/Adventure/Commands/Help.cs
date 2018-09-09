@@ -9,7 +9,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         {
         }
 
-        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
             var helpText = new StringBuilder("I know several commands to aid you in your exploration, including:");
             helpText.AppendLine();

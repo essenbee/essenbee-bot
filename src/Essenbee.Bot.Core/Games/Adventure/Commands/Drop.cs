@@ -9,7 +9,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         {
         }
 
-        public override void Invoke(AdventurePlayer player, ChatCommandEventArgs e)
+        public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
             var args = e.ArgsAsList;
 
@@ -36,9 +36,18 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                     player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
                 }
 
-                player.Inventory.RemoveItemContainer(itemInInventory);
-                player.CurrentLocation.Items.Add(itemInInventory);
-                player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
+                itemInInventory = player.Inventory.GetContainedItem(itemToDrop);
+
+                if (itemInInventory != null)
+                {
+                    player.Inventory.RemoveItemContainer(itemInInventory);
+                    player.CurrentLocation.Items.Add(itemInInventory);
+                    player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
+                    return;
+                }
+
+                // Just in case ...
+                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToDrop} to drop!");
             }
         }
     }

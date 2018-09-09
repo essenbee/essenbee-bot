@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public class AdventurePlayer
+    public class AdventurePlayer : IAdventurePlayer
     {
         public string Id { get; set; }
         public string UserName { get; set; }
