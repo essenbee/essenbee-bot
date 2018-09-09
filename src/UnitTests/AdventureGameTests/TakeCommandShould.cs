@@ -25,18 +25,25 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var food = ItemFactory.GetInstance(fakeGame, Item.FoodRation);
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { food });
 
-            var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "food" }, string.Empty, "Bill", "Player1", string.Empty);
+            var fakeLamp = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeLamp.ItemId).Returns(Item.Lamp);
+            A.CallTo(() => fakeLamp.Nouns).Returns(new List<string> { "lamp" });
+            A.CallTo(() => fakeLamp.IsEndlessSupply).Returns(false);
+            A.CallTo(() => fakeLamp.IsPortable).Returns(true);
+            A.CallTo(() => fakeLamp.IsMatch("lamp")).Returns(true);
+
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakeLamp });
+
+            var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "lamp" }, string.Empty, "Bill", "Player1", string.Empty);
 
             // Act
             var cmd = new Take(fakeGame, "take", "get");
             cmd.Invoke(fakePlayer, args);
 
             // Assert
-            Assert.IsTrue(inventory.Has(Item.FoodRation));
-            Assert.AreEqual(1, inventory.GetItems().Count(i => i.ItemId == Item.FoodRation));
+            Assert.IsTrue(inventory.Has(Item.Lamp));
+            Assert.AreEqual(1, inventory.GetItems().Count(i => i.ItemId == Item.Lamp));
         }
 
         [TestMethod]
@@ -51,10 +58,15 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var food = ItemFactory.GetInstance(fakeGame, Item.FoodRation);
-            inventory.AddItem(food);
 
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { food });
+            var fakeFood = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeFood.ItemId).Returns(Item.FoodRation);
+            A.CallTo(() => fakeFood.Nouns).Returns(new List<string> { "food" });
+            A.CallTo(() => fakeFood.IsPortable).Returns(true);
+            A.CallTo(() => fakeFood.IsMatch("food")).Returns(true);
+            inventory.AddItem(fakeFood);
+
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakeFood });
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "food" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -79,9 +91,13 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var mailbox = ItemFactory.GetInstance(fakeGame, Item.Mailbox);
+            var fakMailbox = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakMailbox.ItemId).Returns(Item.Mailbox);
+            A.CallTo(() => fakMailbox.Nouns).Returns(new List<string> { "mailbox" });
+            A.CallTo(() => fakMailbox.IsPortable).Returns(false);
+            A.CallTo(() => fakMailbox.IsMatch("mailbox")).Returns(true);
 
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { mailbox });
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakMailbox });
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "mailbox" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -105,8 +121,13 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var food = ItemFactory.GetInstance(fakeGame, Item.FoodRation);
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { food });
+            var fakeFood = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeFood.ItemId).Returns(Item.FoodRation);
+            A.CallTo(() => fakeFood.Nouns).Returns(new List<string> { "food" });
+            A.CallTo(() => fakeFood.IsPortable).Returns(true);
+            A.CallTo(() => fakeFood.IsMatch("food")).Returns(true);
+
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakeFood });
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "cage" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -130,8 +151,16 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var bird = ItemFactory.GetInstance(fakeGame, Item.Bird);
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { bird });
+
+            var fakeBird = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeBird.ItemId).Returns(Item.Bird);
+            A.CallTo(() => fakeBird.Nouns).Returns(new List<string> { "bird" });
+            A.CallTo(() => fakeBird.IsPortable).Returns(true);
+            A.CallTo(() => fakeBird.IsMatch("bird")).Returns(true);
+            A.CallTo(() => fakeBird.ContainerRequired()).Returns(true);
+            A.CallTo(() => fakeBird.MustBeContainedIn).Returns(Item.Cage);
+
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakeBird });
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "bird" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -155,11 +184,25 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var bird = ItemFactory.GetInstance(fakeGame, Item.Bird);
-            var cage = ItemFactory.GetInstance(fakeGame, Item.Cage);
 
-            inventory.AddItem(cage);
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { bird });
+            var fakeCage = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeCage.ItemId).Returns(Item.Cage);
+            A.CallTo(() => fakeCage.Nouns).Returns(new List<string> { "cage" });
+            A.CallTo(() => fakeCage.IsPortable).Returns(true);
+            A.CallTo(() => fakeCage.IsMatch("cage")).Returns(true);
+            A.CallTo(() => fakeCage.IsContainer).Returns(true);
+            A.CallTo(() => fakeCage.Contents).Returns(new List<IAdventureItem>());
+
+            var fakeBird = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeBird.ItemId).Returns(Item.Bird);
+            A.CallTo(() => fakeBird.Nouns).Returns(new List<string> { "bird" });
+            A.CallTo(() => fakeBird.IsPortable).Returns(true);
+            A.CallTo(() => fakeBird.IsMatch("bird")).Returns(true);
+            A.CallTo(() => fakeBird.ContainerRequired()).Returns(true);
+            A.CallTo(() => fakeBird.MustBeContainedIn).Returns(Item.Cage);
+
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakeBird });
+            inventory.AddItem(fakeCage);
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "bird" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -168,10 +211,10 @@ namespace UnitTests.AdventureGameTests
             cmd.Invoke(fakePlayer, args);
 
             // Assert
-            Assert.IsTrue(inventory.HasRequiredContainer(bird));
+            Assert.IsTrue(inventory.HasRequiredContainer(fakeBird));
             Assert.IsTrue(inventory.Has(Item.Cage));
             Assert.IsTrue(inventory.Has(Item.Bird));
-            Assert.IsTrue(inventory.GetItems().Single(i => i.IsMatch("cage")).Contents.Contains(bird));
+            Assert.IsTrue(inventory.GetItems().Single(i => i.IsMatch("cage")).Contents.Contains(fakeBird));
         }
 
         [TestMethod]
@@ -188,11 +231,23 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var bird = ItemFactory.GetInstance(fakeGame, Item.Bird);
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { bird });
+            var fakeBird = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeBird.ItemId).Returns(Item.Bird);
+            A.CallTo(() => fakeBird.Nouns).Returns(new List<string> { "bird" });
+            A.CallTo(() => fakeBird.IsPortable).Returns(true);
+            A.CallTo(() => fakeBird.IsMatch("bird")).Returns(true);
+            A.CallTo(() => fakeBird.ContainerRequired()).Returns(true);
+            A.CallTo(() => fakeBird.MustBeContainedIn).Returns(Item.Cage);
 
-            var rod = ItemFactory.GetInstance(fakeGame, Item.Rod);
-            inventory.AddItem(rod);
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakeBird });
+
+            var fakeRod = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeRod.ItemId).Returns(Item.Rod);
+            A.CallTo(() => fakeRod.Nouns).Returns(new List<string> { "rod" });
+            A.CallTo(() => fakeRod.IsPortable).Returns(true);
+            A.CallTo(() => fakeRod.IsMatch("rod")).Returns(true);
+
+            inventory.AddItem(fakeRod);
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "bird" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -216,9 +271,15 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.CurrentLocation).Returns(fakeLocation);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var lamp = ItemFactory.GetInstance(fakeGame, Item.Lamp);
 
-            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { lamp });
+            var fakeLamp = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeLamp.ItemId).Returns(Item.Lamp);
+            A.CallTo(() => fakeLamp.Nouns).Returns(new List<string> { "lamp" });
+            A.CallTo(() => fakeLamp.IsEndlessSupply).Returns(true);
+            A.CallTo(() => fakeLamp.IsPortable).Returns(true);
+            A.CallTo(() => fakeLamp.IsMatch("lamp")).Returns(true);
+
+            A.CallTo(() => fakeLocation.Items).Returns(new List<IAdventureItem> { fakeLamp });
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "take", "lamp" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -228,7 +289,7 @@ namespace UnitTests.AdventureGameTests
 
             // Assert
             Assert.IsTrue(inventory.Has(Item.Lamp));
-            Assert.AreNotSame(lamp, inventory.GetItems().Single(i => i.ItemId == Item.Lamp));
+            Assert.AreNotSame(fakeLamp, inventory.GetItems().Single(i => i.ItemId == Item.Lamp));
         }
     }
 }
