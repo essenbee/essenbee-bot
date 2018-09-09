@@ -22,11 +22,11 @@ namespace Essenbee.Bot.Core.Games.Adventure
             Dungeon = new Dungeon(this, new ColossalCave());
         }
 
-        public AdventureGame(IDungeonBuilder dungeonBuilder)
+        public AdventureGame(IDungeon dungeon)
         {
             _players = new List<AdventurePlayer>();
             _commandHandler = new CommandHandler(this);
-            Dungeon = new Dungeon(this, dungeonBuilder);
+            Dungeon = dungeon;
         }
 
         public void HandleCommand(IChatClient chatClient, ChatCommandEventArgs e)
