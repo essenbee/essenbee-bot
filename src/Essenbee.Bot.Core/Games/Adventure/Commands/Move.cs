@@ -47,6 +47,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             }
 
             player.ChatClient.PostDirectMessage(player.Id, "You cannot go in that direction!");
+            player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
         }
     }
 }
