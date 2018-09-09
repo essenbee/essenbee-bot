@@ -22,8 +22,12 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.Inventory).Returns(inventory);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var food = ItemFactory.GetInstance(fakeGame, Item.FoodRation);
-            inventory.AddItem(food);
+            var fakeFood = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeFood.ItemId).Returns(Item.FoodRation);
+            A.CallTo(() => fakeFood.Nouns).Returns(new List<string> { "food" });
+            A.CallTo(() => fakeFood.IsPortable).Returns(true);
+            A.CallTo(() => fakeFood.IsMatch("food")).Returns(true);
+            inventory.AddItem(fakeFood);
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "drop", "food" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -45,11 +49,26 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.Inventory).Returns(inventory);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var cage = ItemFactory.GetInstance(fakeGame, Item.Cage);
-            var bird = ItemFactory.GetInstance(fakeGame, Item.Bird);
+            var fakeCage = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeCage.ItemId).Returns(Item.Cage);
+            A.CallTo(() => fakeCage.Nouns).Returns(new List<string> { "cage" });
+            A.CallTo(() => fakeCage.IsPortable).Returns(true);
+            A.CallTo(() => fakeCage.IsMatch("cage")).Returns(true);
+            A.CallTo(() => fakeCage.IsContainer).Returns(true);
+            A.CallTo(() => fakeCage.Contents).Returns(new List<IAdventureItem>());
 
-            cage.Contents.Add(bird);
-            inventory.AddItem(cage);
+            var fakeBird = A.Fake<IAdventureItem>();
+            A.CallTo(() => fakeBird.ItemId).Returns(Item.Bird);
+            A.CallTo(() => fakeBird.Nouns).Returns(new List<string> { "bird" });
+            A.CallTo(() => fakeBird.IsPortable).Returns(true);
+            A.CallTo(() => fakeBird.IsMatch("bird")).Returns(true);
+            A.CallTo(() => fakeBird.ContainerRequired()).Returns(true);
+            A.CallTo(() => fakeBird.MustBeContainedIn).Returns(Item.Cage);
+
+            inventory.AddItem(fakeCage);
+
+            fakeCage.Contents.Add(fakeBird);
+            inventory.AddItem(fakeCage);
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "drop", "bird" }, string.Empty, "Bill", "Player1", string.Empty);
 
@@ -72,8 +91,14 @@ namespace UnitTests.AdventureGameTests
             A.CallTo(() => fakePlayer.Inventory).Returns(inventory);
 
             var fakeGame = A.Fake<IReadonlyAdventureGame>();
-            var food = ItemFactory.GetInstance(fakeGame, Item.FoodRation);
-            inventory.AddItem(food);
+            var fakeFood = A.Fake<IAdventureItem>();
+
+            A.CallTo(() => fakeFood.ItemId).Returns(Item.FoodRation);
+            A.CallTo(() => fakeFood.Nouns).Returns(new List<string> { "food" });
+            A.CallTo(() => fakeFood.IsPortable).Returns(true);
+            A.CallTo(() => fakeFood.IsMatch("food")).Returns(true);
+
+            inventory.AddItem(fakeFood);
 
             var args = new ChatCommandEventArgs("!adv", new List<string> { "drop", "bottle" }, string.Empty, "Bill", "Player1", string.Empty);
 
