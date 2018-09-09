@@ -26,10 +26,11 @@ namespace UnitTests.AdventureGameTests
 
             // Act
             var action = new ActivateItem(string.Empty);
-            action.Do(fakePlayer, fakeLamp);
+            var result = action.Do(fakePlayer, fakeLamp);
 
             // Assert
             Assert.IsTrue(fakeLamp.IsActive);
+            Assert.IsTrue(result);
         }
     }
 }
