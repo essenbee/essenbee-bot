@@ -87,12 +87,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public ReadOnlyCollection<IAdventureItem> GetItems() => _items.ToList().AsReadOnly();
 
-        public IAdventureItem GetContainedItem(string noun)
-        {
-            var containedItems = GetContainedItems();
-            return containedItems.FirstOrDefault(c => c.IsMatch(noun));
-        }
-
+        public IAdventureItem GetContainedItem(string noun) => GetContainedItems().FirstOrDefault(c => c.IsMatch(noun));
+        
         public ReadOnlyCollection<IAdventureItem> GetContainedItems()
         {
             var containedItems = new List<IAdventureItem>();
