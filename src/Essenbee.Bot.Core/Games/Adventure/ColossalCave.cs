@@ -6,7 +6,7 @@ using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
-    public class ColossalCave
+    public class ColossalCave : IDungeonBuilder
     {
         public Dictionary<Location, IAdventureLocation> Build(AdventureGame game)
         {

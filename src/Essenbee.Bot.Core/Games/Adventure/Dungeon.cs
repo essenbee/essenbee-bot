@@ -9,9 +9,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
     {
         private readonly Dictionary<Location, IAdventureLocation> _locations;
 
-        public Dungeon(AdventureGame game)
+        public Dungeon(AdventureGame game, IDungeonBuilder builder)
         {
-            _locations = new ColossalCave().Build(game);
+            _locations = builder.Build(game);
         }
 
         public bool TryGetLocation(Location locationId, out IAdventureLocation place)
