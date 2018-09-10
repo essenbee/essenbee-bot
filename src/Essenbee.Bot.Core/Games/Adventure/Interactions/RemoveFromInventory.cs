@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
-using Essenbee.Bot.Core.Games.Adventure.Items;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 {
@@ -8,7 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
     {
         public bool Do(IAdventurePlayer player, IAdventureItem item)
         {
-            if (ContainerRequired(item))
+            if (item.ContainerRequired())
             {
                 var container = player.Inventory.GetItems().FirstOrDefault(i => i.ItemId == item.MustBeContainedIn);
                 container?.Contents.Remove(item);
@@ -20,7 +19,5 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interactions
 
             return true;
         }
-
-        private static bool ContainerRequired(IAdventureItem locationItem) => locationItem.MustBeContainedIn != Item.None;
     }
 }
