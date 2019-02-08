@@ -21,7 +21,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             helpText.AppendLine();
             helpText.AppendLine("Some of the places you will visit have items lying around. If such an item is shown in *bold* text, you can take it and carry it with you; it may or may not be of any use.");
             helpText.AppendLine("Note that, if you find several of the same item, you can only carry one of them at a time!");
-            player.ChatClient.PostDirectMessage(player.Id, helpText.ToString());
+            player.ChatClient.PostDirectMessage(player, helpText.ToString());
         }
     }
 }

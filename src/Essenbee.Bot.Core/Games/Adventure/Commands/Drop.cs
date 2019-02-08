@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (args.Count == 1)
             {
-                player.ChatClient.PostDirectMessage(player.Id, "What would you like to drop? Try using: !adv drop _item_");
+                player.ChatClient.PostDirectMessage(player, "What would you like to drop? Try using: !adv drop _item_");
                 return;
             }
 
@@ -23,7 +23,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (!player.Inventory.Has(itemToDrop))
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToDrop} to drop!");
+                player.ChatClient.PostDirectMessage(player, $"You don't have a {itemToDrop} to drop!");
             }
             else
             {
@@ -33,7 +33,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 {
                     player.Inventory.RemoveItem(itemInInventory);
                     player.CurrentLocation.Items.Add(itemInInventory);
-                    player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
+                    player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
                 }
 
                 itemInInventory = player.Inventory.GetContainedItem(itemToDrop);
@@ -42,12 +42,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 {
                     player.Inventory.RemoveItemContainer(itemInInventory);
                     player.CurrentLocation.Items.Add(itemInInventory);
-                    player.ChatClient.PostDirectMessage(player.Id, $"You dropped a {itemToDrop}");
+                    player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
                     return;
                 }
 
                 // Just in case ...
-                player.ChatClient.PostDirectMessage(player.Id, $"You don't have a {itemToDrop} to drop!");
+                player.ChatClient.PostDirectMessage(player, $"You don't have a {itemToDrop} to drop!");
             }
         }
     }

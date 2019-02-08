@@ -2,6 +2,7 @@ using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Infra.CognitiveServices;
 using Essenbee.Bot.Infra.Hangfire;
 using Essenbee.Bot.Infra.Slack;
+using Essenbee.Bot.Infra.Twitch;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,9 +36,16 @@ namespace Essenbee.Bot.Web
             services.Configure<UserSecrets>(Configuration.GetSection(nameof(UserSecrets)));
             var secrets = Configuration.GetSection(nameof(UserSecrets)).Get<UserSecrets>();
 
-            // Injected into SlackChatClient by DI for Hangfire scheduled actions
+            // Injected into ChatClients by DI for Hangfire scheduled actions
             var slackConfig = new SlackConfig { ApiKey = secrets.SlackApiKey };
+            var twitchConfig = new TwitchConfig {
+                Username = secrets.TwitchUsername,
+                Token = secrets.TwitchToken,
+                Channel = secrets.TwitchChannel,
+            };
+
             services.AddSingleton(slackConfig);
+            services.AddSingleton(twitchConfig);
 
             services.AddSingleton<IConnectedClients, ConnectedClients>();
             services.AddSingleton<IBotSettings, BotSettings>();

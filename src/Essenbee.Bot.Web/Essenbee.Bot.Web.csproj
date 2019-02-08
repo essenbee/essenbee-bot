@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>9E695E0F-21E1-42A6-989E-DBA5DD2F3AFA</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
     <PackageReference Include="NWebsec.AspNetCore.Core" Version="2.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="Serilog" Version="2.7.1" />
@@ -25,6 +25,7 @@
     <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Hangfire\Essenbee.Bot.Infra.Hangfire.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj" />
+    <ProjectReference Include="..\Essenbee.Bot.Infra.Twitch\Essenbee.Bot.Infra.Twitch.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Inra.CognitiveServices\Essenbee.Bot.Infra.CognitiveServices.csproj" />
   </ItemGroup>
 

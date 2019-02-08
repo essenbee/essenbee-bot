@@ -10,7 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
-            player.ChatClient.PostDirectMessage(player.Id, player.Inventory.ListItems());
+            player.ChatClient.PostDirectMessage(player, player.Inventory.ListItems());
         }
     }
 }

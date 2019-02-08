@@ -45,7 +45,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 }
                 else
                 {
-                    player.ChatClient.PostDirectMessage(player.Id, "What would you like me to do?");
+                    player.ChatClient.PostDirectMessage((chatClient.UseUsernameForIM) ? player.UserName : player.Id, "What would you like me to do?");
                 }
             }
         }
@@ -53,6 +53,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
         private void JoinGame(IChatClient chatClient, ChatCommandEventArgs e)
         {
             var player = new AdventurePlayer(e.UserId, e.UserName, chatClient) { CurrentLocation = Dungeon.GetStartingLocation() };
+
+
             _players.Add(player);
             chatClient.PostMessage(e.Channel, $"{e.UserName} has joined the Adventure!");
 

@@ -65,7 +65,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 description.AppendLine("It is pitch black, you cannot see a thing!");
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, description.ToString());
+            player.ChatClient.PostDirectMessage(player, description.ToString());
         }
     }
 }

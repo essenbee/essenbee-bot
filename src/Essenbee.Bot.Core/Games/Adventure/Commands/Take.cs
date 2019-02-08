@@ -20,7 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (locationItem != null && player.Inventory.GetItems().Any(i => i.ItemId.Equals(locationItem.ItemId)))
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You are already carrying a {item} with you.");
+                player.ChatClient.PostDirectMessage(player, $"You are already carrying a {item} with you.");
                 return;
             }
 
@@ -32,7 +32,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                     {
                         player.Inventory.AddItem(containedItem);
                         container.Contents.Remove(containedItem);
-                        player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
+                        player.ChatClient.PostDirectMessage(player, $"You are now carrying a {item} with you.");
 
                         return;
                     }
@@ -41,29 +41,29 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (locationItem is null)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You cannot see a {item} here!");
+                player.ChatClient.PostDirectMessage(player, $"You cannot see a {item} here!");
                 return;
             }
 
             if (!locationItem.IsPortable)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You cannot carry the {item} with you!");
+                player.ChatClient.PostDirectMessage(player, $"You cannot carry the {item} with you!");
                 return;
             }
 
             if (locationItem.ContainerRequired() && !player.Inventory.HasRequiredContainer(locationItem))
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"You have no way of carrying a {item} with you...");
+                player.ChatClient.PostDirectMessage(player, $"You have no way of carrying a {item} with you...");
                 return;
             }
 
             if (player.Inventory.Has(locationItem.PreventTakeItemId))
             {
-                player.ChatClient.PostDirectMessage(player.Id, locationItem.PreventTakeText);
+                player.ChatClient.PostDirectMessage(player, locationItem.PreventTakeText);
                 return;
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, $"You are now carrying a {item} with you.");
+            player.ChatClient.PostDirectMessage(player, $"You are now carrying a {item} with you.");
 
             if (locationItem.IsEndlessSupply)
             {

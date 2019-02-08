@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             {
                 if (!player.Statuses.Contains(PlayerStatus.HasLight))
                 {
-                    player.ChatClient.PostDirectMessage(player.Id, "It is pitch black! If you move around, you'll probably fall into a chasm or something...");
+                    player.ChatClient.PostDirectMessage(player, "It is pitch black! If you move around, you'll probably fall into a chasm or something...");
                 }
             }
 
@@ -37,17 +37,17 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                     if (!string.IsNullOrWhiteSpace(moveText))
                     {
-                        player.ChatClient.PostDirectMessage(player.Id, moveText);
+                        player.ChatClient.PostDirectMessage(player, moveText);
                     }
 
-                    player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
+                    player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
 
                     return;
                 }
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, "You cannot go in that direction!");
-            player.ChatClient.PostDirectMessage(player.Id, "*" + player.CurrentLocation.Name + "*");
+            player.ChatClient.PostDirectMessage(player, "You cannot go in that direction!");
+            player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
         }
     }
 }

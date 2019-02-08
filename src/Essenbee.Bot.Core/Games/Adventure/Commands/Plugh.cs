@@ -28,11 +28,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (canMove)
             {
-                player.ChatClient.PostDirectMessage(player.Id, "You suddenly feel nauseous as space seems to fold around you!");
+                player.ChatClient.PostDirectMessage(player, "You suddenly feel nauseous as space seems to fold around you!");
                 return;
             }
 
-            player.ChatClient.PostDirectMessage(player.Id, "Nothing happens...");
+            player.ChatClient.PostDirectMessage(player, "Nothing happens...");
         }
     }
 }

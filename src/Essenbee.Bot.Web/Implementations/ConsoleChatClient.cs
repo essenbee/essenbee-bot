@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Interfaces;
 using Serilog;
 
@@ -7,6 +8,7 @@ namespace Essenbee.Bot.Web
 {
     public class ConsoleChatClient : IChatClient
     {
+        public bool UseUsernameForIM { get; }
         public string DefaultChannel => string.Empty;
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
 
@@ -39,5 +41,7 @@ namespace Essenbee.Bot.Web
             Console.WriteLine($"<{username}>: " + text);
             Log.Information($"*** <{username}>: " + text);
         }
+
+        public void PostDirectMessage(IAdventurePlayer player, string text) => PostDirectMessage(player.Id, text);
     }
 }

@@ -4,6 +4,7 @@ using Essenbee.Bot.Core.Interfaces;
 using static System.Console;
 using SlackLibCore;
 using System.Linq;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 
 namespace Essenbee.Bot.Infra.Slack
 {
@@ -15,6 +16,7 @@ namespace Essenbee.Bot.Infra.Slack
         private bool _isReady = false;
         private SlackConfig _settings;
 
+        public bool UseUsernameForIM { get; }
         public string DefaultChannel => "general";
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
@@ -109,6 +111,18 @@ namespace Essenbee.Bot.Infra.Slack
         {
             var imChannelList = _slackClient.IM.List();
             var userChannel = imChannelList.ims.FirstOrDefault(c => c.user == userId);
+
+            if (userChannel is null) return;
+
+            PostMessage(userChannel.id, msg);
+        }
+
+        public void PostDirectMessage(IAdventurePlayer player, string msg)
+        {
+            if (player is null) return;
+
+            var imChannelList = _slackClient.IM.List();
+            var userChannel = imChannelList.ims.FirstOrDefault(c => c.user == player.Id);
 
             if (userChannel is null) return;
 

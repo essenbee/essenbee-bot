@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (args.Count == 1)
             {
-                player.ChatClient.PostDirectMessage(player.Id, Verbs.Contains(args[0])
+                player.ChatClient.PostDirectMessage(player, Verbs.Contains(args[0])
                         ? $"I don't know how to just `{args[0]}`. Can you be a little more explicit?"
                         : $"Sorry, I don't understand the verb `{args[0]}`.");
 
@@ -35,7 +35,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (itemInInventory is null && itemAtLocation is null)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"Which `{itemToInteractWith}` are you referring to?");
+                player.ChatClient.PostDirectMessage(player, $"Which `{itemToInteractWith}` are you referring to?");
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (!actionWasMatched)
             {
-                player.ChatClient.PostDirectMessage(player.Id, $"I don't know how to `{args[0]}` a `{itemToInteractWith}`. Can you be clearer?");
+                player.ChatClient.PostDirectMessage(player, $"I don't know how to `{args[0]}` a `{itemToInteractWith}`. Can you be clearer?");
             }
         }
     }
