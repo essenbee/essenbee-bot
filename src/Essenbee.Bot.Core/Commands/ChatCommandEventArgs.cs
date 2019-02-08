@@ -10,8 +10,9 @@ namespace Essenbee.Bot.Core
         public string UserName { get; }
         public string UserId { get; }
         public string ClientType { get; }
+        public UserRole Role { get; }
 
-        public ChatCommandEventArgs(string command, List<string> args, string channel, string userName, string userId, string clientType)
+        public ChatCommandEventArgs(string command, List<string> args, string channel, string userName, string userId, string clientType, UserRole role = UserRole.Viewer)
         {
             Channel = channel;
             Command = command;
@@ -19,6 +20,7 @@ namespace Essenbee.Bot.Core
             UserName = userName;
             UserId = userId;
             ClientType = clientType;
+            Role = role;
         }
     }
 }

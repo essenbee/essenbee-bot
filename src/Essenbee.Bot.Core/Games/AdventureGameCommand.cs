@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure;
+﻿using System;
+using Essenbee.Bot.Core.Games.Adventure;
 using Essenbee.Bot.Core.Interfaces;
 
 namespace Essenbee.Bot.Core.Games
@@ -8,6 +9,7 @@ namespace Essenbee.Bot.Core.Games
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName => "adv";
         public string HelpText => "Play an old school text adventure game";
+        public TimeSpan Cooldown { get; }
 
         private AdventureGame _adventureGame;
         private object _mutex = new object();
@@ -16,6 +18,7 @@ namespace Essenbee.Bot.Core.Games
         public AdventureGameCommand(IBot bot)
         {
             _bot = bot;
+            Cooldown = TimeSpan.FromMinutes(0);
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

@@ -9,6 +9,7 @@ namespace Essenbee.Bot.Core.Commands
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName => "skeet";
         public string HelpText => "Use !skeet to get a random fact about Jon Skeet.";
+        public TimeSpan Cooldown { get; }
 
         private readonly Random _random = new Random();
         private readonly List<string> _quotes;
@@ -17,6 +18,7 @@ namespace Essenbee.Bot.Core.Commands
         public SkeetCommand(IBot bot)
         {
             _quotes = SkeetQuotes.Quotes;
+            Cooldown = TimeSpan.FromMinutes(0);
             _bot = bot;
         }
 

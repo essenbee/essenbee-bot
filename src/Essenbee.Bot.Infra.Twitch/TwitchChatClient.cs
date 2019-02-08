@@ -156,15 +156,25 @@ namespace Essenbee.Bot.Infra.Twitch
 
         private void ProcessCommand(object sender, OnChatCommandReceivedArgs e)
         {
-            var user = e?.Command?.ChatMessage?.DisplayName ?? "<unknown>";
-            var command = e?.Command?.CommandText ?? "<none>";
-            var args = e?.Command?.ArgumentsAsString ?? string.Empty;
-            var argsList = e?.Command?.ArgumentsAsList ?? new List<string>();
-            var channel = string.Empty;
-            var userId = e?.Command?.ChatMessage?.UserId ?? string.Empty;
-            var clientType = GetType().ToString();
+                var user = e?.Command?.ChatMessage?.DisplayName ?? "<unknown>";
+                var command = e?.Command?.CommandText ?? "<none>";
+                var args = e?.Command?.ArgumentsAsString ?? string.Empty;
+                var argsList = e?.Command?.ArgumentsAsList ?? new List<string>();
+                var channel = string.Empty;
+                var userId = e?.Command?.ChatMessage?.UserId ?? string.Empty;
+                var clientType = GetType().ToString();
 
-            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, channel, user, userId, clientType));
+                var userRole = GetRole(e?.Command?.ChatMessage);
+
+                OnChatCommandReceived?.Invoke(this,
+                    new ChatCommandEventArgs(command, argsList, channel, user, userId, clientType, userRole));
+        }
+
+        private UserRole GetRole(ChatMessage chatMessage)
+        {
+            if (chatMessage.IsBroadcaster) return UserRole.Streamer;
+            if (chatMessage.IsModerator) return UserRole.Moderator;
+            return chatMessage.IsSubscriber ? UserRole.Subscriber : UserRole.Viewer;
         }
 
         private void ProcessCommand(object sender, OnWhisperCommandReceivedArgs e)
@@ -177,7 +187,7 @@ namespace Essenbee.Bot.Infra.Twitch
             var userId = e?.Command?.WhisperMessage?.UserId ?? string.Empty;
             var clientType = GetType().ToString();
 
-            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, channel, user, userId, clientType));
+            OnChatCommandReceived?.Invoke(this, new ChatCommandEventArgs(command, argsList, channel, user, userId, clientType));
         }
 
         private static IEnumerable<string> SplitToLines(string value, int maximumLineLength)

@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using System;
+using Essenbee.Bot.Core.Interfaces;
 using System.Net;
 
 namespace Essenbee.Bot.Core.Commands
@@ -8,12 +9,14 @@ namespace Essenbee.Bot.Core.Commands
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName { get => "cricket"; }
         public string HelpText { get; } = @"The !cricket command shows live scoreboards from around the world.";
+        public TimeSpan Cooldown { get; }
 
         private readonly IBot _bot;
 
         public CricketCommand(IBot bot)
         {
             _bot = bot;
+            Cooldown = TimeSpan.FromMinutes(10);
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

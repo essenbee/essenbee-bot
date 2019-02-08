@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using System;
+using Essenbee.Bot.Core.Interfaces;
 using System.Text;
 
 namespace Essenbee.Bot.Core.Commands
@@ -11,11 +12,13 @@ namespace Essenbee.Bot.Core.Commands
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName => "ask";
         public string HelpText => "The !ask command uses the experimental Project Answer Search to try to answer your questions.";
+        public TimeSpan Cooldown { get; }
 
         public AskCommand(IBot bot)
         {
             _bot = bot;
             _searchEngine = bot.AnswerSearchEngine;
+            Cooldown = TimeSpan.FromMinutes(10);
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

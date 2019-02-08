@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using System;
+using Essenbee.Bot.Core.Interfaces;
 using System.Linq;
 using System.Text;
 
@@ -9,12 +10,14 @@ namespace Essenbee.Bot.Core.Commands
         public ItemStatus Status { get; set; } = ItemStatus.Active;
         public string CommandName => "help";
         public string HelpText => "The !help command provides help on the commands available through CoreBot.";
+        public TimeSpan Cooldown { get; }
 
         private readonly IBot _bot;
 
         public HelpCommand(IBot bot)
         {
             _bot = bot;
+            Cooldown = TimeSpan.FromMinutes(0);
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

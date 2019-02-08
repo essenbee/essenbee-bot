@@ -17,6 +17,7 @@ namespace Essenbee.Bot.Core
         public IAnswerSearchEngine AnswerSearchEngine { get; }
         public IBotSettings Settings { get; }
         public ICommandHandler CommandHandler { get; set; }
+        public Dictionary<string, DateTimeOffset> CommandInvocations { get; } = new Dictionary<string, DateTimeOffset>();
 
         public static bool IsRunning = false;
         private IRepository _repository;

@@ -25,6 +25,8 @@ namespace Essenbee.Bot.Core.Commands
                 // Check command name against available commands ...
                 if (CommandRegistry.TryGetValue(e.Command, out ICommand cmd))
                 {
+                    if (!CanExecuteNow(chatClient, e, cmd)) return;
+
                     cmd.Execute(chatClient, e);
                 }
                 else
@@ -32,6 +34,39 @@ namespace Essenbee.Bot.Core.Commands
                     chatClient.PostMessage(e.Channel, $"The command {e.Command} has not been implemented.");
                 }
             }
+        }
+
+        private bool CanExecuteNow(IChatClient chatClient, ChatCommandEventArgs e, ICommand cmd)
+        {
+            if (cmd.Cooldown > TimeSpan.FromMinutes(0))
+            {
+                if (e.Role != UserRole.Streamer && e.Role != UserRole.Moderator)
+                {
+                    if (_bot.CommandInvocations.ContainsKey(e.Command))
+                    {
+                        var timeInvoked = _bot.CommandInvocations[e.Command];
+                        var elapsedTime = DateTimeOffset.Now - timeInvoked;
+
+                        if (elapsedTime >= cmd.Cooldown)
+                        {
+                            _bot.CommandInvocations.Remove(e.Command);
+                        }
+                        else
+                        {
+                            var remaining = (cmd.Cooldown - elapsedTime).Minutes;
+                            chatClient.PostMessage(e.Channel,
+                                $"The command \"{e.Command}\" is on cooldown, {remaining} minute(s) remaining.");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        _bot.CommandInvocations.Add(e.Command, DateTimeOffset.Now);
+                    }
+                }
+            }
+
+            return true;
         }
 
         private void LoadCommands()
@@ -48,6 +83,8 @@ namespace Essenbee.Bot.Core.Commands
                 if (type.Name == "ICommand") continue;
 
                 var cmd = Activator.CreateInstance(type, _bot) as ICommand;
+                if (cmd == null) continue;
+
                 cmd.Status = ItemStatus.Active;
                 CommandRegistry.Add(cmd.CommandName, cmd);
             }

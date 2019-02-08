@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Interfaces;
+﻿using System;
+using Essenbee.Bot.Core.Interfaces;
 using System.Net;
 
 namespace Essenbee.Bot.Core.Commands
@@ -10,11 +11,14 @@ namespace Essenbee.Bot.Core.Commands
         public string HelpText { get; } = @"The command !news with no argument will display Home news from Sky News. Valid arguments are: " +
                         "space, tech, uk, us, world, business, politics, entertainment, sport or strange.";
 
+        public TimeSpan Cooldown { get; }
+
         private readonly IBot _bot;
 
         public NewsCommand(IBot bot)
         {
             _bot = bot;
+            Cooldown = TimeSpan.FromMinutes(10);
         }
     
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
