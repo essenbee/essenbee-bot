@@ -34,7 +34,9 @@ namespace Essenbee.Bot.Infra.Twitch
             var credentials = new ConnectionCredentials(settings.Username, settings.Token);
             _twitchClient = new TwitchClient();
             _twitchClient.Initialize(credentials, channel: settings.Channel);
+
             UseUsernameForIM = true;
+            DefaultChannel = _settings.Channel;
 
             SetupEvents();
             _twitchClient.Connect();
@@ -52,6 +54,7 @@ namespace Essenbee.Bot.Infra.Twitch
             };
 
             UseUsernameForIM = true;
+            DefaultChannel = _settings.Channel;
 
             SetupEvents();
             _twitchClient.Connect();
@@ -76,7 +79,7 @@ namespace Essenbee.Bot.Infra.Twitch
 
         public void PostMessage(string text)
         {
-            if (_isReady)
+            if (_twitchClient.IsConnected && _twitchClient.JoinedChannels.Count > 0)
             {
                 var messageParts = SplitToLines(text, MaxMsgSize);
 
@@ -89,7 +92,7 @@ namespace Essenbee.Bot.Infra.Twitch
 
         public void PostDirectMessage(string username, string text)
         {
-            if (_isReady)
+            if (_twitchClient.IsConnected && _twitchClient.JoinedChannels.Count > 0)
             {
                 var messageParts = SplitToLines(text, MaxMsgSize);
 
@@ -125,8 +128,8 @@ namespace Essenbee.Bot.Infra.Twitch
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            WriteLine("Hey guys! I am a bot connected via TwitchLib!");
-            _twitchClient.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
+            // WriteLine("CoreBot joined the channel!");
+            // _twitchClient.SendMessage(e.Channel, "CoreBot joined the channel!");
         }
 
         private void OnDisconnected(object sender, OnDisconnectedEventArgs e)
