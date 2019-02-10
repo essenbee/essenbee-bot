@@ -29,10 +29,6 @@ namespace Essenbee.Bot.Core.Commands
 
                     cmd.Execute(chatClient, e);
                 }
-                else
-                {
-                    chatClient.PostMessage(e.Channel, $"The command {e.Command} has not been implemented.");
-                }
             }
         }
 
