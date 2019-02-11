@@ -23,9 +23,6 @@ namespace Essenbee.Bot.Infra.Twitch
         private readonly TwitchClient _twitchClient;
         private readonly TwitchConfig _settings;
         private int _connectionFailures = 0;
-        private bool _shutdown = false;
-        private bool _isReady = false;
-
         private const int MaxMsgSize = 500;
 
         public TwitchChatClient(TwitchConfig settings)
@@ -107,8 +104,6 @@ namespace Essenbee.Bot.Infra.Twitch
         
         public void Disconnect()
         {
-            _isReady = false;
-            _shutdown = true;
             WriteLine("Disconnecting from the Twitch service ...");
             _twitchClient.Disconnect();
         }
@@ -121,7 +116,6 @@ namespace Essenbee.Bot.Infra.Twitch
         private void OnConnected(object sender, OnConnectedArgs e)
         {
             var botName = e?.BotUsername ?? "<unknown>";
-            _isReady = true;
             _connectionFailures = 0;
             WriteLine($"{botName} is connected to Twitch!");
         }
