@@ -38,7 +38,22 @@ namespace Essenbee.Bot.Core.Commands
 
             var launchJson = result.Content.ReadAsStringAsync().Result;
 
-            var launches = JsonConvert.DeserializeObject<RocketLaunches>(launchJson);
+            var rocketLaunch = JsonConvert.DeserializeObject<RocketLaunches>(launchJson);
+
+            if (rocketLaunch.Status == "error")
+            {
+                chatClient.PostMessage("No launches found.");
+                return;
+            }
+
+            var output = new StringBuilder();
+
+            foreach (var launch in rocketLaunch.Launches)
+            {
+                output.AppendLine($"{launch.Name} - {launch.Net}");
+            }
+
+            chatClient.PostMessage(output.ToString());
         }
 
     }
