@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using DSharpPlus.EventArgs;
 using System.Threading.Tasks;
 using Essenbee.Bot.Infra.Discord.Commands;
-using System.Text;
 
 namespace Essenbee.Bot.Infra.Discord
 {
@@ -17,10 +16,10 @@ namespace Essenbee.Bot.Infra.Discord
         private readonly DiscordClient _discordClient;
         private bool _isReady;
         private DiscordConfig _settings;
-        private const ulong General = 546412212038795307;
-
+        
         public bool UseUsernameForIM { get; }
         public string DefaultChannel => "general";
+        public const ulong General = 546412212038795307;
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
         public CommandsNextModule Commands { get; set; }
@@ -34,7 +33,7 @@ namespace Essenbee.Bot.Infra.Discord
             });
 
             SetupEvents();
-            SetupCommands();
+            SetupDiscordCommands();
             _ = Connect();
         }
 
@@ -49,7 +48,7 @@ namespace Essenbee.Bot.Infra.Discord
             });
 
             SetupEvents();
-            SetupCommands();
+            SetupDiscordCommands();
             _ = Connect();
         }
 
@@ -109,23 +108,7 @@ namespace Essenbee.Bot.Infra.Discord
                 return Task.CompletedTask;
             }
 
-            if (e.Message.Content.StartsWith("!") )
-            {
-                var cmdText = e.Message.Content.ToLower();
-                var commandPieces = cmdText.Split(' ');
-                var command = commandPieces[0].Replace("!", string.Empty);
-                var clientType = GetType().ToString();
-                var argsList = new List<string>();
-
-                for (var i = 1; i < commandPieces.Length; i++)
-                {
-                    argsList.Add(commandPieces[i]);
-                }
-
-
-                OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, 
-                    "general", e.Author.Username, e.Author.Username, clientType, Core.UserRole.Streamer));
-            }
+            ProcessCommand(e);
 
             var user = e?.Author?.Username ?? string.Empty;
             var text = e?.Message?.Content ?? "<< none >>";
@@ -156,7 +139,7 @@ namespace Essenbee.Bot.Infra.Discord
             _discordClient.MessageUpdated += OnMessageEdit;
             // _discordClient.CommandReceived += ProcessCommand;
         }
-        private void SetupCommands()
+        private void SetupDiscordCommands()
         {
             var commandConfig = new CommandsNextConfiguration {
                 StringPrefix = "~",
@@ -166,6 +149,26 @@ namespace Essenbee.Bot.Infra.Discord
 
             Commands = _discordClient.UseCommandsNext(commandConfig);
             Commands.RegisterCommands<UtilityCommands>(); // Discord only commands
+        }
+
+        private void ProcessCommand(MessageCreateEventArgs e)
+        {
+            if (e.Message.Content.StartsWith("!"))
+            {
+                var cmdText = e.Message.Content.ToLower();
+                var commandPieces = cmdText.Split(' ');
+                var command = commandPieces[0].Replace("!", string.Empty);
+                var clientType = GetType().ToString();
+                var argsList = new List<string>();
+
+                for (var i = 1; i < commandPieces.Length; i++)
+                {
+                    argsList.Add(commandPieces[i]);
+                }
+
+                OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList,
+                    "general", e.Author.Username, e.Author.Username, clientType, Core.UserRole.Streamer));
+            }
         }
     }
 }
