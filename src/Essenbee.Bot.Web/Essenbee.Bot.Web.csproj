@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
+    <ProjectReference Include="..\Essenbee.Bot.Infra.Discord\Essenbee.Bot.Infra.Discord.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Hangfire\Essenbee.Bot.Infra.Hangfire.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Twitch\Essenbee.Bot.Infra.Twitch.csproj" />

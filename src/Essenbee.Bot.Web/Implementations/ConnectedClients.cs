@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Essenbee.Bot.Infra.Twitch;
+using Essenbee.Bot.Infra.Discord;
 
 namespace Essenbee.Bot.Web
 {
@@ -24,11 +25,13 @@ namespace Essenbee.Bot.Web
         private List<IChatClient> ConnectChatClients()
         {
             var slackApiKey = _config.Value.SlackApiKey;
+            var discordToken = _config.Value.DiscordToken;
             var connectedClients = new List<IChatClient>
             {
                 // new ConsoleChatClient(),
-                // new SlackChatClient(slackApiKey),
-                new TwitchChatClient(_config.Value.TwitchUsername, _config.Value.TwitchToken, _config.Value.TwitchChannel),
+                new SlackChatClient(slackApiKey),
+                new DiscordChatClient(discordToken),
+                // new TwitchChatClient(_config.Value.TwitchUsername, _config.Value.TwitchToken, _config.Value.TwitchChannel),
             };
 
             Thread.Sleep(2000);

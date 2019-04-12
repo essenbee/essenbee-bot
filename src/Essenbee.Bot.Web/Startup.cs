@@ -1,5 +1,6 @@
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Infra.CognitiveServices;
+using Essenbee.Bot.Infra.Discord;
 using Essenbee.Bot.Infra.Hangfire;
 using Essenbee.Bot.Infra.Slack;
 using Essenbee.Bot.Infra.Twitch;
@@ -14,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Essenbee.Bot.Web
 {
+    //`
+    //` ![](BECF8D6358A570AF7A626A1C8EC9D254.png;;;0.00917,0.00839)
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -38,6 +42,7 @@ namespace Essenbee.Bot.Web
 
             // Injected into ChatClients by DI for Hangfire scheduled actions
             var slackConfig = new SlackConfig { ApiKey = secrets.SlackApiKey };
+            var discordConfig = new DiscordConfig { DiscordToken = secrets.DiscordToken };
             var twitchConfig = new TwitchConfig {
                 Username = secrets.TwitchUsername,
                 Token = secrets.TwitchToken,
