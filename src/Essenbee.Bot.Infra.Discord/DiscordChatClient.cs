@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using DSharpPlus.EventArgs;
 using System.Threading.Tasks;
 using Essenbee.Bot.Infra.Discord.Commands;
+using System.Text;
 
 namespace Essenbee.Bot.Infra.Discord
 {
@@ -16,6 +17,7 @@ namespace Essenbee.Bot.Infra.Discord
         private readonly DiscordClient _discordClient;
         private bool _isReady;
         private DiscordConfig _settings;
+        private const ulong General = 546412212038795307;
 
         public bool UseUsernameForIM { get; }
         public string DefaultChannel => "general";
@@ -74,12 +76,14 @@ namespace Essenbee.Bot.Infra.Discord
 
         public void PostMessage(string channel, string text)
         {
-            throw new NotImplementedException();
+            var discordChannel = _discordClient.GetChannelAsync(General).Result;
+            _discordClient.SendMessageAsync(discordChannel, text);
         }
 
         public void PostMessage(string text)
         {
-            throw new NotImplementedException();
+            var discordChannel = _discordClient.GetChannelAsync(General).Result;
+            _discordClient.SendMessageAsync(discordChannel, text);
         }
 
         private Task OnConnected(ReadyEventArgs e)
@@ -103,6 +107,24 @@ namespace Essenbee.Bot.Infra.Discord
             if (e.Author == null)
             {
                 return Task.CompletedTask;
+            }
+
+            if (e.Message.Content.StartsWith("!") )
+            {
+                var cmdText = e.Message.Content.ToLower();
+                var commandPieces = cmdText.Split(' ');
+                var command = commandPieces[0].Replace("!", string.Empty);
+                var clientType = GetType().ToString();
+                var argsList = new List<string>();
+
+                for (var i = 1; i < commandPieces.Length; i++)
+                {
+                    argsList.Add(commandPieces[i]);
+                }
+
+
+                OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, 
+                    "general", e.Author.Username, e.Author.Username, clientType, Core.UserRole.Streamer));
             }
 
             var user = e?.Author?.Username ?? string.Empty;
@@ -137,7 +159,7 @@ namespace Essenbee.Bot.Infra.Discord
         private void SetupCommands()
         {
             var commandConfig = new CommandsNextConfiguration {
-                StringPrefix = "!",
+                StringPrefix = "~",
                 EnableDms = true,
                 EnableMentionPrefix = false
             };
