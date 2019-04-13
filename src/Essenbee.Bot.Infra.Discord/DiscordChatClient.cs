@@ -182,7 +182,7 @@ namespace Essenbee.Bot.Infra.Discord
             DiscordUser user;
             string channel, cmdText;
 
-            (user, channel, cmdText) = GetCommandParameters(e);
+            (user, channel, cmdText) = ExtractFromEventArgs(e);
 
             if (user.IsBot)
             {
@@ -203,7 +203,7 @@ namespace Essenbee.Bot.Infra.Discord
                 channel, userName, userId, clientType, Core.UserRole.Moderator));
         }
 
-        private (DiscordUser user, string channel, string cmdText) GetCommandParameters(DiscordEventArgs e)
+        private (DiscordUser user, string channel, string cmdText) ExtractFromEventArgs(DiscordEventArgs e)
         {
             switch (e)
             {

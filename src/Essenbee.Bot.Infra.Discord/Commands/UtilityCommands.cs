@@ -1,8 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using Essenbee.Bot.Core;
-using Essenbee.Bot.Core.Commands;
 using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Infra.Discord.Commands
