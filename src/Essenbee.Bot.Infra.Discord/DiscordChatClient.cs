@@ -124,7 +124,7 @@ namespace Essenbee.Bot.Infra.Discord
         {
             if (e.Author != null)
             {
-                if (e.Message.Content.StartsWith("!"))
+                if (e.Message?.Content != null && e.Message.Content.StartsWith("!"))
                 {
                     ProcessCommand(e);
                 }
@@ -140,7 +140,7 @@ namespace Essenbee.Bot.Infra.Discord
 
         private Task OnMessageEdit(MessageUpdateEventArgs e)
         {
-            if (e.Message.Content.StartsWith("!"))
+            if (e.Message?.Content != null && e.Message.Content.StartsWith("!"))
             {
                 ProcessCommand(e);
             }
