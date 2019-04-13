@@ -32,6 +32,7 @@ namespace Essenbee.Bot.Infra.Discord
                 AutoReconnect = true
             });
 
+            UseUsernameForIM = false;
             SetupEvents();
             SetupDiscordCommands();
             _ = Connect();
@@ -46,6 +47,7 @@ namespace Essenbee.Bot.Infra.Discord
                 AutoReconnect = true
             });
 
+            UseUsernameForIM = false;
             SetupEvents();
             SetupDiscordCommands();
             _ = Connect();
@@ -57,11 +59,37 @@ namespace Essenbee.Bot.Infra.Discord
             await Task.Delay(-1);
         }
 
-        public void Disconnect() => throw new NotImplementedException();
+        public void Disconnect()
+        {
+            WriteLine("Disconnecting from the Discord service ...");
+            _discordClient.DisconnectAsync();
+        }
 
-        public void PostDirectMessage(string username, string text) => throw new NotImplementedException();
+        public void PostDirectMessage(string username, string text)
+        {
+            var found = ulong.TryParse(username, out var userId);
 
-        public void PostDirectMessage(IAdventurePlayer player, string text) => throw new NotImplementedException();
+            if (found)
+            {
+                var user = _discordClient.GetUserAsync(userId).Result;
+                var privateChannel = _discordClient.CreateDmAsync(user).Result;
+                var channelId = privateChannel.Id.ToString();
+                PostMessage(channelId, text);
+            }
+        }
+
+        public void PostDirectMessage(IAdventurePlayer player, string text)
+        {
+            var found = ulong.TryParse(player.Id, out var userId);
+
+            if (found)
+            {
+                var user = _discordClient.GetUserAsync(userId).Result;
+                var privateChannel = _discordClient.CreateDmAsync(user).Result;
+                var channelId = privateChannel.Id.ToString();
+                PostMessage(channelId, text);
+            }
+        }
 
         public void PostMessage(string channel, string text)
         {
@@ -94,20 +122,18 @@ namespace Essenbee.Bot.Infra.Discord
 
         private Task OnMessage(MessageCreateEventArgs e)
         {
-            if (e.Author == null)
+            if (e.Author != null)
             {
-                return Task.CompletedTask;
+                if (e.Message.Content.StartsWith("!"))
+                {
+                    ProcessCommand(e);
+                }
+
+                var user = e?.Author?.Username ?? string.Empty;
+                var text = e?.Message?.Content ?? "<< none >>";
+
+                WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
             }
-
-            if (e.Message.Content.StartsWith("!"))
-            {
-                ProcessCommand(e);
-            }
-
-            var user = e?.Author?.Username ?? string.Empty;
-            var text = e?.Message?.Content ?? "<< none >>";
-
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
 
             return Task.CompletedTask;
         }
@@ -158,9 +184,15 @@ namespace Essenbee.Bot.Infra.Discord
 
             (user, channel, cmdText) = GetCommandParameters(e);
 
+            if (user.IsBot)
+            {
+                return;
+            }
+
             var commandPieces = cmdText.Split(' ');
             var command = commandPieces[0].Replace("!", string.Empty);
             var userName = user?.Username ?? string.Empty;
+            var userId = user?.Id.ToString() ?? "0"; 
 
             for (var i = 1; i < commandPieces.Length; i++)
             {
@@ -168,7 +200,7 @@ namespace Essenbee.Bot.Infra.Discord
             }
 
             OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList,
-                channel, userName, userName, clientType, Core.UserRole.Moderator));
+                channel, userName, userId, clientType, Core.UserRole.Moderator));
         }
 
         private (DiscordUser user, string channel, string cmdText) GetCommandParameters(DiscordEventArgs e)

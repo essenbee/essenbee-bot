@@ -178,15 +178,13 @@ namespace Essenbee.Bot.Infra.Slack
 
         private void OnMessage(MessageEventArgs e)
         {
-            if (e.user == null)
+            if (e.user != null)
             {
-                return;
+                var user = e?.UserInfo?.name ?? string.Empty;
+                var text = e?.text ?? "<< none >>";
+
+                WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
             }
-
-            var user = e?.UserInfo?.name ?? string.Empty;
-            var text = e?.text ?? "<< none >>";
-
-            WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
         }
 
         private void OnMessageEdit(MessageEditEventArgs e)
