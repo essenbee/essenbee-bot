@@ -1,22 +1,22 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using static System.Console;
+using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Interfaces;
+using Essenbee.Bot.Infra.Discord.Commands;
 using System;
 using System.Collections.Generic;
-using DSharpPlus.EventArgs;
 using System.Threading.Tasks;
-using Essenbee.Bot.Infra.Discord.Commands;
+using static System.Console;
 
 namespace Essenbee.Bot.Infra.Discord
 {
     public class DiscordChatClient : IChatClient
     {
         private readonly DiscordClient _discordClient;
-        private bool _isReady;
-        private DiscordConfig _settings;
-        
+        private readonly DiscordConfig _settings;
+
         public bool UseUsernameForIM { get; }
         public string DefaultChannel => "general";
         public const ulong General = 546412212038795307;
@@ -40,8 +40,7 @@ namespace Essenbee.Bot.Infra.Discord
         public DiscordChatClient(DiscordConfig settings)
         {
             _settings = settings;
-            _discordClient = new DiscordClient(new DiscordConfiguration 
-            {
+            _discordClient = new DiscordClient(new DiscordConfiguration {
                 Token = _settings.DiscordToken,
                 TokenType = TokenType.Bot,
                 AutoReconnect = true
@@ -58,25 +57,21 @@ namespace Essenbee.Bot.Infra.Discord
             await Task.Delay(-1);
         }
 
-        public void Disconnect()
-        {
-            throw new NotImplementedException();
-        }
+        public void Disconnect() => throw new NotImplementedException();
 
-        public void PostDirectMessage(string username, string text)
-        {
-            throw new NotImplementedException();
-        }
+        public void PostDirectMessage(string username, string text) => throw new NotImplementedException();
 
-        public void PostDirectMessage(IAdventurePlayer player, string text)
-        {
-            throw new NotImplementedException();
-        }
+        public void PostDirectMessage(IAdventurePlayer player, string text) => throw new NotImplementedException();
 
         public void PostMessage(string channel, string text)
         {
-            var discordChannel = _discordClient.GetChannelAsync(General).Result;
-            _discordClient.SendMessageAsync(discordChannel, text);
+            var found = ulong.TryParse(channel, out var channelId);
+
+            if (found)
+            {
+                var discordChannel = _discordClient.GetChannelAsync(channelId).Result;
+                _discordClient.SendMessageAsync(discordChannel, text);
+            }
         }
 
         public void PostMessage(string text)
@@ -87,17 +82,13 @@ namespace Essenbee.Bot.Infra.Discord
 
         private Task OnConnected(ReadyEventArgs e)
         {
-            _isReady = true;
             WriteLine("Connected to the Discord service");
-
             return Task.CompletedTask;
         }
 
         private Task OnError(ClientErrorEventArgs e)
         {
-            _isReady = true;
             WriteLine($"Exception occurred: {e.Exception.GetType()}: {e.Exception.Message}");
-
             return Task.CompletedTask;
         }
 
@@ -108,7 +99,10 @@ namespace Essenbee.Bot.Infra.Discord
                 return Task.CompletedTask;
             }
 
-            ProcessCommand(e);
+            if (e.Message.Content.StartsWith("!"))
+            {
+                ProcessCommand(e);
+            }
 
             var user = e?.Author?.Username ?? string.Empty;
             var text = e?.Message?.Content ?? "<< none >>";
@@ -120,6 +114,11 @@ namespace Essenbee.Bot.Infra.Discord
 
         private Task OnMessageEdit(MessageUpdateEventArgs e)
         {
+            if (e.Message.Content.StartsWith("!"))
+            {
+                ProcessCommand(e);
+            }
+
             var user = e?.Author?.Username ?? string.Empty;
             var text = e?.Message?.Content ?? "<< deleted >>";
 
@@ -137,7 +136,6 @@ namespace Essenbee.Bot.Infra.Discord
             // Wire up additional events
             _discordClient.MessageCreated += OnMessage;
             _discordClient.MessageUpdated += OnMessageEdit;
-            // _discordClient.CommandReceived += ProcessCommand;
         }
         private void SetupDiscordCommands()
         {
@@ -151,24 +149,39 @@ namespace Essenbee.Bot.Infra.Discord
             Commands.RegisterCommands<UtilityCommands>(); // Discord only commands
         }
 
-        private void ProcessCommand(MessageCreateEventArgs e)
+        private void ProcessCommand(DiscordEventArgs e)
         {
-            if (e.Message.Content.StartsWith("!"))
+            var clientType = GetType().ToString();
+            var argsList = new List<string>();
+            DiscordUser user;
+            string channel, cmdText;
+
+            (user, channel, cmdText) = GetCommandParameters(e);
+
+            var commandPieces = cmdText.Split(' ');
+            var command = commandPieces[0].Replace("!", string.Empty);
+            var userName = user?.Username ?? string.Empty;
+
+            for (var i = 1; i < commandPieces.Length; i++)
             {
-                var cmdText = e.Message.Content.ToLower();
-                var commandPieces = cmdText.Split(' ');
-                var command = commandPieces[0].Replace("!", string.Empty);
-                var clientType = GetType().ToString();
-                var argsList = new List<string>();
-
-                for (var i = 1; i < commandPieces.Length; i++)
-                {
-                    argsList.Add(commandPieces[i]);
-                }
-
-                OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList,
-                    "general", e.Author.Username, e.Author.Username, clientType, Core.UserRole.Streamer));
+                argsList.Add(commandPieces[i]);
             }
+
+            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList,
+                channel, userName, userName, clientType, Core.UserRole.Moderator));
+        }
+
+        private (DiscordUser user, string channel, string cmdText) GetCommandParameters(DiscordEventArgs e)
+        {
+            switch (e)
+            {
+                case MessageUpdateEventArgs u:
+                    return (u.Author, u.Channel.Id.ToString(), u.Message.Content.ToLower());
+                case MessageCreateEventArgs c:
+                    return (c.Author, c.Channel.Id.ToString(), c.Message.Content.ToLower());
+            }
+
+            return (null, string.Empty, string.Empty);
         }
     }
 }

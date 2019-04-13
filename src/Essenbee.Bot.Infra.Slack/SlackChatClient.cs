@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Infra.Slack
         private  int _connectionFailures = 0;
         private  bool _shutdown = false;
         private bool _isReady = false;
-        private SlackConfig _settings;
+        private readonly SlackConfig _settings;
 
         public bool UseUsernameForIM { get; }
         public string DefaultChannel => "general";
@@ -61,26 +61,29 @@ namespace Essenbee.Bot.Infra.Slack
 
         public void PostMessage(string theChannel, string msg)
         {
-            var retries = 0;
-
-            while (retries < 5)
+            if (Channels.Values.Contains(theChannel))
             {
-                if (!_isReady)
-                {
-                    System.Threading.Thread.Sleep(2000);
-                    retries++;
-                }
-                else
-                {
-                    var msgArgs = new Chat.PostMessageArguments {
-                        channel = theChannel,
-                        text = msg,
-                        unfurl_links = false,
-                        unfurl_media = false,
-                    };
+                var retries = 0;
 
-                    _slackClient.Chat.PostMessage(msgArgs);
-                    break;
+                while (retries < 5)
+                {
+                    if (!_isReady)
+                    {
+                        System.Threading.Thread.Sleep(2000);
+                        retries++;
+                    }
+                    else
+                    {
+                        var msgArgs = new Chat.PostMessageArguments {
+                            channel = theChannel,
+                            text = msg,
+                            unfurl_links = false,
+                            unfurl_media = false,
+                        };
+
+                        _slackClient.Chat.PostMessage(msgArgs);
+                        break;
+                    }
                 }
             }
         }
