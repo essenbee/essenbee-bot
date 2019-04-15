@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             {
                 new PlayerMove(string.Empty, Location.LowPassage, "south", "s"),
                 new PlayerMove(string.Empty, Location.JumbleOfRocks, "east", "e"),
-                // new PlayerMove(string.Empty, Location., "west", "w"),
+                new PlayerMove(string.Empty, Location.Window1, "west", "w"),
             };
         }
     }

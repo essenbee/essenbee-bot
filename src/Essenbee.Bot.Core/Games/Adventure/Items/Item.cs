@@ -26,5 +26,9 @@
         BarsOfSilver,
         Jewelry,
         Coins,
+        Rug,
+        Dragon,
+        DeadDragon,
+        RottingDeadDragon,
     }
 }

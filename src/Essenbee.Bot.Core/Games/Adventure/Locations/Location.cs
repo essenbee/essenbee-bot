@@ -49,5 +49,8 @@
         Y2,
         BrokenPassage,
         JumbleOfRocks,
+        Window1,
+        SecretNorthEastCanyon,
+        SecretNorthSouthCanyon,
     }
 }

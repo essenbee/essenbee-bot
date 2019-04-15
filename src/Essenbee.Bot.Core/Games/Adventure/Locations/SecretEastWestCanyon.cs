@@ -16,7 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("", Location.HallOfMountainKing, "east", "e"),
-                // new PlayerMove("", Location., "west", "w"),
+                new PlayerMove("", Location.SecretNorthEastCanyon, "west", "w"),
                 // new PlayerMove("", Location., "down", "d"),
             };
         }
