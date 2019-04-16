@@ -152,6 +152,17 @@ namespace Essenbee.Bot.Infra.Slack
                 WriteLine($"\t* {channel.name} ({channel.id})");
             }
 
+            var imChannelList = _slackClient.IM?.List()?.ims;
+
+            if (imChannelList != null)
+            {
+                foreach (var imChannel in imChannelList)
+                {
+                    Channels.Add(imChannel.user, imChannel.id);
+                    WriteLine($"\t* {imChannel.user} ({imChannel.id})");
+                }
+            }
+
             WriteLine();
         }
 
