@@ -216,7 +216,8 @@ namespace Essenbee.Bot.Infra.Slack
             var userId = e?.User ?? string.Empty;
             var clientType = GetType().ToString();
 
-            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, channel, user, userId, clientType));
+            OnChatCommandReceived?.Invoke(this, new Core.ChatCommandEventArgs(command, argsList, 
+                channel, user, userId, clientType, Core.UserRole.Moderator));
         }
     }
 }

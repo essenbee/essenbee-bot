@@ -9,7 +9,7 @@ namespace Essenbee.Bot.Core.Commands
     {
         public ItemStatus Status { get; set; } = ItemStatus.Active;
         public string CommandName => "help";
-        public string HelpText => "The !help command provides help on the commands available through CoreBot.";
+        public string HelpText => "The !help command provides help on the commands available through AlphaBot.";
         public TimeSpan Cooldown { get; }
 
         private readonly IBot _bot;

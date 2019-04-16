@@ -122,8 +122,8 @@ namespace Essenbee.Bot.Infra.Twitch
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            // WriteLine("CoreBot joined the channel!");
-            // _twitchClient.SendMessage(e.Channel, "CoreBot joined the channel!");
+            // WriteLine("AlphaBot joined the channel!");
+            // _twitchClient.SendMessage(e.Channel, "AlphaBot joined the channel!");
         }
 
         private void OnDisconnected(object sender, OnDisconnectedEventArgs e)

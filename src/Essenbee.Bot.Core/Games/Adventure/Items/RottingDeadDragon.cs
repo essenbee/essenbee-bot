@@ -8,8 +8,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal RottingDeadDragon(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.RottingDeadDragon;
-            Name = "The rotting carcass of a dead dragon is lying off to one side.";
-            PluralName = "The rotting carcass of a dead dragon is lying off to one side.";
+            Name = "rotting carcass of a dead dragon lying off to one side";
+            PluralName = "rotting carcass of a dead dragon lying off to one side";
             IsPortable = false;
         }
     }

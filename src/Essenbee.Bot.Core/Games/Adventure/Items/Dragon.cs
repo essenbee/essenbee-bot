@@ -12,8 +12,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal Dragon(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.Dragon;
-            Name = "huge green fierce dragon barring your way! The dragon is sprawled out on a Persian rug";
-            PluralName = "huge green fierce dragon bars the way! The dragon is sprawled out on a Persian rug";
+            Name = "huge green fierce dragon barring your way! The dragon is sprawled out on an expensive-looking Persian rug lying";
+            PluralName = "huge green fierce dragon barring the way! The dragon is sprawled out on an expensive-looking Persian rug lying";
             IsPortable = false;
 
             var kill = new ItemInteraction(Game, "kill", "slay", "murder");

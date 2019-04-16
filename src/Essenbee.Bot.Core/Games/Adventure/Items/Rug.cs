@@ -7,8 +7,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal Rug(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.Rug;
-            Name = "Persian *rug*";
-            PluralName = "Persian *rugs*";
+            Name = "beautiful Persian *rug*";
+            PluralName = "beautiful Persian *rugs*";
             IsPortable = true;
         }
     }
