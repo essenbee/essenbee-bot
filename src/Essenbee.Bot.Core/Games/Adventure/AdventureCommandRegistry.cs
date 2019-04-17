@@ -19,6 +19,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var magicWord2 = new Plugh(game, "plugh");
             var inventoryCommand = new Carrying(game, "inventory", "inv");
             var interactCommand = new Interact(game, "use"); // Do not add aliases for this command
+            var yes = new Yes(game, "yes", "y");
+            var no = new No(game, "no", "n");
+            var say = new Say(game, "say");
 
             RegisteredCommands = new List<IAdventureCommand> {
                 lookCommand,
@@ -30,6 +33,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 magicWord2,
                 inventoryCommand,
                 interactCommand,
+                yes,
+                no,
+                say,
             };
         }
     }

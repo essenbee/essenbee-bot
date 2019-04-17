@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
 {
@@ -9,8 +10,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
         {
             LocationId = Location.SecretNorthSouthCanyon;
             Name = "secret canyon";
-            ShortDescription = "in a secret canyon which exits to the north and south";
-            LongDescription = "in a secret canyon which exits to the north and south.";
+            ShortDescription = "in a secret canyon which exits to the north and south, above a large room";
+            LongDescription = "in a secret canyon which exits to the north and south, above a large room.";
+
+            ValidMoves = new List<IPlayerMove>
+{
+                //new PlayerMove(string.Empty, Location.MirrorCanyon, "north", "n"),
+                new PlayerMove(string.Empty, Location.SecretNorthEastCanyon, "south", "s"),
+                //new PlayerMove(string.Empty, Location.SlabRoom, "down", "d"),
+            };
         }
     }
 }

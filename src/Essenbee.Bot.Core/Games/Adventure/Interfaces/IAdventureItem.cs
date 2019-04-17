@@ -28,8 +28,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         string PluralName { get; set; }
         Guid UniqueId { get; }
 
+        Dictionary<string, List<string>> PlayerItemState { get; set; }
+
         bool ContainerRequired();
         bool Interact(string verb, IAdventurePlayer player);
         bool IsMatch(string noun);
+        bool HasState(IAdventurePlayer player, string state);
     }
 }

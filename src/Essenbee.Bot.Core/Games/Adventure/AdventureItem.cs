@@ -27,6 +27,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IReadonlyAdventureGame Game { get; }
         public Item PreventTakeItemId { get; set; } = Item.None;
         public string PreventTakeText { get; set; } = "";
+        public Dictionary<string, List<string>> PlayerItemState { get; set; } = new Dictionary<string, List<string>>();
 
         protected AdventureItem(IReadonlyAdventureGame game, params string[] nouns)
         {
@@ -54,6 +55,21 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 }
 
                 return true;
+            }
+
+            return false;
+        }
+
+        public bool HasState(IAdventurePlayer player, string state)
+        {
+            if (PlayerItemState.ContainsKey(player.Id))
+            {
+                var states = PlayerItemState[player.Id];
+
+                if (states.Contains(state))
+                {
+                    return true;
+                }
             }
 
             return false;

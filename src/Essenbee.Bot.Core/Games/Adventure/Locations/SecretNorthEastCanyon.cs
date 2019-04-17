@@ -6,16 +6,18 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 {
     public class SecretNorthEastCanyon : AdventureLocation
     {
-
         public SecretNorthEastCanyon(IReadonlyAdventureGame game) : base(game)
         {
             LocationId = Location.SecretNorthEastCanyon;
             Name = "secret canyon";
             ShortDescription = "in a secret canyon which exits to the north and east";
             LongDescription = "in a secret canyon which exits to the north and east.";
-            Items = new List<IAdventureItem>();
 
-            Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Dragon) };
+            Items = new List<IAdventureItem> 
+            {
+                ItemFactory.GetInstance(Game, Item.Dragon),
+                ItemFactory.GetInstance(Game, Item.Rug),
+            };
 
             ValidMoves = new List<IPlayerMove>
             {

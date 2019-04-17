@@ -52,5 +52,6 @@
         Window1,
         SecretNorthEastCanyon,
         SecretNorthSouthCanyon,
+        TightNorthSouthCanyon,
     }
 }

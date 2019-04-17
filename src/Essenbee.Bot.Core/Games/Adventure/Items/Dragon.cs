@@ -8,7 +8,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
     public class Dragon : AdventureItem
     {
-
         internal Dragon(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.Dragon;
@@ -16,19 +15,30 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "huge green fierce dragon barring the way! The dragon is sprawled out on an expensive-looking Persian rug lying";
             IsPortable = false;
 
-            var kill = new ItemInteraction(Game, "kill", "slay", "murder");
+            var kill = new ItemInteraction(Game, "kill", "slay", "murder", "attack");
+            kill.RegisteredInteractions.Add(new AddPlayerItemState("kill"));
             kill.RegisteredInteractions.Add(new Display("Do you just want to use your bare hands?"));
+            Interactions.Add(kill);
 
-            // TODO: get yes/no response from user
+            // Player says yes
 
-            kill.RegisteredInteractions.Add(new Display("In an amazing feat of bravery, you kill the dragon with your bare hands!"));
-            kill.RegisteredInteractions.Add(new RemoveFromLocation(this));
-            kill.RegisteredInteractions.Add(new AddToLocation(ItemFactory.GetInstance(Game, Item.DeadDragon)));
-            kill.RegisteredInteractions.Add(new RemoveDestination(Game, Location.SecretNorthEastCanyon));
-            kill.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
+            var yes = new ItemInteraction(Game, "yes");
+            yes.RegisteredInteractions.Add(new RemovePlayerItemState("kill"));
+            yes.RegisteredInteractions.Add(new Display("In an amazing feat of bravery, you kill the dragon with your bare hands!"));
+            yes.RegisteredInteractions.Add(new RemoveFromLocation(this));
+            yes.RegisteredInteractions.Add(new AddToLocation(ItemFactory.GetInstance(Game, Item.DeadDragon)));
+            yes.RegisteredInteractions.Add(new RemoveDestination(Game, Location.SecretNorthEastCanyon));
+            yes.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
                 { new PlayerMove(string.Empty, Location.SecretNorthSouthCanyon, "north", "n") }, Game, Location.SecretNorthEastCanyon));
 
-            Interactions.Add(kill);
+            Interactions.Add(yes);
+
+            // Player says no
+
+            var no = new ItemInteraction(Game, "no");
+            no.RegisteredInteractions.Add(new RemovePlayerItemState("kill"));
+            no.RegisteredInteractions.Add(new Display("I don't blame you!"));
+            Interactions.Add(no);
         }
 
         public override bool Interact(string verb, IAdventurePlayer player)
@@ -38,15 +48,18 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
             if (interaction != null)
             {
-                if (interaction.Verbs.Contains("kill"))
+                if ((interaction.Verbs.Contains("yes") || interaction.Verbs.Contains("no"))
+                    && !HasState(player, "kill"))
                 {
-                    foreach (var action in interaction.RegisteredInteractions)
-                    {
-                        action.Do(player, this);
-                    }
-
-                    return true;
+                    return false;
                 }
+
+                foreach (var action in interaction.RegisteredInteractions)
+                {
+                    action.Do(player, this);
+                }
+
+                return true;
             }
 
             return false;

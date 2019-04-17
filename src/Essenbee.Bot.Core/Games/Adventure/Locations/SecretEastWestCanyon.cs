@@ -17,7 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("", Location.HallOfMountainKing, "east", "e"),
                 new PlayerMove("", Location.SecretNorthEastCanyon, "west", "w"),
-                // new PlayerMove("", Location., "down", "d"),
+                new PlayerMove("You squeeze yourself down and soon realize that you will never get back up again", 
+                    Location.TightNorthSouthCanyon, "down", "d"),
             };
         }
     }
