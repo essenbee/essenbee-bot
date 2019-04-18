@@ -11,13 +11,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LocationId = Location.SecretNorthSouthCanyon;
             Name = "secret canyon";
             ShortDescription = "in a secret canyon which exits to the north and south, above a large room";
-            LongDescription = "in a secret canyon which exits to the north and south, above a large room.";
+            LongDescription = "in a secret canyon which exits to the north and south, above a large room";
 
             ValidMoves = new List<IPlayerMove>
-{
+            {
                 //new PlayerMove(string.Empty, Location.MirrorCanyon, "north", "n"),
                 new PlayerMove(string.Empty, Location.SecretNorthEastCanyon, "south", "s"),
-                //new PlayerMove(string.Empty, Location.SlabRoom, "down", "d"),
+                //new PlayerMove("You clamber downwards, finding plenty of hand and foot holds...", Location.SlabRoom, "down", "d"),
             };
         }
     }

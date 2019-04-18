@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Essenbee.Bot.Core.Games.Adventure.Commands;
 using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
@@ -25,6 +26,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             free.RegisteredInteractions.Add(new RemoveFromInventory());
             free.RegisteredInteractions.Add(new AddToLocation(this));
             Interactions.Add(free);
+
+            var catchInteraction = new ItemInteraction(Game, "catch", "capture", "trap");
+            catchInteraction.RegisteredInteractions.Add(new AliasCommand(new Take(game, "take")));
+            Interactions.Add(catchInteraction);
         }
 
         public override bool Interact(string verb, IAdventurePlayer player)

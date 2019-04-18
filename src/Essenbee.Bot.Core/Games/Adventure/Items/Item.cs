@@ -30,5 +30,6 @@
         Dragon,
         DeadDragon,
         RottingDeadDragon,
+        DragonTooth,
     }
 }

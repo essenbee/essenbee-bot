@@ -11,8 +11,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal Dragon(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.Dragon;
-            Name = "huge green fierce dragon barring your way! The dragon is sprawled out on an expensive-looking Persian rug lying";
-            PluralName = "huge green fierce dragon barring the way! The dragon is sprawled out on an expensive-looking Persian rug lying";
+            Name = "huge fierce green dragon blocking your way! The dragon is sprawled out on an expensive-looking Persian rug lying";
+            PluralName = "huge fierce green dragon blocking the way! The dragon is sprawled out on an expensive-looking Persian rug lying";
             IsPortable = false;
 
             var kill = new ItemInteraction(Game, "kill", "slay", "murder", "attack");
@@ -21,7 +21,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Interactions.Add(kill);
 
             // Player says yes
-
             var yes = new ItemInteraction(Game, "yes");
             yes.RegisteredInteractions.Add(new RemovePlayerItemState("kill"));
             yes.RegisteredInteractions.Add(new Display("In an amazing feat of bravery, you kill the dragon with your bare hands!"));
@@ -30,11 +29,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             yes.RegisteredInteractions.Add(new RemoveDestination(Game, Location.SecretNorthEastCanyon));
             yes.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
                 { new PlayerMove(string.Empty, Location.SecretNorthSouthCanyon, "north", "n") }, Game, Location.SecretNorthEastCanyon));
-
             Interactions.Add(yes);
 
             // Player says no
-
             var no = new ItemInteraction(Game, "no");
             no.RegisteredInteractions.Add(new RemovePlayerItemState("kill"));
             no.RegisteredInteractions.Add(new Display("I don't blame you!"));

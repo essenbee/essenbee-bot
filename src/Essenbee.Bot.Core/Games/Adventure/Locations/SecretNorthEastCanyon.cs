@@ -21,7 +21,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
             ValidMoves = new List<IPlayerMove>
             {
-                new PlayerMove("A wicked green dragon is barring your way!", Location.SecretNorthEastCanyon, "north", "n"),
+                new PlayerMove("A wicked green dragon is blocking your way! It hisses at you menacingly.", Location.SecretNorthEastCanyon, "north", "n"),
                 new PlayerMove(string.Empty, Location.SecretEastWestCanyon, "east", "e"),
             };
         }
