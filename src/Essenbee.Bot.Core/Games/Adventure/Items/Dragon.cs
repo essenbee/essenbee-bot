@@ -23,7 +23,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             // Player says yes
             var yes = new ItemInteraction(Game, "yes");
             yes.RegisteredInteractions.Add(new RemovePlayerItemState("kill"));
-            yes.RegisteredInteractions.Add(new Display("In an amazing feat of bravery, you kill the dragon with your bare hands!"));
+            yes.RegisteredInteractions.Add(new Display("Congratulations! You have just vanquished a dragon with your bare " +
+                "hands! (Unbelievable, isn't it?)"));
             yes.RegisteredInteractions.Add(new RemoveFromLocation(this));
             yes.RegisteredInteractions.Add(new AddToLocation(ItemFactory.GetInstance(Game, Item.DeadDragon)));
             yes.RegisteredInteractions.Add(new RemoveDestination(Game, Location.SecretNorthEastCanyon));

@@ -10,6 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "large sparkling *nugget* of gold";
             PluralName = "large sparkling nuggets of *gold*";
             IsPortable = true;
+            IsTreasure = true;
         }
     }
 }

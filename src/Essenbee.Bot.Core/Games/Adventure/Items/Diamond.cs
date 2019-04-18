@@ -10,6 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "large *diamond*";
             PluralName = "large *diamonds*";
             IsPortable = true;
+            IsTreasure = true;
         }
     }
 }

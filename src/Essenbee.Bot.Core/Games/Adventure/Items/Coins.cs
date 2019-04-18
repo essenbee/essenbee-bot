@@ -10,6 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "pile of *coins*";
             PluralName = "piles of *coins*";
             IsPortable = true;
+            IsTreasure = true;
         }
     }
 }

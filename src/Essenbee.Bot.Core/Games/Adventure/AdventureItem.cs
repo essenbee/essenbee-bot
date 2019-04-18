@@ -22,6 +22,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public bool IsTransparent { get; set; }
+        public bool IsTreasure { get; set; }
         public IList<IAdventureItem> Contents { get; set; }
         public IList<IInteraction> Interactions { get; set; }
         public IReadonlyAdventureGame Game { get; }

@@ -10,6 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "few bars of *silver*";
             PluralName = "few bars of *silver*";
             IsPortable = true;
+            IsTreasure = true;
         }
     }
 }
