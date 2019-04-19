@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             WaterPresent = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Water) };
             ValidMoves = new List<IPlayerMove> {
-                new PlayerMove(string.Empty, Location.Forest, "forest", "west", "w", "up", "east", "e"),
+                new PlayerMove(string.Empty, Location.Forest, "forest", "west", "w", "up", "u", "east", "e"),
                 new PlayerMove(string.Empty, Location.Slit, "downstream", "south", "s"),
                 new PlayerMove(string.Empty, Location.Road, "upstream", "n", "north"),
             };

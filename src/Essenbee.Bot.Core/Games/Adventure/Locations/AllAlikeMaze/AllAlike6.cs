@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
-                new PlayerMove("", Location.AllAlike5, "up"),
+                new PlayerMove("", Location.AllAlike5, "up", "u", "climb"),
                 new PlayerMove("", Location.AllAlike5, "down", "d"),
             };
         }

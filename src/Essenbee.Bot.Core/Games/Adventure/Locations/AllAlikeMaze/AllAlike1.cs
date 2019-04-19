@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
-                new PlayerMove("You follow a long winding tunnel...", Location.HallOfMistsWest, "up"),
+                new PlayerMove("You follow a long winding tunnel...", Location.HallOfMistsWest, "up", "u", "climb"),
                 new PlayerMove("", Location.AllAlike1, "north", "n"),
                 new PlayerMove("", Location.AllAlike5, "south", "s"),
                 new PlayerMove("", Location.AllAlike3, "east", "e"),

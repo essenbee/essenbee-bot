@@ -10,8 +10,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LocationId = Location.TightNorthSouthCanyon;
             Name = "tight canyon";
             ShortDescription = "in a tight canyon which exits to the north and south";
-            LongDescription = "in a tight canyon which exits to the north and south." + string.Empty +
+            LongDescription = "in a tight canyon which exits to the north and south. " +
                 "There is a crack in the roof, but there is no way you could climb up there...";
+
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove> {

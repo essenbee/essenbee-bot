@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 // Dead end? new PlayerMove("", Location.AllAlike5, "south", "s"),
                 // Dead end? new PlayerMove("", Location.AllAlike3, "east", "e"),
                 new PlayerMove("", Location.AllAlike1, "west", "w"),
-                new PlayerMove("", Location.AllAlike6, "up"),
+                new PlayerMove("", Location.AllAlike6, "up", "u", "climb"),
                 new PlayerMove("", Location.AllAlike6, "down", "d"),
             };
         }

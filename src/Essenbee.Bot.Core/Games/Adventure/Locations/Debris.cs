@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Rod) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.Cobbles, "east", "e"),
-                new PlayerMove(string.Empty, Location.Canyon, "west", "w", "up"),
+                new PlayerMove(string.Empty, Location.Canyon, "west", "w", "up", "u", "climb"),
             };
         }
     }

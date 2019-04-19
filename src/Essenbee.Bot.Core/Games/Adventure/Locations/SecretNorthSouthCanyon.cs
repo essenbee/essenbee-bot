@@ -15,9 +15,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
             ValidMoves = new List<IPlayerMove>
             {
-                //new PlayerMove(string.Empty, Location.MirrorCanyon, "north", "n"),
+                new PlayerMove(string.Empty, Location.MirrorCanyon, "north", "n"),
                 new PlayerMove(string.Empty, Location.SecretNorthEastCanyon, "south", "s"),
-                //new PlayerMove("You clamber downwards, finding plenty of hand and foot holds...", Location.SlabRoom, "down", "d"),
+                new PlayerMove("You clamber downwards, finding plenty of hand and foot holds...", 
+                    Location.SlabRoom, "down", "d"),
             };
         }
     }

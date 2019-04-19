@@ -9,7 +9,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
         {
             LocationId = Location.SecretEastWestCanyon;
             Name = "Secret E-W Canyon";
-            ShortDescription = "in secret east-west canyon";
+            ShortDescription = "in secret East-West canyon";
             LongDescription = "in a secret canyon which here runs East-West. It crosses over a very tight canyon 15 feet below. " +
                 "If you go down you may not be able to get back up.";
             IsDark = true;

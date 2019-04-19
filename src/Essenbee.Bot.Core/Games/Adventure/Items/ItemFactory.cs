@@ -60,6 +60,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new DeadDragon(game, "dragon", "wyrm");
                 case Item.RottingDeadDragon:
                     return new RottingDeadDragon(game, "dragon", "wyrm");
+                case Item.DragonTooth:
+                    return new DragonTooth(game, "tooth", "teeth");
+                case Item.ShadowyFigure:
+                    return new ShadowyFigure(game, "figure", "shadow", "shadowy");
             }
 
             return null;

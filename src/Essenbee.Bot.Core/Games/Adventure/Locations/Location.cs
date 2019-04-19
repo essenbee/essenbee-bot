@@ -53,5 +53,9 @@
         SecretNorthEastCanyon,
         SecretNorthSouthCanyon,
         TightNorthSouthCanyon,
+        MirrorCanyon,
+        Reservoir,
+        SlabRoom,
+        Crossover,
     }
 }

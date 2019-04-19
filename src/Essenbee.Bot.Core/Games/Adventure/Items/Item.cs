@@ -31,5 +31,6 @@
         DeadDragon,
         RottingDeadDragon,
         DragonTooth,
+        ShadowyFigure,
     }
 }

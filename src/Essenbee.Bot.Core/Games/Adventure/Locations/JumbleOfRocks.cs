@@ -16,7 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You drop down into a narrow crack...", Location.Y2, "down", "d"),
-                new PlayerMove("You squeeze up through a jagged crack...", Location.HallOfMistsEast, "up"),
+                new PlayerMove("You squeeze up through a jagged crack...", Location.HallOfMistsEast, "up", "u", "climb"),
             };
         }
     }

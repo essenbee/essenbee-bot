@@ -50,7 +50,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             }, Game, Location.Depression));
             unlock.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
             {
-               new PlayerMove("You climb the rusty ladder and emerge into the light!", Location.Depression, "up", "ladder", "surface"),
+               new PlayerMove("You climb the rusty ladder and emerge into the light!", Location.Depression, "up", "ladder", "surface", "climb"),
             }, Game, Location.Cave1));
             
             Interactions.Add(unlock);

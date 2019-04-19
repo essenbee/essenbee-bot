@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove("You follow a low, winding passage to the base of a pit, then struggle upwards...", 
-                    Location.SmallPit, "up", "e", "east"),
+                    Location.SmallPit, "up", "e", "east", "u", "climb"),
                 new PlayerMove("You descend a majestic staircase of natural rock, worn smooth by water flowing in the past...",
                     Location.HallOfMountainKing, "north", "n", "down", "d"),
                 new PlayerMove("The roof of the passage becomes so low, you have to crawl...",

@@ -15,8 +15,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Coins) };
             ValidMoves = new List<IPlayerMove>
             {
-                new PlayerMove("Your footsetps echo around you...", Location.HallOfMountainKing, "east", "e"),
-                // new PlayerMove(string.Empty, Location.HighPassage, "west", "w", "up"),
+                new PlayerMove("Your footsteps echo around you...", Location.HallOfMountainKing, "east", "e"),
+                new PlayerMove("The passage twists and climbs. Water drips from the ceiling.", 
+                    Location.Crossover, "west", "w", "up", "u", "climb"),
             };
         }
     }

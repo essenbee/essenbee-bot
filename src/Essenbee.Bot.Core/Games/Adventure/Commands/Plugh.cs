@@ -28,7 +28,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (canMove)
             {
-                player.ChatClient.PostDirectMessage(player, "You suddenly feel nauseous as space seems to fold around you!");
+                player.ChatClient.PostDirectMessage(player, "From out of thin air, a hollow booming voice says 'Plugh!'");
                 return;
             }
 

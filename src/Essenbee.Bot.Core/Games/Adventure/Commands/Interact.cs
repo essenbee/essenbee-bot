@@ -36,6 +36,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             if (itemInInventory is null && itemAtLocation is null)
             {
                 player.ChatClient.PostDirectMessage(player, $"Which `{itemToInteractWith}` are you referring to?");
+                player.ChatClient.PostDirectMessage(player, "Tip: Don't use words like 'the' or 'at', try just <verb> <noun> instead.");
                 return;
             }
 
@@ -46,7 +47,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (!actionWasMatched)
             {
-                player.ChatClient.PostDirectMessage(player, $"I don't know how to `{args[0]}` a `{itemToInteractWith}`. Can you be clearer?");
+                player.ChatClient.PostDirectMessage(player, $"I don't know how to `{args[0]}` a `{itemToInteractWith}`. " +
+                    "Can you be clearer?");
             }
         }
     }
