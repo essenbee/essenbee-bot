@@ -58,5 +58,6 @@
         SlabRoom,
         Crossover,
         DeadEndWithMessage,
+        Bedquilt,
     }
 }

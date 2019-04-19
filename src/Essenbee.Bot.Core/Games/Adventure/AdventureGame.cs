@@ -85,7 +85,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
             // TODO: calculate points gained during game...
             var points = 0;
 
-            player.ChatClient.PostDirectMessage(player, $"You earned {points} during your Adventure.");
+            player.ChatClient.PostDirectMessage(player, 
+                $"You earned {points} during your Adventure in {player.Moves} moves.");
 
             _players.Remove(thePlayer);
         }

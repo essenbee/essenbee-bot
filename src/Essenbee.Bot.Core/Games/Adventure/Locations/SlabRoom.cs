@@ -20,7 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
             ValidMoves = new List<IPlayerMove>
             {
-                //new PlayerMove(string.Empty, Location.Bedquilt, "north", "n"),
+                new PlayerMove(string.Empty, Location.Bedquilt, "north", "n"),
                 //new PlayerMove(string.Empty, Location.WestTwoPit, "south", "s"),
                 new PlayerMove("You make your way upwards, finding plenty of hand and foot holds...",
                     Location.SecretNorthSouthCanyon, "up", "u", "climb"),
