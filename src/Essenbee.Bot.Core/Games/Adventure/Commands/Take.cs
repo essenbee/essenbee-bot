@@ -76,6 +76,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 : player.Inventory.AddItem(locationItem);
 
             player.CurrentLocation.Items.Remove(locationItem);
+            locationItem.AddPlayerStatusCondition(player, locationItem.GivesPlayerStatus);
         }
        
         private void CreateNewInstance(IAdventurePlayer player, IAdventureItem locationItem)

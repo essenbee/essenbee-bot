@@ -17,11 +17,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
             ValidMoves = new List<IPlayerMove>
             {
-                //new PlayerMove(string.Empty, Location., "north", "n"), // dead end
-                //new PlayerMove(string.Empty, Location., "south", "s"), // long hall west
+                new PlayerMove(string.Empty, Location.DeadEndWithMessage, "north", "n"),
+                new PlayerMove(string.Empty, Location.LongHallWest, "south", "s"),
                 new PlayerMove("The passage twists and descends. Water drips from the ceiling.", 
-                    Location.WestSideChamber, "east", "e"),
-                //new PlayerMove(string.Empty, Location., "west", "w"), // long hall east
+                    Location.WestSideChamber, "east", "e", "down", "d"),
+                new PlayerMove(string.Empty, Location.LongHallEast, "west", "w"),
             };
         }
     }

@@ -29,6 +29,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public Item PreventTakeItemId { get; set; } = Item.None;
         public string PreventTakeText { get; set; } = "";
         public Dictionary<string, List<string>> PlayerItemState { get; set; } = new Dictionary<string, List<string>>();
+        public PlayerStatus GivesPlayerStatus { get; set; } = PlayerStatus.None;
 
         protected AdventureItem(IReadonlyAdventureGame game, params string[] nouns)
         {
@@ -74,6 +75,24 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             return false;
+        }
+
+        public void AddPlayerStatusCondition(IAdventurePlayer player, PlayerStatus status)
+        {
+            if (status != PlayerStatus.None &&
+                !player.Statuses.Contains(status))
+            {
+                player.Statuses.Add(status);
+            }
+        }
+
+        public void RemovePlayerStatusCondition(IAdventurePlayer player, PlayerStatus status)
+        {
+            if (status != PlayerStatus.None && 
+                player.Statuses.Contains(status))
+            {
+                player.Statuses.Remove(status);
+            }
         }
     }
 }

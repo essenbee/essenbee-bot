@@ -57,5 +57,6 @@
         Reservoir,
         SlabRoom,
         Crossover,
+        DeadEndWithMessage,
     }
 }

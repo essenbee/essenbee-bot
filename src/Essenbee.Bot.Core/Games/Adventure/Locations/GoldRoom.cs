@@ -11,7 +11,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LocationId = Location.GoldRoom;
             Name = "Gold Room";
             ShortDescription = "in nugget of gold room";
-            LongDescription = "in a low room with a crude note on the wall. The note says, `You won't get it up the steps`.";
+            LongDescription = "in a low room with a crude note on the wall. The note says, `You won't get it up the steps`. " +
+                "The only way out is north, up some crude steps cut into the rock.";
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Nugget) };
             ValidMoves = new List<IPlayerMove>
             {

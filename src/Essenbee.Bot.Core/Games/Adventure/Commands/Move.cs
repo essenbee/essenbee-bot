@@ -24,13 +24,31 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (player.CurrentLocation.ValidMoves.Any(d => d.IsMatch(direction)))
             {
-                var moveTo = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction)).Destination;
-                var moveText = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction)).MoveText;
+                var move = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction));
+                var moveTo = move.Destination;
+                var moveText = move.MoveText;
 
                 canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
 
                 if (canMove)
                 {
+                    if (player.Statuses.Contains(PlayerStatus.IsEncumbered))
+                    {
+                        player.ChatClient.PostDirectMessage(player, "You are currently encumbered.");
+
+                        if (move.Moves.Contains("up"))
+                        {
+                            player.ChatClient.PostDirectMessage(player, "You are unable to move upward!");
+                            player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+                            return;
+                        }
+
+                        if (move.Moves.Contains("down") && player.CurrentLocation.IsDark)
+                        {
+                            // Player falls and is killed!
+                        }
+                    }
+
                     player.PriorLocation = player.CurrentLocation;
                     player.CurrentLocation = place;
                     player.Moves++;

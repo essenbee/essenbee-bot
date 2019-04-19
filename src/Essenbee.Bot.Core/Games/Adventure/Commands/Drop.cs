@@ -34,6 +34,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                     player.Inventory.RemoveItem(itemInInventory);
                     player.CurrentLocation.Items.Add(itemInInventory);
                     player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
+                    itemInInventory.RemovePlayerStatusCondition(player, itemInInventory.GivesPlayerStatus);
+                    return;
                 }
 
                 itemInInventory = player.Inventory.GetContainedItem(itemToDrop);
@@ -43,6 +45,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                     player.Inventory.RemoveItemContainer(itemInInventory);
                     player.CurrentLocation.Items.Add(itemInInventory);
                     player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
+                    itemInInventory.RemovePlayerStatusCondition(player, itemInInventory.GivesPlayerStatus);
                     return;
                 }
 

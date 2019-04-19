@@ -17,9 +17,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "and splashes noisily into the water near the reservoir's northern wall. " +
                 "A dimly-seen passage exits through the northern wall, but you can't get " +
                 "across the water to get to it. Another passage leads south from here.";
-
+            WaterPresent = true;
+            
             ValidMoves = new List<IPlayerMove>
             {
+                new PlayerMove("There is no way you can swim across a subterranean lake!", 
+                    Location.Reservoir, "north", "n"),
                 new PlayerMove(string.Empty, Location.MirrorCanyon, "south", "s"),
             };
         }

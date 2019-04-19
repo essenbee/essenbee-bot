@@ -11,6 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "large sparkling nuggets of *gold*";
             IsPortable = true;
             IsTreasure = true;
+            GivesPlayerStatus = PlayerStatus.IsEncumbered;
         }
     }
 }
