@@ -32,21 +32,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                 if (canMove)
                 {
-                    if (player.Statuses.Contains(PlayerStatus.IsEncumbered))
+                    if (MoveAffectedByEncumberedStatus(player, move))
                     {
-                        player.ChatClient.PostDirectMessage(player, "You are currently encumbered.");
-
-                        if (move.Moves.Contains("up"))
-                        {
-                            player.ChatClient.PostDirectMessage(player, "You are unable to move upward!");
-                            player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
-                            return;
-                        }
-
-                        if (move.Moves.Contains("down") && player.CurrentLocation.IsDark)
-                        {
-                            // Player falls and is killed!
-                        }
+                        return;
                     }
 
                     player.PriorLocation = player.CurrentLocation;
@@ -66,6 +54,32 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             player.ChatClient.PostDirectMessage(player, "You cannot go in that direction!");
             player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+        }
+
+        public bool MoveAffectedByEncumberedStatus(IAdventurePlayer player, IPlayerMove move)
+        {
+            if (player.Statuses.Contains(PlayerStatus.IsEncumbered))
+            {
+                player.ChatClient.PostDirectMessage(player, "You are currently encumbered.");
+
+                if (move.Moves.Contains("up"))
+                {
+                    player.ChatClient.PostDirectMessage(player, "You are unable to move upward!");
+                    player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+                    return true;
+                }
+
+                if (move.Moves.Contains("down"))
+                {
+                    player.ChatClient.PostDirectMessage(player, "You slip and fall! All that weight drags you down. " +
+                        "Your lamp smashes and darkness engulfs you...");
+                    player.Statuses.Add(PlayerStatus.IsDead);
+                    _game.EndOfGame(player);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

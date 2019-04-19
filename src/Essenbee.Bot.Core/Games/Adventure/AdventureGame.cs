@@ -72,5 +72,22 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             return _players.First(x => x.Id == userId);
         }
+
+        public void EndOfGame(IAdventurePlayer player)
+        {
+            var thePlayer = player as AdventurePlayer;
+
+            if (player.Statuses.Contains(PlayerStatus.IsDead))
+            {
+                player.ChatClient.PostDirectMessage(player, "You have been killed, another victim of the perils of Colossal Cave.");
+            }
+
+            // TODO: calculate points gained during game...
+            var points = 0;
+
+            player.ChatClient.PostDirectMessage(player, $"You earned {points} during your Adventure.");
+
+            _players.Remove(thePlayer);
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
     {
         ReadOnlyCollection<AdventurePlayer> Players { get; }
         IDungeon Dungeon { get; }
+
+        void EndOfGame(IAdventurePlayer player);
     }
 }
