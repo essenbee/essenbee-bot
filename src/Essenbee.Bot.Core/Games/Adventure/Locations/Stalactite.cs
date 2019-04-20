@@ -13,12 +13,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "at top of stalactite";
             LongDescription = "in a cave where large stalactite extends from the roof and almost reaches the floor of a cave " + 
                 "below. You could climb down it, and jump from it, but having done so you would be unable " + 
-                "to reach it to climb back up...";
+                "to reach it to climb back up. A passage exits to the North.";
             IsDark = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You climb down the stalactite and jump down...", Location.AllAlike7, "down", "d"),
-                // new PlayerMove("", Location., "north", "n"),
+                new PlayerMove("", Location.SecretNorthSouthPassage, "north", "n"),
             };
         }
     }

@@ -32,5 +32,9 @@
         RottingDeadDragon,
         DragonTooth,
         ShadowyFigure,
+        Magazines,
+        Pillow,
+        Vase,
+        BrokenVase,
     }
 }

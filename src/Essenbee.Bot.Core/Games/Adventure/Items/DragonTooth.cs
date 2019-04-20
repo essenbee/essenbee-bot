@@ -10,7 +10,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "dragon *tooth*";
             PluralName = "dragon *teeth*";
             IsPortable = true;
-            IsEndlessSupply = true;
+            IsEndlessSupply = false;
+            IsTreasure = true;
         }
     }
 }

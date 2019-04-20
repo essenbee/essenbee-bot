@@ -50,6 +50,7 @@
         BrokenPassage,
         JumbleOfRocks,
         Window1,
+        Window2,
         SecretNorthEastCanyon,
         SecretNorthSouthCanyon,
         TightNorthSouthCanyon,
@@ -59,5 +60,15 @@
         Crossover,
         DeadEndWithMessage,
         Bedquilt,
+        DustyCave,
+        SwissCheese,
+        ComplexJunction,
+        Anteroom,
+        LowRoom,
+        SecretJunction,
+        SecretNorthSouthPassage,
+        TallEastWestCanyon,
+        SoftRoom,
+        Oriental,
     }
 }

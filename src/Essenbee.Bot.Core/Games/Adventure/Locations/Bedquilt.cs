@@ -7,19 +7,46 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
     {
         public Bedquilt(IReadonlyAdventureGame game) : base(game)
         {
-            LocationId = Location.TightNorthSouthCanyon;
-            Name = "tight canyon";
-            ShortDescription = "in a tight canyon which exits to the north and south";
-            LongDescription = "in a tight canyon which exits to the north and south. " +
-                "There is a crack in the roof, but there is no way you could climb up there...";
+            LocationId = Location.Bedquilt;
+            Name = "Bedquilt Cave";
+            ShortDescription = "back at Bedquilt cave";
+            LongDescription = "in Bedquilt cave, a long East/West passage with holes everywhere. " +
+                "To explore at random select NORTH, SOUTH, UP, or DOWN.";
 
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.SlabRoom, "slab"),
-                //new PlayerMove(string.Empty, Location., "west", "w"), // swiss cheese
-                //new PlayerMove(string.Empty, Location., "east", "e"), // complex junction
-                // complex random movement for n,s,up or down 
+                new PlayerMove(string.Empty, Location.SwissCheese, "west", "w"), // swiss cheese
+                new PlayerMove(string.Empty, Location.ComplexJunction, "east", "e"), // complex junction
+                new RandomMove("You have crawled around in some little holes and found your way to:", 
+                new List<Location> 
+                {
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.LowRoom,
+                    Location.SecretJunction, Location.Bedquilt, Location.Bedquilt, Location.LowRoom,
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.LowRoom,
+                }, "north", "n"),
+                new RandomMove("You have crawled around in some little holes and found your way to:", 
+                new List<Location>
+                {
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.SlabRoom,
+                    Location.TallEastWestCanyon, Location.Bedquilt, Location.Bedquilt, Location.SlabRoom,
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.SlabRoom,
+                }, "south", "s"),
+                new RandomMove("You have crawled around in some little holes and found your way to:", 
+                new List<Location>
+                {
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.DustyCave,
+                    Location.SecretNorthSouthPassage, Location.Bedquilt, Location.Bedquilt, Location.DustyCave,
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.DustyCave,
+                }, "up", "u", "climb"),
+                new RandomMove("You have crawled around in some little holes and found your way to:", 
+                new List<Location>
+                {
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.Anteroom,
+                    Location.Anteroom, Location.Bedquilt, Location.Bedquilt, Location.Anteroom,
+                    Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.Anteroom,
+                }, "down", "d"),
             };
         }
     }
