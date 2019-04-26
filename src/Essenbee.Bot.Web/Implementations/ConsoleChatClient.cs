@@ -18,6 +18,12 @@ namespace Essenbee.Bot.Web
             set => throw new NotSupportedException("You cannot set Channels on the ConsoleChatClient");
         }
 
+        public void Connect()
+        {
+            Console.WriteLine("Connecting to the Console service ...");
+            Log.Information("*** Connecting to the Console service ...");
+        }
+
         public void Disconnect()
         {
             Console.WriteLine("Disconnecting from the Console service ...");

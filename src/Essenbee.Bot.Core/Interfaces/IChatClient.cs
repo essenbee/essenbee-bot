@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Core.Interfaces
         void PostMessage(string text);
         void PostDirectMessage(string username, string text);
         void PostDirectMessage(IAdventurePlayer player, string text);
+        void Connect();
         void Disconnect();
     }
 }

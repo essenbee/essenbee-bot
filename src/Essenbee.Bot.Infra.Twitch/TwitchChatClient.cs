@@ -23,6 +23,7 @@ namespace Essenbee.Bot.Infra.Twitch
         private readonly TwitchClient _twitchClient;
         private readonly TwitchConfig _settings;
         private int _connectionFailures = 0;
+        private bool _isReady = false;
         private const int MaxMsgSize = 500;
 
         public TwitchChatClient(TwitchConfig settings)
@@ -36,7 +37,7 @@ namespace Essenbee.Bot.Infra.Twitch
             DefaultChannel = _settings.Channel;
 
             SetupEvents();
-            _twitchClient.Connect();
+            Connect();
         }
 
         public TwitchChatClient(string username, string token, string channel)
@@ -54,7 +55,7 @@ namespace Essenbee.Bot.Infra.Twitch
             DefaultChannel = _settings.Channel;
 
             SetupEvents();
-            _twitchClient.Connect();
+            Connect();
         }
 
         private void SetupEvents()
@@ -101,11 +102,17 @@ namespace Essenbee.Bot.Infra.Twitch
         }
 
         public void PostDirectMessage(IAdventurePlayer player, string text) => PostDirectMessage(player.UserName, text);
-        
+
+        public void Connect()
+        {
+            _twitchClient.Connect();
+        }
+
         public void Disconnect()
         {
             WriteLine("Disconnecting from the Twitch service ...");
             _twitchClient.Disconnect();
+            _isReady = false;
         }
 
         private void OnLog(object sender, OnLogArgs e)
@@ -117,6 +124,7 @@ namespace Essenbee.Bot.Infra.Twitch
         {
             var botName = e?.BotUsername ?? "<unknown>";
             _connectionFailures = 0;
+            _isReady = true;
             WriteLine($"{botName} is connected to Twitch!");
         }
 
@@ -129,12 +137,14 @@ namespace Essenbee.Bot.Infra.Twitch
         private void OnDisconnected(object sender, OnDisconnectedEventArgs e)
         {
             WriteLine("Disconnected from Twitch!");
+            _isReady = false;
         }
 
         private void OnConnectionError(object sender, OnConnectionErrorArgs e)
         {
             var botName = e?.BotUsername ?? "<unknown>";
             _connectionFailures++;
+            _isReady = false;
             WriteLine($"{botName} had a problem connecting to Twitch (failure #{_connectionFailures})!");
         }
 

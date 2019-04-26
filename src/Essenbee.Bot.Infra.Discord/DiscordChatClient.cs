@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Infra.Discord
     {
         private readonly DiscordClient _discordClient;
         private readonly DiscordConfig _settings;
+        private bool _isReady = false;
 
         public bool UseUsernameForIM { get; }
         public string DefaultChannel => "general";
@@ -35,7 +36,7 @@ namespace Essenbee.Bot.Infra.Discord
             UseUsernameForIM = false;
             SetupEvents();
             SetupDiscordCommands();
-            _ = Connect();
+            Connect();
         }
 
         public DiscordChatClient(DiscordConfig settings)
@@ -50,10 +51,15 @@ namespace Essenbee.Bot.Infra.Discord
             UseUsernameForIM = false;
             SetupEvents();
             SetupDiscordCommands();
-            _ = Connect();
+            Connect();
         }
 
-        public async Task Connect()
+        public void Connect()
+        {
+            _ = ConnectAsync();
+        }
+
+        public async Task ConnectAsync()
         {
             await _discordClient.ConnectAsync();
             await Task.Delay(-1);
@@ -63,6 +69,7 @@ namespace Essenbee.Bot.Infra.Discord
         {
             WriteLine("Disconnecting from the Discord service ...");
             _discordClient.DisconnectAsync();
+            _isReady = false;
         }
 
         public void PostDirectMessage(string username, string text)
@@ -111,6 +118,7 @@ namespace Essenbee.Bot.Infra.Discord
         private Task OnConnected(ReadyEventArgs e)
         {
             WriteLine("Connected to the Discord service");
+            _isReady = true;
             return Task.CompletedTask;
         }
 

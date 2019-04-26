@@ -27,7 +27,7 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient = new Client(_settings.ApiKey);
 
             SetupEvents();
-            _slackClient.Connect();
+            Connect();
         }
 
         public SlackChatClient(string apiKey)
@@ -35,7 +35,7 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient = new Client(apiKey);
 
             SetupEvents();
-            _slackClient.Connect();
+            Connect();
         }
 
         private void SetupEvents()
@@ -52,10 +52,16 @@ namespace Essenbee.Bot.Infra.Slack
             _slackClient.CommandReceived += ProcessCommand;
         }
 
+        public void Connect()
+        {
+            _slackClient.Connect();
+        }
+
         public void Disconnect()
         {
             WriteLine("Disconnecting from the Slack service ...");
             _shutdown = true;
+            _isReady = false;
             _slackClient.Disconnect();
         }
 
