@@ -21,7 +21,8 @@ namespace Essenbee.Bot.Core
 
         public static bool IsRunning = false;
         private IRepository _repository;
-        
+        private static bool InitialStartup = true;
+
         public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, IBotSettings settings)
         {
             Settings = settings;
@@ -45,12 +46,19 @@ namespace Essenbee.Bot.Core
         public void Start()
         {
             IsRunning = true;
-            
-            foreach (var chatClient in ConnectedClients)
+
+            if (InitialStartup)
             {
-                chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) => {
-                    ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
-                };
+                // Don't add the event handler(s) more than once!
+                foreach (var chatClient in ConnectedClients)
+                {
+                    chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) =>
+                    {
+                        ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
+                    };
+                }
+
+                InitialStartup = false;
             }
 
             CancelKeyPress += OnCtrlC;
