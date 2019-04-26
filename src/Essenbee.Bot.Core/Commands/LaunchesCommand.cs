@@ -12,8 +12,8 @@ namespace Essenbee.Bot.Core.Commands
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName => "launches";
         public string HelpText { get; } = @"The command !launches with no argument will display SpaceX launches. Valid arguments are: " +
-                "spacex, ula, boeing, lm (or lockheed), nasa, irso (or india), jaxa (or japan), rocketlab (or rl), rfsa (or roscosmos) " +
-                "and casc (or china).";
+                "spacex, ula, boeing, lm (or lockheed), nasa, irso (or india), jaxa (or japan), rocketlab (or rl), rfsa (or roscosmos), " +
+                "asa (or ariane) and casic (or china).";
         public TimeSpan Cooldown { get; }
 
         private readonly IBot _bot;
@@ -54,7 +54,7 @@ namespace Essenbee.Bot.Core.Commands
                     case "rl":
                     case "rocketlab":
                         provider = "147";
-                        providerName = "Rocket Lab";
+                        providerName = "Rocket Lab Ltd";
                         break;
                     case "jaxa":
                     case "japan":
@@ -66,10 +66,10 @@ namespace Essenbee.Bot.Core.Commands
                         providerName = "ROSCOSMOS (Russia)";
                         provider = "63";
                         break;
-                    case "casc":
+                    case "casic":
                     case "china":
                         provider = "88";
-                        providerName = "the C.A.S.C. (China)";
+                        providerName = "the C.A.S.I.C. (China)";
                         break;
                     case "spacex":
                         provider = "121";
@@ -83,6 +83,11 @@ namespace Essenbee.Bot.Core.Commands
                     case "lockheed":
                         provider = "82";
                         providerName = "Lockheed-Martin";
+                        break;
+                    case "asa":
+                    case "ariane":
+                        provider = "115";
+                        providerName = "Ariane Group";
                         break;
                 }
             }
