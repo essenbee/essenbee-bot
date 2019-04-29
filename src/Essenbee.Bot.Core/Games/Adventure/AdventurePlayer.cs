@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public int Moves { get; set; }
         public Inventory Inventory { get; set; }
         public IList<PlayerStatus> Statuses { get; set; }
+        public Dictionary<string, int> Clocks { get; set; }
 
         public AdventurePlayer()
         {

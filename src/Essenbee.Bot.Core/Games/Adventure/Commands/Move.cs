@@ -41,6 +41,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                     player.CurrentLocation = place;
                     player.Moves++;
 
+                    foreach (var key in player.Clocks.Keys)
+                    {
+                        player.Clocks[key]++;
+                    }
+
                     if (!string.IsNullOrWhiteSpace(moveText))
                     {
                         player.ChatClient.PostDirectMessage(player, moveText);

@@ -27,6 +27,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 "hands! (Unbelievable, isn't it?)"));
             yes.RegisteredInteractions.Add(new RemoveFromLocation(this));
             yes.RegisteredInteractions.Add(new AddToLocation(ItemFactory.GetInstance(Game, Item.DeadDragon)));
+            yes.RegisteredInteractions.Add(new StartClock("dragon"));
             yes.RegisteredInteractions.Add(new RemoveDestination(Game, Location.SecretNorthEastCanyon));
             yes.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
                 { new PlayerMove(string.Empty, Location.SecretNorthSouthCanyon, "north", "n") }, Game, Location.SecretNorthEastCanyon));
