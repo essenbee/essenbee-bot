@@ -19,8 +19,7 @@ namespace Essenbee.Bot.Infra.Discord
         private bool _isReady = false;
 
         public bool UseUsernameForIM { get; }
-        public string DefaultChannel => "general";
-        public const ulong General = 546412212038795307;
+        public string DefaultChannel => "546412212038795307";
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
         public CommandsNextModule Commands { get; set; }
@@ -111,7 +110,8 @@ namespace Essenbee.Bot.Infra.Discord
 
         public void PostMessage(string text)
         {
-            var discordChannel = _discordClient.GetChannelAsync(General).Result;
+            var defaultChannel = ulong.Parse(DefaultChannel);
+            var discordChannel = _discordClient.GetChannelAsync(defaultChannel).Result;
             _discordClient.SendMessageAsync(discordChannel, text);
         }
 
