@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Infra.Slack
         private readonly SlackConfig _settings;
 
         public bool UseUsernameForIM { get; }
-        public string DefaultChannel => "general";
+        public string DefaultChannel => "CHKTD29JM";
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
 

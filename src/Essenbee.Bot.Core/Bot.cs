@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using Essenbee.Bot.Core.Commands;
+using Essenbee.Bot.Core.Data;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
-using static System.Console;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Essenbee.Bot.Core.Data;
-using Essenbee.Bot.Core.Commands;
+using System.Threading;
+using static System.Console;
 
 namespace Essenbee.Bot.Core
 {
@@ -39,7 +39,6 @@ namespace Essenbee.Bot.Core
             {
                 _repository = repository;
                 ScheduleRepeatedMessages();
-                ShowStartupMessage();
             }
         }
 
@@ -67,32 +66,29 @@ namespace Essenbee.Bot.Core
             {
                 Thread.Sleep(1000);
 
-                if (!IsRunning) break;
+                if (!IsRunning)
+                {
+                    break;
+                }
             }
         }
 
-        public void Stop()
-        {
-            IsRunning = false;
-        }
+        public void Stop() => IsRunning = false;
 
-        private void ShowStartupMessage()
+        public void ShowStartupMessage(string startupMessage)
         {
-            if (_repository != null && ActionScheduler != null)
+            if (startupMessage != null)
             {
-                var startupMessage = _repository.List<StartupMessage>().FirstOrDefault(m => m.Status == ItemStatus.Active);
-
-                if (startupMessage != null)
+                foreach (var chatClient in ConnectedClients)
                 {
-                    var action = new DelayedMessage(startupMessage.Message, 5, ConnectedClients, $"AutomatedMessage-{startupMessage.Id}");
-                    ActionScheduler.Schedule(action);
+                    chatClient.PostMessage(chatClient.DefaultChannel, startupMessage);
                 }
             }
         }
 
         private void ScheduleRepeatedMessages()
         {
-            if (_repository != null && ActionScheduler != null)
+            if ((_repository != null) && (ActionScheduler != null))
             {
                 var messages = _repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
 

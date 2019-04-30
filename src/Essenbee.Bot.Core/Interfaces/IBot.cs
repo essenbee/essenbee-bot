@@ -13,6 +13,8 @@ namespace Essenbee.Bot.Core.Interfaces
         Dictionary<string, DateTimeOffset> CommandInvocations { get; }
 
         void Init(IRepository repository);
+
+        void ShowStartupMessage(string message);
         void Start();
         void Stop();
     }

@@ -50,6 +50,8 @@ namespace Essenbee.Bot.Web.Pages
             try
             {
                 var runningJobs = _actionScheduler.GetRunningJobs<Core.Bot>();
+                StartupMessage = _repository.List<Core.Data.StartupMessage>();
+                var startUpMessage = StartupMessage.FirstOrDefault();
 
                 if (runningJobs.Any())
                 {
@@ -62,10 +64,11 @@ namespace Essenbee.Bot.Web.Pages
                     _bot.Init(_repository);
                     _actionScheduler.Enqueue(() => _bot.Start());
                     IsRunning = true;
+
+                    _bot.ShowStartupMessage(startUpMessage.Message);
                 }
 
                 TimedMessages = _repository.List<Core.Data.TimedMessage>();
-                StartupMessage = _repository.List<Core.Data.StartupMessage>();
             }
             catch (Exception ex)
             {
