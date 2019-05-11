@@ -12,6 +12,7 @@ Commands supported:
 - [X] !cricket         - Cricket scores from around the world
 - [X] !ask _question_  - Ask any question and the bot will use Cognitive Services to answer it (or try)
 - [X] !adv             - An implementation of the classic text adventure game _Adventure_ - a work in progress (its big)
+- [X] !hey             - Essenbee can get engrossed in the code, so attract their attention with this SFX command (Twitch chat only)
   
 More commands planned.
 
