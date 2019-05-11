@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="ConsoleTableExt" Version="2.0.1" />
+    <PackageReference Include="NetCoreAudio" Version="1.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 </Project>

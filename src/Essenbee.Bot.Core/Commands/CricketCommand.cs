@@ -16,7 +16,7 @@ namespace Essenbee.Bot.Core.Commands
         public CricketCommand(IBot bot)
         {
             _bot = bot;
-            Cooldown = TimeSpan.FromMinutes(10);
+            Cooldown = TimeSpan.FromMinutes(1);
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

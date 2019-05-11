@@ -18,7 +18,7 @@ namespace Essenbee.Bot.Core.Commands
         {
             _bot = bot;
             _searchEngine = bot.AnswerSearchEngine;
-            Cooldown = TimeSpan.FromMinutes(10);
+            Cooldown = TimeSpan.FromMinutes(1);
         }
 
         public void Execute(IChatClient chatClient, ChatCommandEventArgs e)

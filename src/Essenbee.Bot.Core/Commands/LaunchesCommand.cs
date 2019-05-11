@@ -21,7 +21,7 @@ namespace Essenbee.Bot.Core.Commands
         public LaunchesCommand(IBot bot)
         {
             _bot = bot;
-            Cooldown = TimeSpan.FromMinutes(10);
+            Cooldown = TimeSpan.FromMinutes(1);
         }
 
         public bool ShouldExecute() => Status == ItemStatus.Active;
