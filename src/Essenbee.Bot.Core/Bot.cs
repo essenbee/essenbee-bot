@@ -20,7 +20,6 @@ namespace Essenbee.Bot.Core
         public Dictionary<string, DateTimeOffset> CommandInvocations { get; } = new Dictionary<string, DateTimeOffset>();
 
         public static bool IsRunning = false;
-        private IRepository _repository;
         private static bool InitialStartup = true;
 
         public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, IBotSettings settings)
@@ -33,16 +32,7 @@ namespace Essenbee.Bot.Core
             CommandHandler = new BotCommandHandler(this);
         }
 
-        public void Init(IRepository repository)
-        {
-            if (_repository is null)
-            {
-                _repository = repository;
-                ScheduleRepeatedMessages();
-            }
-        }
-
-        public void Start()
+        public void Start(string startupMessage)
         {
             IsRunning = true;
 
@@ -60,6 +50,8 @@ namespace Essenbee.Bot.Core
                 InitialStartup = false;
             }
 
+            ShowStartupMessage(startupMessage);
+
             CancelKeyPress += OnCtrlC;
 
             while (true)
@@ -73,11 +65,21 @@ namespace Essenbee.Bot.Core
             }
         }
 
-        public void Stop() => IsRunning = false;
-
-        public void ShowStartupMessage(string startupMessage)
+        public void Stop(string stopMessage)
         {
-            if (startupMessage != null)
+            IsRunning = false;
+            if (!string.IsNullOrWhiteSpace(stopMessage))
+            {
+                foreach (var chatClient in ConnectedClients)
+                {
+                    chatClient.PostMessage(chatClient.DefaultChannel, stopMessage);
+                }
+            }
+        }
+
+        private void ShowStartupMessage(string startupMessage)
+        {
+            if (!string.IsNullOrWhiteSpace(startupMessage))
             {
                 foreach (var chatClient in ConnectedClients)
                 {
@@ -86,16 +88,16 @@ namespace Essenbee.Bot.Core
             }
         }
 
-        private void ScheduleRepeatedMessages()
+        public void ScheduleRepeatedMessages(IActionScheduler actionScheduler, IRepository repository)
         {
-            if ((_repository != null) && (ActionScheduler != null))
+            if ((repository != null) && (actionScheduler != null))
             {
-                var messages = _repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
+                var messages = repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
 
                 foreach (var message in messages)
                 {
                     var action = new RepeatingMessage(message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
-                    ActionScheduler.Schedule(action);
+                    actionScheduler.Schedule(action);
                 }
             }
         }

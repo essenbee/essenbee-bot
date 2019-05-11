@@ -55,17 +55,15 @@ namespace Essenbee.Bot.Web.Pages
 
                 if (runningJobs.Any())
                 {
-                    _bot.Stop();
+                    _bot.Stop("Master computer is offline.");
                     _actionScheduler.StopRunningJobs<Core.Bot>();
                     IsRunning = false;
                 }
                 else
                 {
-                    _bot.Init(_repository);
-                    _actionScheduler.Enqueue(() => _bot.Start());
+                    _actionScheduler.Enqueue(() => _bot.Start(startUpMessage.Message));
+                    _bot.ScheduleRepeatedMessages(_actionScheduler, _repository);
                     IsRunning = true;
-
-                    _bot.ShowStartupMessage(startUpMessage.Message);
                 }
 
                 TimedMessages = _repository.List<Core.Data.TimedMessage>();

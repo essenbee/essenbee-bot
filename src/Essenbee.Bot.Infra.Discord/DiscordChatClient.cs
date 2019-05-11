@@ -24,10 +24,11 @@ namespace Essenbee.Bot.Infra.Discord
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
         public CommandsNextModule Commands { get; set; }
 
-        public DiscordChatClient(string token)
+        public DiscordChatClient(DiscordConfig settings)
         {
+            _settings = settings;
             _discordClient = new DiscordClient(new DiscordConfiguration {
-                Token = token,
+                Token = _settings.DiscordToken,
                 TokenType = TokenType.Bot,
                 AutoReconnect = true
             });
@@ -38,11 +39,11 @@ namespace Essenbee.Bot.Infra.Discord
             Connect();
         }
 
-        public DiscordChatClient(DiscordConfig settings)
+        public DiscordChatClient(string token)
         {
-            _settings = settings;
-            _discordClient = new DiscordClient(new DiscordConfiguration {
-                Token = _settings.DiscordToken,
+            _discordClient = new DiscordClient(new DiscordConfiguration
+            {
+                Token = token,
                 TokenType = TokenType.Bot,
                 AutoReconnect = true
             });

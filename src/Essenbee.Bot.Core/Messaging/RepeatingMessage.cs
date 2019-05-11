@@ -69,7 +69,7 @@ namespace Essenbee.Bot.Core.Messaging
                 }
                 else
                 {
-                    chatClient.PostMessage(Message);
+                    chatClient.PostMessage(chatClient.DefaultChannel, Message);
                 }
             }
         }

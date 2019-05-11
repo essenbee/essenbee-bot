@@ -50,6 +50,7 @@ namespace Essenbee.Bot.Web
             };
 
             services.AddSingleton(slackConfig);
+            services.AddSingleton(discordConfig);
             services.AddSingleton(twitchConfig);
 
             services.AddSingleton<IConnectedClients, ConnectedClients>();

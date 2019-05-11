@@ -61,23 +61,26 @@ namespace Essenbee.Bot.Infra.Hangfire
                 case RepeatingMessage repeatingMsg:
                     var message = repeatingMsg.Message;
                     var channel = repeatingMsg.Channel;
+                    var i = 0;
 
                     foreach (var chatClient in ChatClients)
                     {
                         if (!string.IsNullOrWhiteSpace(channel))
                         {
                             RecurringJob.AddOrUpdate(
-                            repeatingMsg.Name,
+                            repeatingMsg.Name + $"-{i}",
                             () => chatClient.PostMessage(channel, message),
                             Cron.MinuteInterval(repeatingMsg.IntervalInMinutes));
                         }
                         else
                         {
                             RecurringJob.AddOrUpdate(
-                            repeatingMsg.Name,
+                            repeatingMsg.Name + $"-{i}",
                             () => chatClient.PostMessage(chatClient.DefaultChannel, message),
                             Cron.MinuteInterval(repeatingMsg.IntervalInMinutes));
                         }
+
+                        i++;
                     }
                     break;
             }

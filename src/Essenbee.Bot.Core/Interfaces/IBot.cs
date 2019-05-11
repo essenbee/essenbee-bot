@@ -12,10 +12,8 @@ namespace Essenbee.Bot.Core.Interfaces
         ICommandHandler CommandHandler { get; set; }
         Dictionary<string, DateTimeOffset> CommandInvocations { get; }
 
-        void Init(IRepository repository);
-
-        void ShowStartupMessage(string message);
-        void Start();
-        void Stop();
+        void Start(string message);
+        void Stop(string message);
+        void ScheduleRepeatedMessages(IActionScheduler actionScheduler, IRepository repository);
     }
 }

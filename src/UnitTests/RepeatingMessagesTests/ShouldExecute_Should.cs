@@ -19,7 +19,7 @@ namespace UnitTests.TimerTriggeredMessageTests
 
             A.CallTo(() => fakeClock.UtcNow).Returns(new DateTime(2018, 6, 28, 12, 0, 0));
 
-            var testMsg = new RepeatingMessage("channnel","Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
+            var testMsg = new RepeatingMessage("channel","Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
             
             // Act and Assert
             Assert.IsFalse(testMsg.ShouldExecute());
@@ -36,7 +36,7 @@ namespace UnitTests.TimerTriggeredMessageTests
             A.CallTo(() => fakeClock.UtcNow).Returns(startTime).Once()
                 .Then.Returns(startTime.AddSeconds(30)).Once();
 
-            var testMsg = new RepeatingMessage("channnel", "Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
+            var testMsg = new RepeatingMessage("channel", "Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
 
             // Act and Assert
             Assert.IsFalse(testMsg.ShouldExecute());
@@ -53,7 +53,7 @@ namespace UnitTests.TimerTriggeredMessageTests
             A.CallTo(() => fakeClock.UtcNow).Returns(startTime).Once()
                 .Then.Returns(startTime.AddMinutes(Delay));
 
-            var testMsg = new RepeatingMessage("channnel", "Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
+            var testMsg = new RepeatingMessage("channel", "Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
 
             // Act and Assert
             Assert.IsTrue(testMsg.ShouldExecute());
@@ -70,7 +70,7 @@ namespace UnitTests.TimerTriggeredMessageTests
             A.CallTo(() => fakeClock.UtcNow).Returns(startTime).Once()
                 .Then.Returns(startTime.AddMinutes(2 * Delay));
 
-            var testMsg = new RepeatingMessage("channnel", "Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
+            var testMsg = new RepeatingMessage("channel", "Hi, this is a timed message from AlphaBot!", Delay, null, fakeClock, "TestMessage");
 
             // Act and Assert
             Assert.IsTrue(testMsg.ShouldExecute());

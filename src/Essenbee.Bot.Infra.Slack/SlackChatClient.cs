@@ -67,7 +67,7 @@ namespace Essenbee.Bot.Infra.Slack
 
         public void PostMessage(string theChannel, string msg)
         {
-            if (Channels.Values.Contains(theChannel))
+            if (Channels.Values.Contains(theChannel) || theChannel == DefaultChannel)
             {
                 var retries = 0;
 
