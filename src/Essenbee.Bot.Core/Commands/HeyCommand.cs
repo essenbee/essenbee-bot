@@ -26,7 +26,7 @@ namespace Essenbee.Bot.Core.Commands
 
             if (e.ClientType.ToLower().Contains(RestrictToClientType))
             {
-                Sfx.PlaySound(Sfx.Siren);
+                Sfx.PlaySound(Sfx.HeyEssenbee);
             }
 
             chatClient.PostMessage(e.Channel, "**Hey, Essenbee!**");

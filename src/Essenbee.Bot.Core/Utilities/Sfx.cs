@@ -8,7 +8,7 @@ namespace Essenbee.Bot.Core.Utilities
     {
         private static object _mutex = new object();
 
-        public static string Siren = @"D:\sounds\siren.wav";
+        public static string HeyEssenbee = @"D:\sounds\hey_essenbee.wav";
 
         public static void PlaySound(string fileName)
         {
