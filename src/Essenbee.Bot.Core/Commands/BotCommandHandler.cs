@@ -49,9 +49,9 @@ namespace Essenbee.Bot.Core.Commands
                         }
                         else
                         {
-                            var remaining = (cmd.Cooldown - elapsedTime).Minutes;
+                            var remaining = (cmd.Cooldown - elapsedTime).Seconds;
                             chatClient.PostMessage(e.Channel,
-                                $"The command \"{e.Command}\" is on cooldown, {remaining} minute(s) remaining.");
+                                $"The command \"{e.Command}\" is on cooldown, {remaining} seconds remaining.");
                             return false;
                         }
                     }

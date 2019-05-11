@@ -12,52 +12,59 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
             var canMove = false;
-            var direction = e.ArgsAsList[1].ToLower();
 
-            if (player.CurrentLocation.IsDark)
+            if (e.ArgsAsList.Count == 2)
             {
-                if (!player.Statuses.Contains(PlayerStatus.HasLight))
+                var direction = e.ArgsAsList[1].ToLower();
+
+                if (player.CurrentLocation.IsDark)
                 {
-                    player.ChatClient.PostDirectMessage(player, "It is pitch black! If you move around, you'll probably fall into a chasm or something...");
-                }
-            }
-
-            if (player.CurrentLocation.ValidMoves.Any(d => d.IsMatch(direction)))
-            {
-                var move = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction));
-                var moveTo = move.Destination;
-                var moveText = move.MoveText;
-
-                canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
-
-                if (canMove)
-                {
-                    if (MoveAffectedByEncumberedStatus(player, move))
+                    if (!player.Statuses.Contains(PlayerStatus.HasLight))
                     {
+                        player.ChatClient.PostDirectMessage(player, "It is pitch black! If you move around, you'll probably fall into a chasm or something...");
+                    }
+                }
+
+                if (player.CurrentLocation.ValidMoves.Any(d => d.IsMatch(direction)))
+                {
+                    var move = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction));
+                    var moveTo = move.Destination;
+                    var moveText = move.MoveText;
+
+                    canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
+
+                    if (canMove)
+                    {
+                        if (MoveAffectedByEncumberedStatus(player, move))
+                        {
+                            return;
+                        }
+
+                        player.PriorLocation = player.CurrentLocation;
+                        player.CurrentLocation = place;
+                        player.Moves++;
+
+                        if (player.Clocks != null && player.Clocks.Count > 0)
+                        {
+                            foreach (var key in player.Clocks.Keys)
+                            {
+                                player.Clocks[key]++;
+                            }
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(moveText))
+                        {
+                            player.ChatClient.PostDirectMessage(player, moveText);
+                        }
+
+                        player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+
                         return;
                     }
-
-                    player.PriorLocation = player.CurrentLocation;
-                    player.CurrentLocation = place;
-                    player.Moves++;
-
-                    foreach (var key in player.Clocks.Keys)
-                    {
-                        player.Clocks[key]++;
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(moveText))
-                    {
-                        player.ChatClient.PostDirectMessage(player, moveText);
-                    }
-
-                    player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
-
-                    return;
                 }
             }
 
-            player.ChatClient.PostDirectMessage(player, "You cannot go in that direction!");
+            player.ChatClient.PostDirectMessage(player, "You cannot go in that direction! Try *look* so see where you might go.");
             player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
         }
 

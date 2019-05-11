@@ -89,7 +89,8 @@ namespace Essenbee.Bot.Core
             {
                 chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) =>
                 {
-                    ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
+                    CommandHandler.ExecuteCommand(chatClient, e);
+                    //ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
                 };
             }
         }
