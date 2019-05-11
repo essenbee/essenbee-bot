@@ -55,7 +55,7 @@ namespace Essenbee.Bot.Web.Pages
 
                 if (runningJobs.Any())
                 {
-                    _bot.Stop("Master computer is offline.");
+                    _bot.Stop("AlphaBot is offline."); // ToDo: add to database
                     _actionScheduler.StopRunningJobs<Core.Bot>();
                     IsRunning = false;
                 }
