@@ -27,7 +27,7 @@ namespace Essenbee.Bot.Core
             Settings = settings;
             ActionScheduler = actionScheduler;
             AnswerSearchEngine = answerSearchEngine;
-            AnswerSearchEngine.SetApiKey(Settings.AnswerSerachApiKey);
+            AnswerSearchEngine.SetApiKey(Settings.AnswerSearchApiKey);
             ConnectedClients = clients.ChatClients;
             CommandHandler = new BotCommandHandler(this);
         }
@@ -38,21 +38,12 @@ namespace Essenbee.Bot.Core
 
             if (InitialStartup)
             {
-                // Don't add the event handler(s) more than once!
-                foreach (var chatClient in ConnectedClients)
-                {
-                    chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) =>
-                    {
-                        ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
-                    };
-                }
-
+                AddCommandHandler();
+                CancelKeyPress += OnCtrlC;
                 InitialStartup = false;
             }
 
             ShowStartupMessage(startupMessage);
-
-            CancelKeyPress += OnCtrlC;
 
             while (true)
             {
@@ -67,7 +58,6 @@ namespace Essenbee.Bot.Core
 
         public void Stop(string stopMessage)
         {
-            IsRunning = false;
             if (!string.IsNullOrWhiteSpace(stopMessage))
             {
                 foreach (var chatClient in ConnectedClients)
@@ -75,17 +65,8 @@ namespace Essenbee.Bot.Core
                     chatClient.PostMessage(chatClient.DefaultChannel, stopMessage);
                 }
             }
-        }
 
-        private void ShowStartupMessage(string startupMessage)
-        {
-            if (!string.IsNullOrWhiteSpace(startupMessage))
-            {
-                foreach (var chatClient in ConnectedClients)
-                {
-                    chatClient.PostMessage(chatClient.DefaultChannel, startupMessage);
-                }
-            }
+            IsRunning = false;
         }
 
         public void ScheduleRepeatedMessages(IActionScheduler actionScheduler, IRepository repository)
@@ -98,6 +79,28 @@ namespace Essenbee.Bot.Core
                 {
                     var action = new RepeatingMessage(message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
                     actionScheduler.Schedule(action);
+                }
+            }
+        }
+
+        private void AddCommandHandler()
+        {
+            foreach (var chatClient in ConnectedClients)
+            {
+                chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) =>
+                {
+                    ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
+                };
+            }
+        }
+
+        private void ShowStartupMessage(string startupMessage)
+        {
+            if (!string.IsNullOrWhiteSpace(startupMessage))
+            {
+                foreach (var chatClient in ConnectedClients)
+                {
+                    chatClient.PostMessage(chatClient.DefaultChannel, startupMessage);
                 }
             }
         }

@@ -16,10 +16,9 @@ namespace Essenbee.Bot.Infra.Discord
     {
         private readonly DiscordClient _discordClient;
         private readonly DiscordConfig _settings;
-        private bool _isReady = false;
 
         public bool UseUsernameForIM { get; }
-        public string DefaultChannel => "546412212038795307";
+        public string DefaultChannel { get; }
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
         public CommandsNextModule Commands { get; set; }
@@ -27,6 +26,7 @@ namespace Essenbee.Bot.Infra.Discord
         public DiscordChatClient(DiscordConfig settings)
         {
             _settings = settings;
+            DefaultChannel = _settings.DefaultChannel;
             _discordClient = new DiscordClient(new DiscordConfiguration {
                 Token = _settings.DiscordToken,
                 TokenType = TokenType.Bot,
@@ -39,8 +39,9 @@ namespace Essenbee.Bot.Infra.Discord
             Connect();
         }
 
-        public DiscordChatClient(string token)
+        public DiscordChatClient(string token, string defaultChannel)
         {
+            DefaultChannel = defaultChannel;
             _discordClient = new DiscordClient(new DiscordConfiguration
             {
                 Token = token,
@@ -69,7 +70,6 @@ namespace Essenbee.Bot.Infra.Discord
         {
             WriteLine("Disconnecting from the Discord service ...");
             _discordClient.DisconnectAsync();
-            _isReady = false;
         }
 
         public void PostDirectMessage(string username, string text)
@@ -119,7 +119,6 @@ namespace Essenbee.Bot.Infra.Discord
         private Task OnConnected(ReadyEventArgs e)
         {
             WriteLine("Connected to the Discord service");
-            _isReady = true;
             return Task.CompletedTask;
         }
 

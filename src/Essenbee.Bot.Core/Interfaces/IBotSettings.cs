@@ -2,6 +2,6 @@
 {
     public interface IBotSettings
     {
-        string AnswerSerachApiKey { get; }
+        string AnswerSearchApiKey { get; }
     }
 }

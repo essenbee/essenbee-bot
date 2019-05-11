@@ -17,7 +17,7 @@ namespace Essenbee.Bot.Infra.Slack
         private readonly SlackConfig _settings;
 
         public bool UseUsernameForIM { get; }
-        public string DefaultChannel => "CHKTD29JM";
+        public string DefaultChannel { get; }
         public event EventHandler<Core.ChatCommandEventArgs> OnChatCommandReceived = null;
         public IDictionary<string, string> Channels { get; set; } = new Dictionary<string, string>();
 
@@ -25,15 +25,16 @@ namespace Essenbee.Bot.Infra.Slack
         {
             _settings = settings;
             _slackClient = new Client(_settings.ApiKey);
+            DefaultChannel = _settings.DefaultChannel;
 
             SetupEvents();
             Connect();
         }
 
-        public SlackChatClient(string apiKey)
+        public SlackChatClient(string apiKey, string defaultChannel)
         {
             _slackClient = new Client(apiKey);
-
+            DefaultChannel = defaultChannel;
             SetupEvents();
             Connect();
         }

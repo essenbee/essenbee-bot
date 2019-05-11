@@ -39,10 +39,19 @@ namespace Essenbee.Bot.Web
 
             services.Configure<UserSecrets>(Configuration.GetSection(nameof(UserSecrets)));
             var secrets = Configuration.GetSection(nameof(UserSecrets)).Get<UserSecrets>();
+            services.Configure<ConnectedClientSettings>(Configuration.GetSection("ChatClients"));
 
             // Injected into ChatClients by DI for Hangfire scheduled actions
-            var slackConfig = new SlackConfig { ApiKey = secrets.SlackApiKey };
-            var discordConfig = new DiscordConfig { DiscordToken = secrets.DiscordToken };
+            var slackConfig = new SlackConfig 
+            {
+                ApiKey = secrets.SlackApiKey,
+                DefaultChannel = Configuration["ChatClients:SlackDefaultChannel"],
+            };
+            var discordConfig = new DiscordConfig 
+            {
+                DiscordToken = secrets.DiscordToken,
+                DefaultChannel = Configuration["ChatClients:DiscordDefaultChannel"],
+            };
             var twitchConfig = new TwitchConfig {
                 Username = secrets.TwitchUsername,
                 Token = secrets.TwitchToken,

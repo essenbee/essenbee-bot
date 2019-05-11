@@ -5,13 +5,13 @@ namespace Essenbee.Bot.Web
 {
     public class BotSettings : IBotSettings
     {
-        public string AnswerSerachApiKey { get; }
+        public string AnswerSearchApiKey { get; }
         public IOptions<UserSecrets> Config { get; }
 
         public BotSettings(IOptions<UserSecrets> config)
         {
             Config = config;
-            AnswerSerachApiKey = Config.Value.ProjectAnswerKey;
+            AnswerSearchApiKey = Config.Value.ProjectAnswerKey;
         }
     }
 }
