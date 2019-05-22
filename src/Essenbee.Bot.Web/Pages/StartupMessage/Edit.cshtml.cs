@@ -72,7 +72,7 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                 Log.Error($"StartupMessage.Edit.OnPost(): {ex.Message} - {ex.StackTrace}");
             }
 
-            return RedirectToPage("/Admin");
+            return RedirectToPage("/Index");
         }
 
         private bool StartupMessageExists(Guid id)

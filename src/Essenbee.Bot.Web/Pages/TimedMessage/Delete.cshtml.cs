@@ -63,7 +63,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
                 Log.Error($"TimedMessage.Delete.OnPost(): {ex.Message} - {ex.StackTrace}");
             }
 
-            return RedirectToPage("/Admin");
+            return RedirectToPage("/Index");
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                     Log.Error($"StartupMessage.Create.OnPost(): {ex.Message} - {ex.StackTrace}");
                 }
 
-                return RedirectToPage("/Admin");
+                return RedirectToPage("/Index");
             }
 
             return Page();

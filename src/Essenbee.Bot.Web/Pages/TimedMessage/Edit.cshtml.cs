@@ -72,7 +72,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
                 Log.Error($"TimedMessage.Edit.OnPost(): {ex.Message} - {ex.StackTrace}");
             }
 
-            return RedirectToPage("/Admin");
+            return RedirectToPage("/Index");
         }
 
         private bool TimedMessageExists(Guid id)
