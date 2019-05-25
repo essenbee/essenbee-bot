@@ -62,7 +62,6 @@ namespace Essenbee.Bot.Web.Pages
                 else
                 {
                     _actionScheduler.Enqueue(() => _bot.Start(startUpMessage.Message));
-                    _bot.ScheduleRepeatedMessages(_actionScheduler, _repository);
                     IsRunning = true;
                 }
 

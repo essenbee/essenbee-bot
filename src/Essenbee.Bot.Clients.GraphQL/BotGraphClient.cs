@@ -5,6 +5,7 @@ using GraphQL.Common.Exceptions;
 using GraphQL.Common.Request;
 using GraphQL.Common.Response;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,12 +21,12 @@ namespace Essenbee.Bot.Clients.GraphQL
             _client = new GraphQLClient(endPoint);
         }
 
-        public async Task<TimedMessageModel> GetTimedMessages()
+        public async Task<List<TimedMessageModel>> GetTimedMessages()
         {
             var query = new GraphQLRequest {
                 Query = @"query repeatingMessagesQuery
-                        { repeatingMessages
-                            {  name delay }
+                        { repeatedMessages
+                            {  message delay }
                         }",
             };
 
@@ -33,7 +34,7 @@ namespace Essenbee.Bot.Clients.GraphQL
 
             if (response.Errors is null)
             {
-                return response.GetDataFieldAs<TimedMessageModel>("repeatingMessages");
+                return response.GetDataFieldAs<List<TimedMessageModel>>("repeatedMessages");
             }
 
             var error = response.Errors.First();

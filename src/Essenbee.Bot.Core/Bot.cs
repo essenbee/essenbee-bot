@@ -1,11 +1,11 @@
 ﻿using Essenbee.Bot.Core.Commands;
-using Essenbee.Bot.Core.Data;
 using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using static System.Console;
 
 namespace Essenbee.Bot.Core
@@ -23,7 +23,7 @@ namespace Essenbee.Bot.Core
         public static bool IsRunning = false;
         private static bool InitialStartup = true;
 
-        public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, 
+        public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients,
             IBotClient botDataClient, IBotSettings settings)
         {
             Settings = settings;
@@ -33,6 +33,7 @@ namespace Essenbee.Bot.Core
             AnswerSearchEngine.SetApiKey(Settings.AnswerSearchApiKey);
             ConnectedClients = clients.ChatClients;
             CommandHandler = new BotCommandHandler(this);
+            _ = ScheduleRepeatedMessages();
         }
 
         public void Start(string startupMessage)
@@ -72,16 +73,25 @@ namespace Essenbee.Bot.Core
             IsRunning = false;
         }
 
-        public void ScheduleRepeatedMessages(IActionScheduler actionScheduler, IRepository repository)
+        private async Task ScheduleRepeatedMessages()
         {
-            if ((repository != null) && (actionScheduler != null))
+            if (ActionScheduler != null)
             {
-                var messages = repository.List<TimedMessage>().Where(m => m.Status == ItemStatus.Active);
-
-                foreach (var message in messages)
+                try
                 {
-                    var action = new RepeatingMessage(message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{message.Id}");
-                    actionScheduler.Schedule(action);
+                    var messages = await BotDataClient.GetTimedMessages();
+
+                    var messageId = 0;
+                    foreach (var message in messages)
+                    {
+                        var action = new RepeatingMessage(message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{messageId}");
+                        ActionScheduler.Schedule(action);
+                        messageId++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var x = ex.Message;
                 }
             }
         }

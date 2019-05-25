@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Interfaces
 {
@@ -14,6 +15,5 @@ namespace Essenbee.Bot.Core.Interfaces
 
         void Start(string message);
         void Stop(string message);
-        void ScheduleRepeatedMessages(IActionScheduler actionScheduler, IRepository repository);
     }
 }

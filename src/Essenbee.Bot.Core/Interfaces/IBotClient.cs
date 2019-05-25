@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Interfaces
 {
     public interface IBotClient
     {
-        Task<TimedMessageModel> GetTimedMessages();
+        Task<List<TimedMessageModel>> GetTimedMessages();
     }
 }
