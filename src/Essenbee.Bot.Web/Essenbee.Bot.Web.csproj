@@ -13,6 +13,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
     <PackageReference Include="NWebsec.AspNetCore.Core" Version="2.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
+    <PackageReference Include="GraphQL" Version="2.4.0" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.4.0" />
     <PackageReference Include="Serilog" Version="2.7.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
@@ -24,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Discord\Essenbee.Bot.Infra.Discord.csproj" />
+    <ProjectReference Include="..\Essenbee.Bot.Infra.GraphQL\Essenbee.Bot.Infra.GraphQL.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Hangfire\Essenbee.Bot.Infra.Hangfire.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Slack\Essenbee.Bot.Infra.Slack.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Twitch\Essenbee.Bot.Infra.Twitch.csproj" />

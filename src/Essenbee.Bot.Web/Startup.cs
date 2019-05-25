@@ -4,6 +4,7 @@ using Essenbee.Bot.Infra.Discord;
 using Essenbee.Bot.Infra.Hangfire;
 using Essenbee.Bot.Infra.Slack;
 using Essenbee.Bot.Infra.Twitch;
+using Essenbee.Bot.Infra.GraphQL;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
 
 namespace Essenbee.Bot.Web
 {
@@ -20,12 +23,14 @@ namespace Essenbee.Bot.Web
 
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
+        private readonly IHostingEnvironment _env;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -75,6 +80,8 @@ namespace Essenbee.Bot.Web
             services.AddSingleton<IAnswerSearchEngine, AnswerSearch>();
             services.AddSingleton<IBot, Core.Bot>();
 
+            RegisterGraphQL.Configure(services, _env);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -102,6 +109,15 @@ namespace Essenbee.Bot.Web
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
+
+            app.UseGraphQL<BotDataSchema>(path: "/graphql");
+            if (env.IsDevelopment())
+            {
+                app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
+                {
+                    Path = "/ui/playground"
+                });
+            }
 
             app.UseMvc();
         }
