@@ -77,21 +77,14 @@ namespace Essenbee.Bot.Core
         {
             if (ActionScheduler != null)
             {
-                try
-                {
-                    var messages = await BotDataClient.GetTimedMessages();
+                var messages = await BotDataClient.GetTimedMessages();
 
-                    var messageId = 0;
-                    foreach (var message in messages)
-                    {
-                        var action = new RepeatingMessage(message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{messageId}");
-                        ActionScheduler.Schedule(action);
-                        messageId++;
-                    }
-                }
-                catch (Exception ex)
+                var messageId = 0;
+                foreach (var message in messages)
                 {
-                    var x = ex.Message;
+                    var action = new RepeatingMessage(message.Message, message.Delay, ConnectedClients, $"AutomatedMessage-{messageId}");
+                    ActionScheduler.Schedule(action);
+                    messageId++;
                 }
             }
         }
@@ -103,7 +96,6 @@ namespace Essenbee.Bot.Core
                 chatClient.OnChatCommandReceived += (object sender, ChatCommandEventArgs e) =>
                 {
                     CommandHandler.ExecuteCommand(chatClient, e);
-                    //ConnectedClients.ForEach(client => CommandHandler.ExecuteCommand(client, e));
                 };
             }
         }
