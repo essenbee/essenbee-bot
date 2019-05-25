@@ -1,0 +1,43 @@
+﻿using Essenbee.Bot.Core;
+using Essenbee.Bot.Core.Interfaces;
+using GraphQL.Client;
+using GraphQL.Common.Exceptions;
+using GraphQL.Common.Request;
+using GraphQL.Common.Response;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Essenbee.Bot.Clients.GraphQL
+{
+    public class BotGraphClient: IBotClient
+    {
+        private readonly GraphQLClient _client;
+
+        public BotGraphClient(IConfiguration config)
+        {
+            var endPoint = config["GraphQLEndpoint"];
+            _client = new GraphQLClient(endPoint);
+        }
+
+        public async Task<TimedMessageModel> GetTimedMessages()
+        {
+            var query = new GraphQLRequest {
+                Query = @"query repeatingMessagesQuery
+                        { repeatingMessages
+                            {  name delay }
+                        }",
+            };
+
+            var response = await _client.PostAsync(query);
+
+            if (response.Errors is null)
+            {
+                return response.GetDataFieldAs<TimedMessageModel>("repeatingMessages");
+            }
+
+            var error = response.Errors.First();
+            throw new GraphQLException(new GraphQLError { Message = $"{error.Message}" });
+        }
+    }
+}

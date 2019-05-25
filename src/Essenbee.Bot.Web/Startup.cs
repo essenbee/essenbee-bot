@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using Essenbee.Bot.Clients.GraphQL;
 
 namespace Essenbee.Bot.Web
 {
@@ -69,6 +70,7 @@ namespace Essenbee.Bot.Web
 
             services.AddSingleton<IConnectedClients, ConnectedClients>();
             services.AddSingleton<IBotSettings, BotSettings>();
+            services.AddSingleton<IBotClient, BotGraphClient>();
 
             services.AddHangfire(x => x.UseSqlServerStorage(secrets.DatabaseConnectionString));
 

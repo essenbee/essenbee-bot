@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Essenbee.Bot.Clients.GraphQL\Essenbee.Bot.Clients.GraphQL.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Core\Essenbee.Bot.Core.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.Discord\Essenbee.Bot.Infra.Discord.csproj" />
     <ProjectReference Include="..\Essenbee.Bot.Infra.GraphQL\Essenbee.Bot.Infra.GraphQL.csproj" />

@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core
     public class Bot : IBot
     {
         public List<IChatClient> ConnectedClients { get; } = new List<IChatClient>();
+        public IBotClient BotDataClient { get; }
         public IActionScheduler ActionScheduler { get; }
         public IAnswerSearchEngine AnswerSearchEngine { get; }
         public IBotSettings Settings { get; }
@@ -22,11 +23,13 @@ namespace Essenbee.Bot.Core
         public static bool IsRunning = false;
         private static bool InitialStartup = true;
 
-        public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, IBotSettings settings)
+        public Bot(IActionScheduler actionScheduler, IAnswerSearchEngine answerSearchEngine, IConnectedClients clients, 
+            IBotClient botDataClient, IBotSettings settings)
         {
             Settings = settings;
             ActionScheduler = actionScheduler;
             AnswerSearchEngine = answerSearchEngine;
+            BotDataClient = botDataClient;
             AnswerSearchEngine.SetApiKey(Settings.AnswerSearchApiKey);
             ConnectedClients = clients.ChatClients;
             CommandHandler = new BotCommandHandler(this);

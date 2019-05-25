@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot.Infra.Twitch",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot.Infra.Discord", "Essenbee.Bot.Infra.Discord\Essenbee.Bot.Infra.Discord.csproj", "{45E5AEAB-C265-458E-B764-F2CEC79CC6FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essenbee.Bot.Infra.GraphQL", "Essenbee.Bot.Infra.GraphQL\Essenbee.Bot.Infra.GraphQL.csproj", "{5E91196A-6D07-4E43-9CB4-5466B0D91126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Essenbee.Bot.Infra.GraphQL", "Essenbee.Bot.Infra.GraphQL\Essenbee.Bot.Infra.GraphQL.csproj", "{5E91196A-6D07-4E43-9CB4-5466B0D91126}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Essenbee.Bot.Clients.GraphQL", "Essenbee.Bot.Clients.GraphQL\Essenbee.Bot.Clients.GraphQL.csproj", "{D32A4AE2-8D5A-4FAE-80E8-661E27AB0697}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,10 @@ Global
 		{5E91196A-6D07-4E43-9CB4-5466B0D91126}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E91196A-6D07-4E43-9CB4-5466B0D91126}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E91196A-6D07-4E43-9CB4-5466B0D91126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32A4AE2-8D5A-4FAE-80E8-661E27AB0697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32A4AE2-8D5A-4FAE-80E8-661E27AB0697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32A4AE2-8D5A-4FAE-80E8-661E27AB0697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32A4AE2-8D5A-4FAE-80E8-661E27AB0697}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
