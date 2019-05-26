@@ -17,6 +17,7 @@ namespace Essenbee.Bot.Web
             services.AddScoped<BotDataSchema>();
             services.AddScoped<BotDataQuery>();
             services.AddScoped<TimedMessageType>();
+            services.AddScoped<ProjectTextType>();
 
             services.AddGraphQL(options =>
             {

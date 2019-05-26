@@ -20,6 +20,8 @@ namespace Essenbee.Bot.Web.Pages
         public IList<Core.Data.TimedMessage> TimedMessages { get; set; }
         [BindProperty]
         public IList<Core.Data.StartupMessage> StartupMessage { get; set; }
+        [BindProperty]
+        public IList<Core.Data.ProjectText> ProjectText { get; set; }
 
         public IndexModel(IBot bot, IRepository repository, IActionScheduler actionScheduler)
         {
@@ -36,6 +38,7 @@ namespace Essenbee.Bot.Web.Pages
                 IsRunning = runningJobs.Any();
                 TimedMessages = _repository.List<Core.Data.TimedMessage>();
                 StartupMessage = _repository.List<Core.Data.StartupMessage>();
+                ProjectText = _repository.List<Core.Data.ProjectText>();
             }
             catch (Exception ex)
             {
@@ -66,6 +69,7 @@ namespace Essenbee.Bot.Web.Pages
                 }
 
                 TimedMessages = _repository.List<Core.Data.TimedMessage>();
+                ProjectText = _repository.List<Core.Data.ProjectText>();
             }
             catch (Exception ex)
             {

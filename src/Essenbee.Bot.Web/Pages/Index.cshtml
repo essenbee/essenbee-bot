@@ -43,6 +43,9 @@
 
 </div>
 
+
+
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Startup Message</h3>
@@ -86,6 +89,42 @@
         }
     </div>
 
+</div>
+
+<div class="panel-body">
+    @if (!Model.ProjectText.Any())
+    {
+        <p>
+            <a asp-page="Project/Create">Create Project Text</a>
+        </p>
+    }
+    @if (Model.ProjectText.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProjectText[0].Text)
+                    </th>
+                    <th>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.ProjectText[0].Text)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <a asp-page="./Project/Edit" asp-route-id="@Model.ProjectText[0].Id">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
 </div>
 
 <div class="panel panel-default">

@@ -21,6 +21,12 @@ namespace Essenbee.Bot.Infra.GraphQL
                     return _repo.List<TimedMessage>()
                         .Where(m => m.Status == ItemStatus.Active);
                 });
+
+            Field<ProjectTextType>("projectText",
+                resolve: ctx =>
+                {
+                    return _repo.List<ProjectText>().FirstOrDefault();
+                });
         }
     }
 }
