@@ -6,6 +6,7 @@ namespace Essenbee.Bot.Core.Interfaces
 {
     public interface IBot
     {
+        IBotClient BotDataClient { get; }
         List<IChatClient> ConnectedClients { get; }
         IActionScheduler ActionScheduler { get; }
         IAnswerSearchEngine AnswerSearchEngine { get; }
