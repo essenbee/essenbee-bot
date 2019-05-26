@@ -1,7 +1,7 @@
 # essenbee-bot - AlphaBot
 A self-teaching project to build a Bot, initially integrating with Slack.
 
-- 2019-02-08: Added Twitch support. The bot is now used on my Codebase Alpha live coding Twitch stream. We work on bot in between major development projects on-stream.
+- 2019-02-08: Added Twitch support. The bot is now used on my Codebase Alpha live coding Twitch stream. We work on the bot in between major development projects on-stream.
 - 2019-04-12: Added Discord support.
 
 Commands supported:
@@ -13,6 +13,7 @@ Commands supported:
 - [X] !ask _question_  - Ask any question and the bot will use Cognitive Services to answer it (or try)
 - [X] !adv             - An implementation of the classic text adventure game _Adventure_ - a work in progress (its big)
 - [X] !hey             - Essenbee can get engrossed in the code, so attract their attention with this SFX command (Twitch chat only)
+- [X] !project         - Gives viewers information about the current project being developed on-stream
   
 More commands are planned; send me ideas on [Discord](https://discord.gg/Rz8r93q).
 
