@@ -53,7 +53,7 @@ namespace Essenbee.Bot.Web.Pages.Project
 
             try
             {
-                _repository.Update<Core.Data.ProjectText>(ProjectText);
+                _repository.Update(ProjectText);
             }
             catch (Exception ex)
             {

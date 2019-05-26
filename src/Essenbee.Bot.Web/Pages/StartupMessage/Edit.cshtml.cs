@@ -65,7 +65,7 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
 
             try
             {
-                _repository.Update<Core.Data.StartupMessage>(StartupMessage);
+                _repository.Update(StartupMessage);
             }
             catch (Exception ex)
             {

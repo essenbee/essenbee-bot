@@ -52,11 +52,11 @@ namespace Essenbee.Bot.Web.Pages.StartupMessage
                 return Page();
             }
 
-            if (StartupMessage is null)
+            if (StartupMessage != null)
             {
                 try
                 {
-                    _repository.Create<Core.Data.StartupMessage>(StartupMessage);
+                    _repository.Create(StartupMessage);
                 }
                 catch (Exception ex)
                 {

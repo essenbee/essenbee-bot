@@ -41,11 +41,11 @@ namespace Essenbee.Bot.Web.Pages.Project
                 return Page();
             }
 
-            if (ProjectText is null)
+            if (ProjectText != null)
             {
                 try
                 {
-                    _repository.Create<ProjectText>(ProjectText);
+                    _repository.Create(ProjectText);
                 }
                 catch (Exception ex)
                 {

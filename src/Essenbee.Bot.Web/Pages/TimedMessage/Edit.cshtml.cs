@@ -65,7 +65,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
 
             try
             {
-                _repository.Update<Core.Data.TimedMessage>(TimedMessage);
+                _repository.Update(TimedMessage);
             }
             catch (Exception ex)
             {

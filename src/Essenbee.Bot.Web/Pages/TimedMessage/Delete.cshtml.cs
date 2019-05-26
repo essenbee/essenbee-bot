@@ -55,7 +55,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
 
                 if (TimedMessage != null)
                 {
-                    _repository.Remove<Core.Data.TimedMessage>(TimedMessage);
+                    _repository.Remove(TimedMessage);
                 }
             }
             catch (Exception ex)

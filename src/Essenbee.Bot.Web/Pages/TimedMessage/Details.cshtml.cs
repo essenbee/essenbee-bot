@@ -39,7 +39,7 @@ namespace Essenbee.Bot.Web.Pages.TimedMessage
 
             try
             {
-                TimedMessage = _repository.Single<Core.Data.TimedMessage>(DataItemPolicy<Core.Data.TimedMessage>.ById(id.Value));
+                TimedMessage = _repository.Single(DataItemPolicy<Core.Data.TimedMessage>.ById(id.Value));
             }
             catch (Exception ex)
             {
