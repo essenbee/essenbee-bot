@@ -1,6 +1,7 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
@@ -27,13 +28,14 @@ namespace Essenbee.Bot.Core.Commands
             _quotes = quotes;
         }
 
-        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (Status != ItemStatus.Active) return;
+            if (Status == ItemStatus.Active && _quotes != null) ;
+            {
+                chatClient.PostMessage(e.Channel, _quotes[_random.Next(_quotes.Count)]);
+            }
 
-            if (_quotes == null) return;
-
-            chatClient.PostMessage(e.Channel, _quotes[_random.Next(_quotes.Count)]);
+            return null;
         }
 
         public bool ShouldExecute()

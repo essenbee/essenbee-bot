@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Essenbee.Bot.Core.Games.Adventure;
 using Essenbee.Bot.Core.Interfaces;
 
@@ -21,7 +22,7 @@ namespace Essenbee.Bot.Core.Games
             Cooldown = TimeSpan.FromMinutes(0);
         }
 
-        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
             lock (_mutex)
             {
@@ -35,6 +36,8 @@ namespace Essenbee.Bot.Core.Games
                     _adventureGame.HandleCommand(chatClient, e);
                 }
             }
+
+            return null;
         }
 
         public bool ShouldExecute() => true;

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
@@ -26,7 +27,7 @@ namespace Essenbee.Bot.Core.Commands
 
         public bool ShouldExecute() => Status == ItemStatus.Active;
 
-        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
             var client = new HttpClient();
             var provider = "121"; // SpaceX is the default launch provider
@@ -104,7 +105,7 @@ namespace Essenbee.Bot.Core.Commands
             if (rocketLaunch.Status == "error")
             {
                 chatClient.PostMessage(e.Channel, $"No upcoming launches found for {providerName}.");
-                return;
+                return null;
             }
 
             var output = new StringBuilder();
@@ -116,7 +117,7 @@ namespace Essenbee.Bot.Core.Commands
             }
 
             chatClient.PostMessage(e.Channel, output.ToString());
+            return null;
         }
-
     }
 }

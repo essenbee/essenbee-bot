@@ -1,5 +1,6 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using System;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
@@ -20,7 +21,7 @@ namespace Essenbee.Bot.Core.Commands
             _bot = bot;
         }
 
-        public async void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public async Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
             var projectTextModel = await _bot.BotDataClient.GetProjectText();
             var projectText = projectTextModel.Text;

@@ -1,7 +1,8 @@
-﻿using System;
-using Essenbee.Bot.Core.Interfaces;
+﻿using Essenbee.Bot.Core.Interfaces;
+using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
@@ -20,45 +21,45 @@ namespace Essenbee.Bot.Core.Commands
             Cooldown = TimeSpan.FromMinutes(0);
         }
 
-        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (Status != ItemStatus.Active) return;
-
-            var helpMsg = string.Empty;
-
-            if (e.ArgsAsList.Count == 0)
+            if (Status == ItemStatus.Active)
             {
-                var allCommands = _bot.CommandHandler.CommandRegistry.Select(x => x.Key).ToList();
-                var sb = new StringBuilder("The following commands are available: ");
+                var helpMsg = string.Empty;
 
-                foreach(var cmd in allCommands)
+                if (e.ArgsAsList.Count == 0)
                 {
-                    sb.Append($"!{cmd}, ");
-                }
+                    var allCommands = _bot.CommandHandler.CommandRegistry.Select(x => x.Key).ToList();
+                    var sb = new StringBuilder("The following commands are available: ");
 
-                helpMsg = sb.ToString().Trim();
-                helpMsg = helpMsg.Remove(helpMsg.Length - 1, 1);
-            }
-            else
-            {
-                var helpForCommand = e.ArgsAsList[0];
-                // Check command name against available commands ...
-                if (_bot.CommandHandler.CommandRegistry.TryGetValue(helpForCommand, out ICommand cmd))
-                {
-                    helpMsg = cmd.HelpText;
+                    foreach (var cmd in allCommands)
+                    {
+                        sb.Append($"!{cmd}, ");
+                    }
+
+                    helpMsg = sb.ToString().Trim();
+                    helpMsg = helpMsg.Remove(helpMsg.Length - 1, 1);
                 }
                 else
                 {
-                    helpMsg = $"The command {helpForCommand} has not been implemented.";
+                    var helpForCommand = e.ArgsAsList[0];
+                    // Check command name against available commands ...
+                    if (_bot.CommandHandler.CommandRegistry.TryGetValue(helpForCommand, out ICommand cmd))
+                    {
+                        helpMsg = cmd.HelpText;
+                    }
+                    else
+                    {
+                        helpMsg = $"The command {helpForCommand} has not been implemented.";
+                    }
                 }
+
+                chatClient.PostMessage(e.Channel, helpMsg);
             }
 
-            chatClient.PostMessage(e.Channel, helpMsg);
+            return null;
         }
 
-        public bool ShouldExecute()
-        {
-            return Status == ItemStatus.Active;
-        }
+        public bool ShouldExecute() => Status == ItemStatus.Active;
     }
 }

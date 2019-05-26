@@ -1,6 +1,7 @@
 ﻿using System;
 using Essenbee.Bot.Core.Interfaces;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
@@ -21,25 +22,28 @@ namespace Essenbee.Bot.Core.Commands
             Cooldown = TimeSpan.FromMinutes(1);
         }
 
-        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (Status != ItemStatus.Active) return;
-
-            if (e.ArgsAsList.Count == 0)
+            if (Status == ItemStatus.Active)
             {
-                chatClient.PostMessage(e.Channel, HelpText);
+                if (e.ArgsAsList.Count == 0)
+                {
+                    chatClient.PostMessage(e.Channel, HelpText);
+                }
+
+                var searchTerm = new StringBuilder();
+                foreach (var arg in e.ArgsAsList)
+                {
+                    searchTerm.Append(arg);
+                    searchTerm.Append(" ");
+                }
+
+                var searchFor = searchTerm.ToString().Trim();
+                var answerResponse = _searchEngine.GetAnswer(searchFor);
+                chatClient.PostMessage(e.Channel, answerResponse);
             }
 
-            var searchTerm = new StringBuilder();
-            foreach (var arg in e.ArgsAsList)
-            {
-                searchTerm.Append(arg);
-                searchTerm.Append(" ");
-            }
-
-            var searchFor = searchTerm.ToString().Trim();
-            var answerResponse = _searchEngine.GetAnswer(searchFor);
-            chatClient.PostMessage(e.Channel, answerResponse);
+            return null;
         }
 
         public bool ShouldExecute()

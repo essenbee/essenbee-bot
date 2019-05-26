@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Interfaces
 {
@@ -11,6 +12,6 @@ namespace Essenbee.Bot.Core.Interfaces
 
         bool ShouldExecute();
 
-        void Execute(IChatClient chatClient, ChatCommandEventArgs e);
+        Task Execute(IChatClient chatClient, ChatCommandEventArgs e);
     }
 }

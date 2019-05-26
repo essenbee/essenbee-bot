@@ -1,6 +1,7 @@
 ﻿using Essenbee.Bot.Core.Interfaces;
 using Essenbee.Bot.Core.Utilities;
 using System;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
@@ -20,16 +21,19 @@ namespace Essenbee.Bot.Core.Commands
             _bot = bot;
         }
 
-        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (Status != ItemStatus.Active) return;
-
-            if (e.ClientType.ToLower().Contains(RestrictToClientType))
+            if (Status == ItemStatus.Active)
             {
-                Sfx.PlaySound(Sfx.HeyEssenbee);
+                if (e.ClientType.ToLower().Contains(RestrictToClientType))
+                {
+                    Sfx.PlaySound(Sfx.HeyEssenbee);
+                }
+
+                chatClient.PostMessage(e.Channel, "**Hey, Essenbee!**");
             }
 
-            chatClient.PostMessage(e.Channel, "**Hey, Essenbee!**");
+            return null;
         }
 
         public bool ShouldExecute()

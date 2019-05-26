@@ -1,6 +1,7 @@
 ﻿using System;
 using Essenbee.Bot.Core.Interfaces;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
@@ -19,33 +20,36 @@ namespace Essenbee.Bot.Core.Commands
             Cooldown = TimeSpan.FromMinutes(1);
         }
 
-        public void Execute(IChatClient chatClient, ChatCommandEventArgs e)
+        public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (Status != ItemStatus.Active) return;
-
-            var text = string.Empty;
-            var webClient = new WebClient();
-
-            var cricXML = webClient.DownloadString("http://static.cricinfo.com/rss/livescores.xml");
-
-            System.Xml.XmlDocument xmlDoc = new System.Xml.XmlDocument();
-            xmlDoc.LoadXml(cricXML);
-
-            var itemsRemaining = 10;
-
-            foreach (System.Xml.XmlNode xmlNode in xmlDoc.SelectNodes("rss/channel/item"))
+            if (Status == ItemStatus.Active)
             {
-                itemsRemaining--;
-                if (itemsRemaining == 0)
+                var text = string.Empty;
+                var webClient = new WebClient();
+
+                var cricXML = webClient.DownloadString("http://static.cricinfo.com/rss/livescores.xml");
+
+                System.Xml.XmlDocument xmlDoc = new System.Xml.XmlDocument();
+                xmlDoc.LoadXml(cricXML);
+
+                var itemsRemaining = 10;
+
+                foreach (System.Xml.XmlNode xmlNode in xmlDoc.SelectNodes("rss/channel/item"))
                 {
-                    break;
+                    itemsRemaining--;
+                    if (itemsRemaining == 0)
+                    {
+                        break;
+                    }
+                    text +=
+                        xmlNode.SelectSingleNode("title").InnerText + "\r\n\t" +
+                        xmlNode.SelectSingleNode("link").InnerText + "\r\n";
                 }
-                text +=
-                    xmlNode.SelectSingleNode("title").InnerText + "\r\n\t" +
-                    xmlNode.SelectSingleNode("link").InnerText + "\r\n";
+
+                chatClient.PostMessage(e.Channel, text);
             }
 
-            chatClient.PostMessage(e.Channel, text);
+            return null;
         }
 
         public bool ShouldExecute()
