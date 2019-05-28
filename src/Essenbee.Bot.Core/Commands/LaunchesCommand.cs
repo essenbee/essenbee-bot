@@ -95,28 +95,27 @@ namespace Essenbee.Bot.Core.Commands
 
             var url = $"https://launchlibrary.net/1.4/launch?lsp={provider}&&mode=list&&startdate={DateTime.Now:yyyy-MM-dd}";
             var endpoint = new Uri(url);
-
             var result = client.GetAsync(endpoint).Result;
-
             var launchJson = result.Content.ReadAsStringAsync().Result;
-
             var rocketLaunch = JsonConvert.DeserializeObject<RocketLaunches>(launchJson);
 
-            if (rocketLaunch.Status == "error")
+            if (rocketLaunch.Status != "error")
+            {
+                var output = new StringBuilder();
+                output.AppendLine($"Launch schedule for {providerName}:");
+
+                foreach (var launch in rocketLaunch.Launches)
+                {
+                    output.AppendLine($"{launch.Name} - {launch.Net}");
+                }
+
+                chatClient.PostMessage(e.Channel, output.ToString());
+            }
+            else
             {
                 chatClient.PostMessage(e.Channel, $"No upcoming launches found for {providerName}.");
-                return null;
             }
 
-            var output = new StringBuilder();
-            output.AppendLine($"Launch schedule for {providerName}:");
-
-            foreach (var launch in rocketLaunch.Launches)
-            {
-                output.AppendLine($"{launch.Name} - {launch.Net}");
-            }
-
-            chatClient.PostMessage(e.Channel, output.ToString());
             return null;
         }
     }

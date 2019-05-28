@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
-    class CricketCommand : ICommand
+    public class CricketCommand : ICommand
     {
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName { get => "cricket"; }

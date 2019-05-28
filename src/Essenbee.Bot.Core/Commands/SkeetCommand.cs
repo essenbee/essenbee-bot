@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Essenbee.Bot.Core.Commands
 {
-    class SkeetCommand : ICommand
+    public class SkeetCommand : ICommand
     {
         public ItemStatus Status { get; set; } = ItemStatus.Draft;
         public string CommandName => "skeet";
@@ -30,7 +30,7 @@ namespace Essenbee.Bot.Core.Commands
 
         public Task Execute(IChatClient chatClient, ChatCommandEventArgs e)
         {
-            if (Status == ItemStatus.Active && _quotes != null) ;
+            if (Status == ItemStatus.Active && _quotes != null)
             {
                 chatClient.PostMessage(e.Channel, _quotes[_random.Next(_quotes.Count)]);
             }
