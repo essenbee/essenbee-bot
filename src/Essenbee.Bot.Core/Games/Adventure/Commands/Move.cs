@@ -1,4 +1,7 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Events;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
@@ -46,9 +49,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                         if (player.Clocks != null && player.Clocks.Count > 0)
                         {
-                            foreach (var key in player.Clocks.Keys)
+                            var keys = player.Clocks.Keys.ToList();
+
+                            foreach (var key in keys)
                             {
-                                player.Clocks[key]++;
+                                var ticks = player.Clocks[key];
+                                ticks++;
+                                player.Clocks[key] = ticks;
                             }
                         }
 
@@ -58,6 +65,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                         }
 
                         player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+
+                        // Check for Events
+                        EventManager.CheckForEvents(player);
 
                         return;
                     }

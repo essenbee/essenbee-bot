@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Essenbee.Bot.Core.Interfaces;
 using System;
+using Essenbee.Bot.Core.Games.Adventure.Events;
+using System.Collections.Concurrent;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
 {
@@ -16,6 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         IList<PlayerStatus> Statuses { get; set; }
         string UserName { get; set; }
         Dictionary<string, int> Clocks { get; set; }
+        Dictionary<EventIds, int> EventRecord { get; set; }
     }
 
 }

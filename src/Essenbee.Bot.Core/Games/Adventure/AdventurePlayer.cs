@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Events;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
 
@@ -15,7 +16,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public int Moves { get; set; }
         public Inventory Inventory { get; set; }
         public IList<PlayerStatus> Statuses { get; set; }
-        public Dictionary<string, int> Clocks { get; set; }
+        public Dictionary<string, int> Clocks { get; set; } = new Dictionary<string, int>();
+        public Dictionary<EventIds, int> EventRecord { get; set; } = new Dictionary<EventIds, int>();
 
         public AdventurePlayer()
         {

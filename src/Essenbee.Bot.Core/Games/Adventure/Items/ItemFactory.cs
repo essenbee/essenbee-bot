@@ -57,9 +57,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 case Item.Dragon:
                     return new Dragon(game, "dragon", "wyrm");
                 case Item.DeadDragon:
-                    return new DeadDragon(game, "dragon", "wyrm");
+                    return DeadDragon.GetInstance(game, "dragon", "wyrm"); // Singleton
                 case Item.RottingDeadDragon:
-                    return new RottingDeadDragon(game, "dragon", "wyrm");
+                    return new RottingDeadDragon(game, "dragon", "wyrm"); // Singleton
                 case Item.DragonTooth:
                     return new DragonTooth(game, "tooth", "teeth");
                 case Item.ShadowyFigure:

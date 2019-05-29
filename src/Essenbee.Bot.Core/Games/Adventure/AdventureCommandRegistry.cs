@@ -22,6 +22,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var yes = new Yes(game, "yes", "y");
             var no = new No(game, "no", "n");
             var say = new Say(game, "say");
+            
+            // ToDo: Remove this as its for TESTING ONLY
+            var teleport = new Teleport(game, "teleport");
 
             RegisteredCommands = new List<IAdventureCommand> {
                 lookCommand,
@@ -36,6 +39,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 yes,
                 no,
                 say,
+                teleport,
             };
         }
     }

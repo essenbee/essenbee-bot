@@ -44,17 +44,20 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                 foreach (var item in player.CurrentLocation.Items)
                 {
-                    description.AppendLine(item.IsEndlessSupply
-                        ? $"There are several {item.PluralName} here."
-                        : $"There is a {item.Name} here.");
-
-                    if (item.Contents.Any() && (item.IsOpen || item.IsTransparent))
+                    if (item != null)
                     {
-                        description.AppendLine($"The {item.Name} contains:");
+                        description.AppendLine(item.IsEndlessSupply
+                            ? $"There are several {item.PluralName} here."
+                            : $"There is a {item.Name} here.");
 
-                        foreach (var content in item.Contents)
+                        if (item.Contents.Any() && (item.IsOpen || item.IsTransparent))
                         {
-                            description.AppendLine($"\tA {content.Name}");
+                            description.AppendLine($"The {item.Name} contains:");
+
+                            foreach (var content in item.Contents)
+                            {
+                                description.AppendLine($"\tA {content.Name}");
+                            }
                         }
                     }
                 }

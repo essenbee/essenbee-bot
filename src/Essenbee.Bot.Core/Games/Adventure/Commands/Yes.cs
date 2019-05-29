@@ -19,7 +19,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                 foreach(var item in items)
                 {
-                    if (item.Interactions.Any(i => i.IsMatch("yes")))
+                    if (item != null && item.Interactions.Any(i => i.IsMatch("yes")))
                     {
                         didProcess = item.Interact("yes", player);
                     }
