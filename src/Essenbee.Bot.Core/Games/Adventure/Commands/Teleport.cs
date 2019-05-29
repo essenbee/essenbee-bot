@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Events;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
@@ -13,9 +14,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
             var moveTo = Location.SecretEastWestCanyon;
-            var canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
+            _ = _game.Dungeon.TryGetLocation(moveTo, out var place);
+
+            if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
+            {
+                player.EventRecord.Add(EventIds.CaveOpen, 1);
+            }
+
             player.CurrentLocation = place;
-            player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+            player.ChatClient.PostDirectMessage(player, "Teleported to *" + player.CurrentLocation.Name + "*");
         }
     }
 }

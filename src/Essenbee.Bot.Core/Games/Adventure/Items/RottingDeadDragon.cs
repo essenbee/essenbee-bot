@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "rotting carcass of a dead dragon lying off to one side";
             IsPortable = false;
             IsContainer = true;
-            IsTransparent = false;
+            IsTransparent = true;
 
             Contents = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.DragonTooth) };
         }

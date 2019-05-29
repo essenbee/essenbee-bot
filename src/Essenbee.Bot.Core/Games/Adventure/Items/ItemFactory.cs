@@ -54,6 +54,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new Jewelry(game, "jewelry", "jewels", "jools", "gems", "jewellery", "jewellry");
                 case Item.Coins:
                     return new Coins(game, "coins", "coin", "money", "cash");
+                case Item.Rug:
+                    return new Rug(game, "rug", "carpet", "persian");
                 case Item.Dragon:
                     return new Dragon(game, "dragon", "wyrm");
                 case Item.DeadDragon:
@@ -69,7 +71,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 case Item.Pillow:
                     return new Pillow(game, "pillow", "cushion");
                 case Item.Vase:
-                    return new Pillow(game, "vase", "ming");
+                    return new Vase(game, "vase", "ming");
                 case Item.BrokenVase:
                     return new BrokenGlass(game, "pottery");
             }

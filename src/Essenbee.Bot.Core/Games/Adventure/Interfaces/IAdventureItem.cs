@@ -19,6 +19,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         bool IsOpen { get; set; }
         bool IsPortable { get; set; }
         bool IsTransparent { get; set; }
+        bool IsTreasure { get; set; }
+        bool IsWeapon { get; set; }
         Item ItemId { get; set; }
         Item ItemIdToUnlock { get; set; }
         Item MustBeContainedIn { get; set; }

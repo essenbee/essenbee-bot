@@ -9,7 +9,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
     {
         public static void CheckForEvents(IAdventurePlayer player)
         {
-            if (player.CurrentLocation.LocationId.Equals(Locations.Location.HallOfMistsEast))
+            if (player.CurrentLocation.LocationId.Equals(Location.HallOfMistsEast))
             {
                 if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
                 {
@@ -19,10 +19,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
                 }
             }
 
-            //if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
-            //{
-            //    return;
-            //}
+            if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
+            {
+                return;
+            }
 
             // Handle dead dragon -> rotting dead dragon
             if (player.Clocks.ContainsKey("dragon") && player.Clocks["dragon"] > 10)
