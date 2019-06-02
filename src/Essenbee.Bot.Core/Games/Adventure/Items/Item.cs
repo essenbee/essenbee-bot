@@ -36,5 +36,7 @@
         Pillow,
         Vase,
         BrokenVase,
+        LittleAxe,
+        Dwarf,
     }
 }

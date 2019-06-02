@@ -1,4 +1,8 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Items
 {
@@ -74,6 +78,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new Vase(game, "vase", "ming");
                 case Item.BrokenVase:
                     return new BrokenGlass(game, "pottery");
+                case Item.LittleAxe:
+                    return new LittleAxe(game, "axe", "hatchet");
+                case Item.Dwarf:
+                    return new Dwarf(game, "dwarf");
             }
 
             return null;
