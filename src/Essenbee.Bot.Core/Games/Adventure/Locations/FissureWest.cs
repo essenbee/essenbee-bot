@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "on the edge of a deep fissure";
             LongDescription = "standing on the western side of a wide fissure in the rock.";
             IsDark = true;
+            Level = 1;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(game, Item.Diamond) };
             ValidMoves = new List<IPlayerMove> 
             {

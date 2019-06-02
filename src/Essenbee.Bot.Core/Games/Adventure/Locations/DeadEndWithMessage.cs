@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "at a dead end";
             LongDescription = "at a dead end. Scratched on a rock is the message: 'Stand where " +
                 "the statue gazes, and make use of the proper tool'.";
-
+            Level = 1;
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove>

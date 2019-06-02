@@ -13,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "at the East end of a very long hall apparently without side " +
                 "chambers. To the East a low wide crawl slants up. To the North a " +
                 "round two foot hole slants down.";
-
+            Level = 1;
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove>

@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in a jumble of rocks, with cracks everywhere";
             LongDescription = "in a jumble of rocks, with cracks everywhere.";
             IsDark = true;
+            Level = 1;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Cage) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You drop down into a narrow crack...", Location.Y2, "down", "d"),

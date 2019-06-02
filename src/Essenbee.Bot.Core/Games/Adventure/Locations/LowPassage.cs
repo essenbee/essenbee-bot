@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in a low passage";
             LongDescription = "in a low N/S passage at a hole in the floor. The hole goes down to an E/ W passage.";
             IsDark = true;
+            Level = 1;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.BarsOfSilver) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You crawl into a large open, echoing space...", Location.HallOfMountainKing, "south", "s"),

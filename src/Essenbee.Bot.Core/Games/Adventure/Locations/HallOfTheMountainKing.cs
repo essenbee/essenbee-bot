@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Hall of the Mountain Kings";
             ShortDescription = "in Hall of the Mountain King";
             LongDescription = "in the Hall of the Mountain King, with passages off in all directions. Sounds echo in this vast, high space.";
+            Level = 1;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Snake) };
             ValidMoves = new List<IPlayerMove>
             {

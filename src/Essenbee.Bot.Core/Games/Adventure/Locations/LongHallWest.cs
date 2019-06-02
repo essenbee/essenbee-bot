@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "at the West end of long hall";
             LongDescription = "at the West end of a very long featureless hall. The hall " +
                 "joins up with a narrow North/South passage.";
-
+            Level = 1;
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove>

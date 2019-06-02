@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "Crossover";
             ShortDescription = "at a crossover of a high N/S passage and a low E/W one";
             LongDescription = "at a crossover of a high N/S passage and a low E/W one";
-
+            Level = 1;
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove>
