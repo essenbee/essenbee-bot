@@ -1,0 +1,18 @@
+version: 1.0.{build}
+image: Visual Studio 2019
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+before_build:
+- cmd: >-
+    cd ./src
+
+    nuget restore
+build:
+  project: c:\projects\essenbee-bot\src\Essebee.Bot.sln
+  verbosity: minimal
