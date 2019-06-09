@@ -16,3 +16,12 @@ before_build:
 build:
   project: c:\projects\essenbee-bot\src\Essebee.Bot.sln
   verbosity: minimal
+test_script:
+- cmd: >-
+    cd c:\projects\essenbee-bot/src/UnitTests
+
+    nuget install Appveyor.TestLogger -Version 2.0.0
+
+    cd ..
+
+    dotnet test --no-build --no-restore --test-adapter-path:. --logger:Appveyor c:\projects\essenbee-bot/src/UnitTests
