@@ -1,7 +1,11 @@
 # essenbee-bot - AlphaBot
+
+![Twitter](https://img.shields.io/twitter/follow/codebasealpha.svg?style=social)
+
 A self-teaching project to build a Bot, initially integrating with Slack.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/k0wjacyvjvdip36s/branch/master?svg=true)](https://ci.appveyor.com/project/essenbee/essenbee-bot/branch/master)
+![License](https://img.shields.io/github/license/essenbee/essenbee-bot.svg)
 
 - 2019-02-08: Added Twitch support. The bot is now used on my Codebase Alpha live coding Twitch stream. We work on the bot in between major development projects on-stream.
 - 2019-04-12: Added Discord support.
