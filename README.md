@@ -5,6 +5,7 @@
 A self-teaching project to build a Bot, initially integrating with Slack.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/k0wjacyvjvdip36s/branch/master?svg=true)](https://ci.appveyor.com/project/essenbee/essenbee-bot/branch/master)
+![Tests](https://img.shields.io/appveyor/tests/essenbee/essenbee-bot.svg)
 ![License](https://img.shields.io/github/license/essenbee/essenbee-bot.svg)
 
 - 2019-02-08: Added Twitch support. The bot is now used on my Codebase Alpha live coding Twitch stream. We work on the bot in between major development projects on-stream.
