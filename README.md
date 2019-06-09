@@ -1,4 +1,7 @@
 # essenbee-bot - AlphaBot
+
+![Twitter](https://img.shields.io/twitter/follow/codebasealpha.svg?style=social)
+
 A self-teaching project to build a Bot, initially integrating with Slack.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/k0wjacyvjvdip36s/branch/master?svg=true)](https://ci.appveyor.com/project/essenbee/essenbee-bot/branch/master)
