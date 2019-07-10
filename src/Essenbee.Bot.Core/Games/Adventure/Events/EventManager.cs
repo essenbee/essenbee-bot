@@ -60,45 +60,89 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
                         // Dwarf is not dead
                         if (dwarf != player.CurrentLocation)
                         {
-                            // Not in same room as the player, so move
+                            // Not in same room as the player, so build a list of possible places to move to...
                             var possibleMoves = new List<Location>();
-                            foreach (var move in dwarf.ValidMoves)
+
+                            var movesAvailable = dwarf.MonsterValidMoves.Count > 0
+                                ? dwarf.MonsterValidMoves
+                                : dwarf.ValidMoves;
+
+                            // ToDo: set correct movement rules, like these:
+                            // - if player is "nearby", move towards them; but
+                            //   should player be in a dead end, wait at the exit
+                            // - otherwise move to a valid location that is:
+                            //   * not a dead end
+                            //   * on Level = 1
+
+                            foreach (var move in movesAvailable)
                             {
                                 var found = game.Dungeon.TryGetLocation(move.Destination, out var potentialMove);
 
-                                if (found && potentialMove.Level == 1 && potentialMove.NumberOfExits > 1)
+                                if (found && potentialMove.Level == 1 && 
+                                    potentialMove.NumberOfExits > 1 && 
+                                    move.Destination != dwarf.LocationId)
                                 {
                                     possibleMoves.Add(move.Destination);
                                 }
                             }
 
-                            var moveToLocation = GetRandomNumber(1, possibleMoves.Count) - 1;
+                            var moveToLocation = 0;
+
+                            if (possibleMoves.Count > 1)
+                            {
+                                var dieRoll = GetRandomNumber(0, 99);
+                                moveToLocation = (int)(dieRoll * possibleMoves.Count / 100);
+                            }
 
                             game.Dungeon.TryGetLocation(possibleMoves[moveToLocation], out var newLocation);
 
                             game.WanderingMonsters[i] = newLocation;
                         }
-                        else
-                        {
-                            // In room with player!
-                            player.ChatClient.PostDirectMessage(player, "There is an angry-looking dwarf in the " +
-                                "room with you!");
-                            player.ChatClient.PostDirectMessage(player, "The dwarf lunges at you with a wickedly sharp knife!");
-
-                            var toHitRoll = GetRandomNumber(1, 100);
-                            if (toHitRoll < 26)
-                            {
-                                // Player is hit by the knife and dies?
-                                player.ChatClient.PostDirectMessage(player, "The knife sinks into your flesh and you feel your " +
-                                    "lifeblood ebbing away...");
-                                player.Statuses.Add(PlayerStatus.IsDead);
-                                game.EndOfGame(player);
-                                break;
-                            }
-                        }
                     }
 
                     i++;
+                }
+
+                var numDwarfs = 0;
+
+                foreach (var dwarf in game.WanderingMonsters)
+                {
+                    if (player.CurrentLocation == dwarf)
+                    {
+                        numDwarfs++;
+                    }
+                }
+
+                if (numDwarfs > 0)
+                {
+                    if (numDwarfs == 1)
+                    {
+                        player.ChatClient.PostDirectMessage(player, "There is a nasty-looking dwarf in the room with you!");
+                        player.ChatClient.PostDirectMessage(player, "The dwarf lunges at you with a wickedly sharp knife!");
+                    }
+                    else
+                    {
+                        player.ChatClient.PostDirectMessage(player, $"There are {numDwarfs} nasty-looking dwarfs in the room with you!");
+                        player.ChatClient.PostDirectMessage(player, "The dwarfs lunge at you with wickedly sharp knives!");
+                    }
+
+                    var numberOfHits = RollToHit(numDwarfs);
+
+                    if (numberOfHits > 0)
+                    {
+                        // Player is hit by the knife and dies?
+                        var woundDescr = numberOfHits == 1 
+                            ? "A knife sinks into your flesh" 
+                            : $"{numberOfHits} knives pierce your body";
+                        player.ChatClient.PostDirectMessage(player, $"{woundDescr} and you feel your " +
+                            "lifeblood ebbing away...");
+                        player.Statuses.Add(PlayerStatus.IsDead);
+                        game.EndOfGame(player);
+                    }
+                    else
+                    {
+                        player.ChatClient.PostDirectMessage(player, "Phew - missed! You deftly dodge out of the way of danger!");
+                    }
                 }
             }
 
@@ -114,6 +158,22 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
 
                 player.Clocks.Remove("dragon");
             }
+        }
+
+        private static int RollToHit(int numDwarfs)
+        {
+            var hits = 0;
+
+            for (int i = 0; i < numDwarfs; i++)
+            {
+                var toHitRoll = GetRandomNumber(1, 100);
+                if (toHitRoll < 26)
+                {
+                    hits++;
+                }
+            }
+
+            return hits;
         }
 
         private static int GetRandomNumber(int min, int max)

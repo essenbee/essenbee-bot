@@ -6,6 +6,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
     {
         public Carrying(IReadonlyAdventureGame game, params string[] verbs) : base (game, verbs)
         {
+            CheckEvents = false;
         }
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)

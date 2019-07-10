@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             _commandRegistry = new AdventureCommandRegistry(game);
         }
 
-        public void ExecutePlayerCommand(AdventurePlayer player, ChatCommandEventArgs e)
+        public bool ExecutePlayerCommand(AdventurePlayer player, ChatCommandEventArgs e)
         {
             var advCommands = e.ArgsAsList;
             var cmd = advCommands[0].ToLower();
@@ -23,6 +23,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
                           _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("use"));
 
             command?.Invoke(player, e);
+
+            return command.CheckEvents;
         }
 
         public IAdventureCommand GetCommand(string verb) => _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(verb));

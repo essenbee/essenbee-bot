@@ -9,6 +9,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         protected List<string> Verbs;
         protected readonly IReadonlyAdventureGame _game;
 
+        public bool CheckEvents { get; set; }
+
         protected BaseAdventureCommand(IReadonlyAdventureGame game, params string[] verbs)
         {
             _game = game;

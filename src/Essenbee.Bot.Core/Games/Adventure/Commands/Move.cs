@@ -1,7 +1,4 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Events;
-using Essenbee.Bot.Core.Games.Adventure.Interfaces;
-using Essenbee.Bot.Core.Games.Adventure.Locations;
-using System.Collections.Generic;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
@@ -10,6 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
     {
         public Move(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
+            CheckEvents = true;
         }
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
@@ -65,9 +63,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                         }
 
                         player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
-
-                        // Check for Events
-                        EventManager.CheckForEvents(player);
 
                         return;
                     }

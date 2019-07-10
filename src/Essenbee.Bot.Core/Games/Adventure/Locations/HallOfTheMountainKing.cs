@@ -19,6 +19,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 new PlayerMove("A vicious-looking snake bars your way!", Location.HallOfMountainKing, "south", "s", "north", "n", "west", "w", "down", "d"),
                 new PlayerMove("You ascend a majestic staircase of natural rock...", Location.HallOfMistsEast, "up", "east", "e"),
             };
+
+            MonsterValidMoves = new List<IPlayerMove> 
+            {
+                new PlayerMove(string.Empty, Location.LowPassage, "north", "n"),
+                new PlayerMove(string.Empty, Location.SouthSideChamber, "south", "s"),
+                new PlayerMove(string.Empty, Location.WestSideChamber, "west", "w"),
+                new PlayerMove(string.Empty, Location.SecretEastWestCanyon, "secret"),
+                new PlayerMove(string.Empty, Location.HallOfMistsEast, "up", "east", "e"),
+            };
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
     {
         public Look (IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
+            CheckEvents = true;
         }
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
@@ -41,28 +42,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 }
 
                 description.AppendLine();
-
-                var numDwarfs = 0;
-
-                foreach (var dwarf in _game.WanderingMonsters)
-                {
-                    if (player.CurrentLocation == dwarf)
-                    {
-                        numDwarfs++;
-                    }
-                }
-
-                if (numDwarfs > 0)
-                {
-                    if (numDwarfs == 1)
-                    {
-                        description.AppendLine("There is a nasty-looking dwarf in the room with you!");
-                    }
-                    else
-                    {
-                        description.AppendLine($"There are {numDwarfs} nasty-looking dwarfs in the room with you!");
-                    }
-                }
 
                 foreach (var item in player.CurrentLocation.Items)
                 {

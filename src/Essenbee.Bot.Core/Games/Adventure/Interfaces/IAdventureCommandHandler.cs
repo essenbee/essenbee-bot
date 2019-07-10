@@ -2,7 +2,7 @@
 {
     public interface IAdventureCommandHandler
     {
-        void ExecutePlayerCommand(AdventurePlayer player, ChatCommandEventArgs e);
+        bool ExecutePlayerCommand(AdventurePlayer player, ChatCommandEventArgs e);
         IAdventureCommand GetCommand(string verb);
     }
 }

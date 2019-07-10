@@ -7,6 +7,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
     {
         public Xyzzy(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
+            CheckEvents = true;
         }
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)

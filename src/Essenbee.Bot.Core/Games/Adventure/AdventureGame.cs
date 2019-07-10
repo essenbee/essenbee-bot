@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Events;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -56,7 +57,12 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
                 if (e.ArgsAsList.Count > 0)
                 {
-                    _commandHandler.ExecutePlayerCommand(player, e);
+                    var checkForEvents = _commandHandler.ExecutePlayerCommand(player, e);
+
+                    if (checkForEvents)
+                    {
+                        EventManager.CheckForEvents(player);
+                    }
                 }
                 else
                 {

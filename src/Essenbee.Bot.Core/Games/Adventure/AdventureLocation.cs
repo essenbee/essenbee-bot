@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public IReadonlyAdventureGame Game { get; }
         public IList<IAdventureItem> Items { get; set; }
         public IList<IPlayerMove> ValidMoves { get; set; }
+        public IList<IPlayerMove> MonsterValidMoves { get; set; }
         public bool WaterPresent { get; set; }
         public bool IsDark { get; set; }
         public bool IsStart { get; set; }
@@ -24,6 +25,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         {
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>();
+            MonsterValidMoves = new List<IPlayerMove>();
             Game = game;
         }
 
