@@ -3,6 +3,7 @@ using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System;
+using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Events
 {
@@ -43,6 +44,61 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
                             player.CurrentLocation);
                         addItem.Do(null, null);
                     }
+                }
+            }
+
+            if (player.EventRecord.ContainsKey(EventIds.Dwarves))
+            {
+                var dwarfs = game.WanderingMonsters.ToArray();
+
+                var i = 0;
+
+                foreach (var dwarf in dwarfs)
+                {
+                    if (dwarf.LocationId != Location.Nowhere)
+                    {
+                        // Dwarf is not dead
+                        if (dwarf != player.CurrentLocation)
+                        {
+                            // Not in same room as the player, so move
+                            var possibleMoves = new List<Location>();
+                            foreach (var move in dwarf.ValidMoves)
+                            {
+                                var found = game.Dungeon.TryGetLocation(move.Destination, out var potentialMove);
+
+                                if (found && potentialMove.Level == 1 && potentialMove.NumberOfExits > 1)
+                                {
+                                    possibleMoves.Add(move.Destination);
+                                }
+                            }
+
+                            var moveToLocation = GetRandomNumber(1, possibleMoves.Count) - 1;
+
+                            game.Dungeon.TryGetLocation(possibleMoves[moveToLocation], out var newLocation);
+
+                            game.WanderingMonsters[i] = newLocation;
+                        }
+                        else
+                        {
+                            // In room with player!
+                            player.ChatClient.PostDirectMessage(player, "There is an angry-looking dwarf in the " +
+                                "room with you!");
+                            player.ChatClient.PostDirectMessage(player, "The dwarf lunges at you with a wickedly sharp knife!");
+
+                            var toHitRoll = GetRandomNumber(1, 100);
+                            if (toHitRoll < 26)
+                            {
+                                // Player is hit by the knife and dies?
+                                player.ChatClient.PostDirectMessage(player, "The knife sinks into your flesh and you feel your " +
+                                    "lifeblood ebbing away...");
+                                player.Statuses.Add(PlayerStatus.IsDead);
+                                game.EndOfGame(player);
+                                break;
+                            }
+                        }
+                    }
+
+                    i++;
                 }
             }
 

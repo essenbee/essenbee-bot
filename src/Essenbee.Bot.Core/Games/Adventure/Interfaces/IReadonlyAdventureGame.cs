@@ -1,4 +1,4 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Locations;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
@@ -7,6 +7,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
     {
         ReadOnlyCollection<AdventurePlayer> Players { get; }
         IDungeon Dungeon { get; }
+
+        List<IAdventureLocation> WanderingMonsters { get; }
 
         void EndOfGame(IAdventurePlayer player);
     }

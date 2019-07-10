@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a maze of twisty little passages, all alike.";
             IsDark = true;
             Items = new List<IAdventureItem>();
+            Level = 1;
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("You follow a long winding tunnel...", Location.HallOfMistsWest, "up", "u", "climb"),
                 new PlayerMove("", Location.AllAlike1, "north", "n"),

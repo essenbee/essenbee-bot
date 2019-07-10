@@ -17,6 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         bool IsStart { get; set; }
         int Level { get; set; }
 
+        int NumberOfExits { get; }
+
         void AddItem(IAdventureItem item);
         void AddMoves(List<IPlayerMove> newMoves);
         int Count();
