@@ -4,6 +4,7 @@ using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Events
 {
@@ -13,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
 
         public static void CheckForEvents(IAdventurePlayer player)
         {
-            if (player.CurrentLocation.LocationId.Equals(Location.HallOfMistsEast))
+            if (player.CurrentLocation.Level.Equals(1))
             {
                 if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
                 {
@@ -37,79 +38,94 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
                 {
                     if (GetRandomNumber(1, 6) <= 2)
                     {
-                        player.EventRecord.Add(EventIds.Dwarves, 0);
+                        player.EventRecord.Add(EventIds.Dwarves, 1);
                         player.ChatClient.PostDirectMessage(player, "A hunched dwarf just walked " +
                             "around a corner, saw you, threw a little axe at you (which missed), cursed, and ran away.");
                         var addItem = new AddToLocation(ItemFactory.GetInstance(game, Item.LittleAxe),
                             player.CurrentLocation);
                         addItem.Do(null, null);
+
+                        return;
                     }
                 }
             }
 
             if (player.EventRecord.ContainsKey(EventIds.Dwarves))
             {
-                var dwarfs = game.WanderingMonsters.ToArray();
+                if (game.WanderingMonsters.Count == 0)
+                {
+                    SpawnWanderingMonsters(game, player.CurrentLocation);
+                }
 
-                var i = 0;
+                var dwarfs = game.WanderingMonsters.Where(d => d.CurrentLocation != null).ToArray();
 
                 foreach (var dwarf in dwarfs)
                 {
-                    if (dwarf.LocationId != Location.Nowhere)
+                    if (dwarf.CurrentLocation.LocationId != Location.Nowhere)
                     {
                         // Dwarf is not dead
-                        if (dwarf != player.CurrentLocation)
+                        var possibleMoves = new List<Location>();
+
+                        var movesAvailable = (dwarf.CurrentLocation.MonsterValidMoves.Count > 0)
+                            ? dwarf.CurrentLocation.MonsterValidMoves
+                            : dwarf.CurrentLocation.ValidMoves;
+
+                        foreach (var move in movesAvailable)
                         {
-                            // Not in same room as the player, so build a list of possible places to move to...
-                            var possibleMoves = new List<Location>();
+                            var found = game.Dungeon.TryGetLocation(move.Destination, out var potentialMove);
 
-                            var movesAvailable = dwarf.MonsterValidMoves.Count > 0
-                                ? dwarf.MonsterValidMoves
-                                : dwarf.ValidMoves;
-
-                            // ToDo: set correct movement rules, like these:
-                            // - if player is "nearby", move towards them; but
-                            //   should player be in a dead end, wait at the exit
-                            // - otherwise move to a valid location that is:
-                            //   * not a dead end
-                            //   * on Level = 1
-
-                            foreach (var move in movesAvailable)
+                            if (found && (potentialMove.Level == 1) &&
+                                (potentialMove.NumberOfExits > 1) &&
+                                (move.Destination != dwarf.CurrentLocation.LocationId))
                             {
-                                var found = game.Dungeon.TryGetLocation(move.Destination, out var potentialMove);
-
-                                if (found && potentialMove.Level == 1 && 
-                                    potentialMove.NumberOfExits > 1 && 
-                                    move.Destination != dwarf.LocationId)
-                                {
-                                    possibleMoves.Add(move.Destination);
-                                }
+                                possibleMoves.Add(move.Destination);
                             }
-
-                            var moveToLocation = 0;
-
-                            if (possibleMoves.Count > 1)
-                            {
-                                var dieRoll = GetRandomNumber(0, 99);
-                                moveToLocation = (int)(dieRoll * possibleMoves.Count / 100);
-                            }
-
-                            game.Dungeon.TryGetLocation(possibleMoves[moveToLocation], out var newLocation);
-
-                            game.WanderingMonsters[i] = newLocation;
                         }
-                    }
 
-                    i++;
+                        // Has the dwarf seen the player?
+                        if ((dwarf.HasSeenPlayer && (player.CurrentLocation.Level == 1)) ||
+                            dwarf.PrevLocation.LocationId.Equals(player.CurrentLocation.LocationId) ||
+                            dwarf.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId))
+                        {
+                            // Stick with the player
+                            dwarf.HasSeenPlayer = true;
+                            dwarf.PrevLocation = dwarf.CurrentLocation;
+                            dwarf.CurrentLocation = player.CurrentLocation;
+
+                            continue;
+                        }
+
+                        dwarf.HasSeenPlayer = false;
+
+                        // Random movement
+                        var moveToLocation = 0;
+
+                        if (possibleMoves.Count > 1)
+                        {
+                            var dieRoll = GetRandomNumber(0, 99);
+                            moveToLocation = (dieRoll * possibleMoves.Count) / 100;
+                        }
+
+                        game.Dungeon.TryGetLocation(possibleMoves[moveToLocation], out var newLocation);
+
+                        dwarf.PrevLocation = dwarf.CurrentLocation;
+                        dwarf.CurrentLocation = newLocation;
+                    }
                 }
 
                 var numDwarfs = 0;
+                var numAttacks = 0;
 
-                foreach (var dwarf in game.WanderingMonsters)
+                foreach (var dwarf in game.WanderingMonsters.Where(d => d.CurrentLocation != null))
                 {
-                    if (player.CurrentLocation == dwarf)
+                    if (player.CurrentLocation.LocationId.Equals(dwarf.CurrentLocation.LocationId))
                     {
+                        // A dwarf is in the room with the player
                         numDwarfs++;
+                        if (dwarf.CurrentLocation.LocationId.Equals(dwarf.PrevLocation.LocationId))
+                        {
+                            numAttacks++;
+                        }
                     }
                 }
 
@@ -118,39 +134,50 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
                     if (numDwarfs == 1)
                     {
                         player.ChatClient.PostDirectMessage(player, "There is a nasty-looking dwarf in the room with you!");
-                        player.ChatClient.PostDirectMessage(player, "The dwarf lunges at you with a wickedly sharp knife!");
+
+                        if (numAttacks == 1)
+                        {
+                            player.ChatClient.PostDirectMessage(player, "The dwarf lunges at you with a wickedly sharp knife!");
+                        }
                     }
                     else
                     {
                         player.ChatClient.PostDirectMessage(player, $"There are {numDwarfs} nasty-looking dwarfs in the room with you!");
-                        player.ChatClient.PostDirectMessage(player, "The dwarfs lunge at you with wickedly sharp knives!");
+
+                        if (numAttacks > 0)
+                        {
+                            player.ChatClient.PostDirectMessage(player, "The dwarfs lunge at you with wickedly sharp knives!");
+                        }
                     }
 
-                    var numberOfHits = RollToHit(numDwarfs);
+                    if (numAttacks > 0)
+                    {
+                        var numberOfHits = RollToHit(numAttacks);
 
-                    if (numberOfHits > 0)
-                    {
-                        // Player is hit by the knife and dies?
-                        var woundDescr = numberOfHits == 1 
-                            ? "A knife sinks into your flesh" 
-                            : $"{numberOfHits} knives pierce your body";
-                        player.ChatClient.PostDirectMessage(player, $"{woundDescr} and you feel your " +
-                            "lifeblood ebbing away...");
-                        player.Statuses.Add(PlayerStatus.IsDead);
-                        game.EndOfGame(player);
-                    }
-                    else
-                    {
-                        player.ChatClient.PostDirectMessage(player, "Phew - missed! You deftly dodge out of the way of danger!");
+                        if (numberOfHits > 0)
+                        {
+                            // Player is hit by the knife and dies?
+                            var woundDescr = (numberOfHits == 1)
+                                ? "A knife sinks into your flesh"
+                                : ($"{numberOfHits} knives pierce your body");
+                            player.ChatClient.PostDirectMessage(player, ($"{woundDescr} and you feel your ") +
+                                "lifeblood ebbing away...");
+                            player.Statuses.Add(PlayerStatus.IsDead);
+                            game.EndOfGame(player);
+                        }
+                        else
+                        {
+                            player.ChatClient.PostDirectMessage(player, "Phew - missed! You deftly dodge out of the way of danger!");
+                        }
                     }
                 }
             }
 
             // Handle dead dragon -> rotting dead dragon
-            if (player.Clocks.ContainsKey("dragon") && player.Clocks["dragon"] > 10)
+            if (player.Clocks.ContainsKey("dragon") && (player.Clocks["dragon"] > 10))
             {
                 game.Dungeon.TryGetLocation(Location.SecretNorthEastCanyon, out var location);
-                
+
                 var remove = new RemoveFromLocation(ItemFactory.GetInstance(game, Item.DeadDragon), location);
                 remove.Do(null, null);
                 var addItem = new AddToLocation(ItemFactory.GetInstance(game, Item.RottingDeadDragon), location);
@@ -160,14 +187,44 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
             }
         }
 
-        private static int RollToHit(int numDwarfs)
+        private static void SpawnWanderingMonsters(IReadonlyAdventureGame game, IAdventureLocation playerLocation)
+        {
+            // Initial wandering monster locations
+            game.Dungeon.TryGetLocation(Location.HallOfMountainKing, out var location1);
+            game.WanderingMonsters.Add(new WanderingMonster(location1));
+            game.Dungeon.TryGetLocation(Location.FissureWest, out var location2);
+            game.WanderingMonsters.Add(new WanderingMonster(location2));
+            game.Dungeon.TryGetLocation(Location.Y2, out var location3);
+            game.WanderingMonsters.Add(new WanderingMonster(location3));
+            game.Dungeon.TryGetLocation(Location.AllAlike3, out var location4);
+            game.WanderingMonsters.Add(new WanderingMonster(location4));
+            //game.Dungeon.TryGetLocation(Locations.Location.ComplexJunction, out var location5);
+            //game.WanderingMonsters.Add(new WanderingMonster(location5));
+            game.Dungeon.TryGetLocation(Location.PirateChestCave, out var location6);
+            game.WanderingMonsters.Add(new WanderingMonster(location6));
+
+            game.Dungeon.TryGetLocation(Location.GoldRoom, out var altLocation);
+
+            // Do not spawn a dwarf on top of the player!
+            foreach (var monster in game.WanderingMonsters)
+            {
+                if (monster.CurrentLocation.LocationId.Equals(playerLocation.LocationId))
+                {
+                    monster.CurrentLocation = altLocation;
+                    monster.PrevLocation = altLocation;
+                    break;
+                }
+            }
+        }
+
+        private static int RollToHit(int numAttacks)
         {
             var hits = 0;
 
-            for (int i = 0; i < numDwarfs; i++)
+            for (var i = 0; i < numAttacks; i++)
             {
-                var toHitRoll = GetRandomNumber(1, 100);
-                if (toHitRoll < 26)
+                var toHitRoll = GetRandomNumber(0, 99);
+                if (toHitRoll < 20)
                 {
                     hits++;
                 }

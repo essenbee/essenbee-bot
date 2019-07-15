@@ -1,5 +1,7 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Events;
+using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
@@ -24,21 +26,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (!player.EventRecord.ContainsKey(EventIds.Dwarves))
             {
-                player.EventRecord.Add(EventIds.Dwarves, 0);
+                player.EventRecord.Add(EventIds.Dwarves, 1);
+                var addItem = new AddToInventory();
+                addItem.Do(player, ItemFactory.GetInstance(_game, Item.LittleAxe));
             }
 
             player.CurrentLocation = place;
             player.ChatClient.PostDirectMessage(player, "Teleported to *" + player.CurrentLocation.Name + "*");
 
-            var numDwarfs = 0;
 
-            foreach (var dwarf in _game.WanderingMonsters)
-            {
-                if (player.CurrentLocation == dwarf)
-                {
-                    numDwarfs++;
-                }
-            }
         }
     }
 }

@@ -19,7 +19,9 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsDark { get; set; }
         public bool IsStart { get; set; }
         public int Level { get; set; }
-        public int NumberOfExits => ValidMoves.Count();
+        public int NumberOfExits => MonsterValidMoves.Count() > 0
+            ? MonsterValidMoves.Count() 
+            : ValidMoves.Count();
 
         protected AdventureLocation(IReadonlyAdventureGame game)
         {

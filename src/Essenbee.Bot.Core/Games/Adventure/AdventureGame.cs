@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
     {
         public ReadOnlyCollection<AdventurePlayer> Players => _players.AsReadOnly();
         public IDungeon Dungeon { get; }
-        public List<IAdventureLocation> WanderingMonsters { get; } = new List<IAdventureLocation>();
+        public List<WanderingMonster> WanderingMonsters { get; } = new List<WanderingMonster>();
 
         private List<AdventurePlayer> _players;
         private readonly IAdventureCommandHandler _commandHandler;
@@ -22,20 +22,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             _players = new List<AdventurePlayer>();
             _commandHandler = new CommandHandler(this);
             Dungeon = new Dungeon(this, new ColossalCave());
-
-            // Initial wandering monster locations
-            Dungeon.TryGetLocation(Locations.Location.HallOfMountainKing, out var location1);
-            WanderingMonsters.Add(location1);
-            Dungeon.TryGetLocation(Locations.Location.FissureWest, out var location2);
-            WanderingMonsters.Add(location2);
-            Dungeon.TryGetLocation(Locations.Location.Y2, out var location3);
-            WanderingMonsters.Add(location3);
-            Dungeon.TryGetLocation(Locations.Location.AllAlike3, out var location4);
-            WanderingMonsters.Add(location4);
-            //Dungeon.TryGetLocation(Locations.Location.ComplexJunction, out var location5);
-            //WanderingMonsters.Add(location5);
-            Dungeon.TryGetLocation(Locations.Location.PirateChestCave, out var location6);
-            WanderingMonsters.Add(location6);
         }
 
         public AdventureGame(IDungeon dungeon)

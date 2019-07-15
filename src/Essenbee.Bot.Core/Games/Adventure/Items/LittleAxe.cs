@@ -1,5 +1,6 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Items
@@ -14,8 +15,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsPortable = true;
             IsWeapon = true;
 
-            var use = new ItemInteraction(Game, "use");
+            var use = new ItemInteraction(Game, "use", "swing", "throw", "wield");
             use.RegisteredInteractions.Add(new Display("You attack the dwarf with the little axe!!"));
+            use.RegisteredInteractions.Add(new Chance(80));
+
             Interactions.Add(use);
         }
 
@@ -30,9 +33,23 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
                 if (dwarf != null)
                 {
+                    var killed = false;
+
                     foreach (var action in interaction.RegisteredInteractions)
                     {
-                        action.Do(player, this);
+                        killed = action.Do(player, this);
+                    }
+
+                    if (killed)
+                    {
+                        Game.Dungeon.TryGetLocation(Location.Nowhere, out var nowhere);
+                        dwarf.CurrentLocation = nowhere;
+                        player.ChatClient.PostDirectMessage(player, "Your aim is true and the dwarf falls dead!" +
+                            " The body disappears in a cloud of greasy smoke...");
+                    }
+                    else
+                    {
+                        player.ChatClient.PostDirectMessage(player, "The dwarf dodged out of harms way!");
                     }
 
                     return true;
@@ -45,7 +62,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             return false;
         }
 
-        private IAdventureItem GetDwarfIfPresent(IAdventurePlayer player) =>
-            player.CurrentLocation.Items.FirstOrDefault(i => i.ItemId.Equals(Item.Dwarf));
+        private WanderingMonster GetDwarfIfPresent(IAdventurePlayer player) => 
+            Game.WanderingMonsters.FirstOrDefault(d => d.CurrentLocation != null &&
+            d.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId));
     }
 }
