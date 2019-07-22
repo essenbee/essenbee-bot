@@ -10,6 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         protected readonly IReadonlyAdventureGame _game;
 
         public bool CheckEvents { get; set; }
+        public bool IsVerbatim { get; set; }
 
         protected BaseAdventureCommand(IReadonlyAdventureGame game, params string[] verbs)
         {

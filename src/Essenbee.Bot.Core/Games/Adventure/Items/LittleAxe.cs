@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
+﻿using Essenbee.Bot.Core.Games.Adventure.Events;
+using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Linq;
@@ -14,9 +15,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "small *axes*";
             IsPortable = true;
             IsWeapon = true;
-
+            
             var use = new ItemInteraction(Game, "use", "swing", "throw", "wield");
-            use.RegisteredInteractions.Add(new Display("You attack the dwarf with the little axe!!"));
+            use.RegisteredInteractions.Add(new Display("You attack the dwarf, throwing the little axe at it!!"));
+            use.RegisteredInteractions.Add(new RemoveFromInventory());
             use.RegisteredInteractions.Add(new Chance(80));
 
             Interactions.Add(use);
@@ -24,6 +26,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
         public override bool Interact(string verb, IAdventurePlayer player)
         {
+            var retVal = false;
             verb = verb.ToLower();
             var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());
 
@@ -44,6 +47,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     {
                         Game.Dungeon.TryGetLocation(Location.Nowhere, out var nowhere);
                         dwarf.CurrentLocation = nowhere;
+
+                        if (player.EventRecord.ContainsKey(EventIds.Dwarves))
+                        {
+                            player.EventRecord[EventIds.Dwarves]++;
+                        }
+
                         player.ChatClient.PostDirectMessage(player, "Your aim is true and the dwarf falls dead!" +
                             " The body disappears in a cloud of greasy smoke...");
                     }
@@ -52,18 +61,32 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                         player.ChatClient.PostDirectMessage(player, "The dwarf dodged out of harms way!");
                     }
 
-                    return true;
+                    retVal = true;
+                }
+                else
+                {
+                    player.ChatClient.PostDirectMessage(player,
+                        "The axe doesn't seem to be of much use in this particular situation!");
                 }
 
-                player.ChatClient.PostDirectMessage(player, 
-                    "The axe doesn't seem to be of much use in this particular situation!");
+                var addItem = new AddToLocation(this);
+                addItem.Do(player, null);
             }
 
-            return false;
+            return retVal;
         }
 
-        private WanderingMonster GetDwarfIfPresent(IAdventurePlayer player) => 
-            Game.WanderingMonsters.FirstOrDefault(d => d.CurrentLocation != null &&
-            d.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId));
+        private WanderingMonster GetDwarfIfPresent(IAdventurePlayer player)
+        {
+            var manager = Game.MonsterManagers.FirstOrDefault();
+
+            if (manager is null)
+            {
+                return null;
+            }
+
+            return manager.Monsters.FirstOrDefault(d => d.CurrentLocation != null &&
+             d.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId));
+        }
     }
 }

@@ -7,16 +7,16 @@ namespace Essenbee.Bot.Core.Games.Adventure
 {
     public class Dungeon : IDungeon
     {
-        private readonly Dictionary<Location, IAdventureLocation> _locations;
+        public Dictionary<Location, IAdventureLocation> Locations { get; }
 
         public Dungeon(AdventureGame game, IDungeonBuilder builder)
         {
-            _locations = builder.Build(game);
+            Locations = builder.Build(game);
         }
 
         public bool TryGetLocation(Location locationId, out IAdventureLocation place)
         {
-            var location = _locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
+            var location = Locations.Where(l => l.Value.LocationId.Equals(locationId)).ToList();
             place = null;
 
             if (location.Count == 0)
@@ -31,7 +31,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public IAdventureLocation GetStartingLocation()
         {
-            var startingLocations = _locations.Where(l => l.Value.IsStart);
+            var startingLocations = Locations.Where(l => l.Value.IsStart);
             return startingLocations.First().Value;
         }
     }

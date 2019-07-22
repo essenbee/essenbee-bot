@@ -17,6 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         bool WaterPresent { get; set; }
         bool IsStart { get; set; }
         int Level { get; set; }
+        bool IsSpawnPoint { get; set; }
+        bool IsAlternateSpawnPoint { get; set; }
 
         int NumberOfExits { get; }
 

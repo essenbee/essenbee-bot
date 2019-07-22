@@ -12,7 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
     {
         public ReadOnlyCollection<AdventurePlayer> Players => _players.AsReadOnly();
         public IDungeon Dungeon { get; }
-        public List<WanderingMonster> WanderingMonsters { get; } = new List<WanderingMonster>();
+        public List<IMonsterManager> MonsterManagers { get; } = new List<IMonsterManager>();
 
         private List<AdventurePlayer> _players;
         private readonly IAdventureCommandHandler _commandHandler;
@@ -22,6 +22,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             _players = new List<AdventurePlayer>();
             _commandHandler = new CommandHandler(this);
             Dungeon = new Dungeon(this, new ColossalCave());
+            MonsterManagers.Add(new DwarfManager(Dungeon.Locations));
         }
 
         public AdventureGame(IDungeon dungeon)

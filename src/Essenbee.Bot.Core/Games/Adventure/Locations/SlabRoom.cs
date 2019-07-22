@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "large passages, but they are now filled with boulders. Low small " +
                 "passages go north and south, and the south one quickly bends west " +
                 "around the boulders.";
+            Level = 1;
 
             Items = new List<IAdventureItem>();
 

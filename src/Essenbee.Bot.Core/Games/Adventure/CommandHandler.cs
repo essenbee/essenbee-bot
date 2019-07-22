@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 
 namespace Essenbee.Bot.Core.Games.Adventure
@@ -21,6 +22,17 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             var command = _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch(cmd)) ??
                           _commandRegistry.RegisteredCommands.FirstOrDefault(c => c.IsMatch("use"));
+
+            if (!command.IsVerbatim)
+            {
+                var nullWords = new List<string> { "a", "an", "the", "this", "that", "to" };
+                var argsSent = advCommands.ToArray();
+
+                foreach (var word in argsSent.Where(word => nullWords.Contains(word)).Select(word => word))
+                {
+                    advCommands.Remove(word);
+                }
+            }
 
             command?.Invoke(player, e);
 

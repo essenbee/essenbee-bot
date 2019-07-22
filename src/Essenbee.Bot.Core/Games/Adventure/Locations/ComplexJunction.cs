@@ -14,6 +14,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "North joins a higher crawl from the east to make a walking passage " + 
                 "going West. There is also a large room above. The air is damp here.";
             Items = new List<IAdventureItem>();
+            Level = 1;
+            IsSpawnPoint = true;
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove(string.Empty, Location.DustyCave, "up", "u", "climb"),

@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations.AllAlikeMaze
             LongDescription = "in a tiny, rough-hewn chamber. It seems that this space has been cleared out of debris fairly recently...";
             IsDark = true;
             Level = 1;
+            IsSpawnPoint = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.PirateChest) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("", Location.AllAlike14, "southeast", "se"),

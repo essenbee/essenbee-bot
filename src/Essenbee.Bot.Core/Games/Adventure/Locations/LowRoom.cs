@@ -11,6 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "large low room";
             ShortDescription = "in a large low room. Crawls lead north, SE, and SW.";
             LongDescription = "in a large low room. Crawls lead north, SE, and SW.";
+            Level = 1;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>
             {

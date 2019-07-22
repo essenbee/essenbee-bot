@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a large room, with a passage to the south, a passage to the west, and a wall of broken rock to the east." + 
                 " There is a large `Y2` on a rock in the room's centre.";
             Level = 1;
+            IsSpawnPoint = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>
             {

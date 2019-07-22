@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a large room full of dusty rocks. There is a big hole in " +
                 "the floor. There are cracks everywhere, and a passage leading east.";
             Items = new List<IAdventureItem>();
+            Level = 1;
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove(string.Empty, Location.ComplexJunction, "down", "d", "hole"),

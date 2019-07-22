@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in the soft room.";
             LongDescription = "in the soft room. The walls are covered with heavy curtains, " +
                 "the floor with a thick pile carpet. Moss covers the ceiling.";
+            Level = 1;
 
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Pillow) };
 

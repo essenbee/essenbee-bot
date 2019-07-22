@@ -8,7 +8,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
     {
         public Look (IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
-            CheckEvents = true;
+            CheckEvents = false;
         }
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)

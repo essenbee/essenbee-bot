@@ -14,11 +14,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "To explore at random select NORTH, SOUTH, UP, or DOWN.";
 
             Items = new List<IAdventureItem>();
+            Level = 1;
 
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.SlabRoom, "slab"),
-                new PlayerMove(string.Empty, Location.SwissCheese, "west", "w"), // swiss cheese
-                new PlayerMove(string.Empty, Location.ComplexJunction, "east", "e"), // complex junction
+                new PlayerMove(string.Empty, Location.SwissCheese, "west", "w"),
+                new PlayerMove(string.Empty, Location.ComplexJunction, "east", "e"),
                 new RandomMove("You have crawled around in some little holes and found your way to:", 
                 new List<Location> 
                 {
@@ -47,6 +48,16 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                     Location.Anteroom, Location.Bedquilt, Location.Bedquilt, Location.Anteroom,
                     Location.Bedquilt, Location.Bedquilt, Location.Bedquilt, Location.Anteroom,
                 }, "down", "d"),
+            };
+
+            MonsterValidMoves = new List<IPlayerMove>
+            {
+                new PlayerMove(string.Empty, Location.SlabRoom, "slab"),
+                new PlayerMove(string.Empty, Location.SwissCheese, "west", "w"),
+                new PlayerMove(string.Empty, Location.ComplexJunction, "east", "e"),
+                new PlayerMove(string.Empty, Location.Anteroom, "ante"),
+                new PlayerMove(string.Empty, Location.TallEastWestCanyon, "tall"),
+                new PlayerMove(string.Empty, Location.SecretJunction, "secret"),
             };
         }
     }
