@@ -13,6 +13,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in west side chamber";
             LongDescription = "in the west side chamber of the Hall of the Mountain King. A passage continues west and up here.";
             Level = 1;
+            IsDark = true;
+
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Coins) };
             ValidMoves = new List<IPlayerMove>
             {

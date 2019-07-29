@@ -23,6 +23,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             _commandHandler = new CommandHandler(this);
             Dungeon = new Dungeon(this, new ColossalCave());
             MonsterManagers.Add(new DwarfManager(Dungeon.Locations));
+            MonsterManagers.Add(new PirateManager(Dungeon.Locations));
         }
 
         public AdventureGame(IDungeon dungeon)
@@ -91,10 +92,21 @@ namespace Essenbee.Bot.Core.Games.Adventure
             }
 
             // TODO: calculate points gained during game...
-            var points = 0;
+            var found = Dungeon.TryGetLocation(Locations.Location.Building, out var building);
+
+            if (found)
+            {
+                var numberOfTreasuresRecovered = building.Items.Where(x => x.IsTreasure).Count();
+                thePlayer.Score += 15 * numberOfTreasuresRecovered;
+            }
+
+            if (player.EventRecord.ContainsKey(EventIds.Dwarves))
+            {
+                thePlayer.Score += 5 * player.EventRecord[EventIds.Dwarves];
+            }
 
             player.ChatClient.PostDirectMessage(player, 
-                $"You earned {points} during your Adventure in {player.Moves} moves.");
+                $"You earned {thePlayer.Score} during your Adventure in {player.Moves} moves.");
 
             _players.Remove(thePlayer);
         }

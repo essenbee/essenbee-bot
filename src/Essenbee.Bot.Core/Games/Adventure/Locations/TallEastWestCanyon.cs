@@ -12,6 +12,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in a tall East-West canyon.";
             LongDescription = "in a tall East-West canyon. A low tight crawl goes 3 feet North and then seems to open up.";
             Level = 1;
+            IsDark = true;
+
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("With difficulty, you manage to squeeze yourself through the constriction...",

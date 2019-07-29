@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in an anteroom leading to a large passage to the East. Small " +
                 "passages go West and up. The remnants of recent digging are evident.";
             Level = 1;
+            IsDark = true;
 
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Magazines) };
 

@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "walls. A gently sloping passage leads upward to the North, another passage leads SE, " +
                 "and a hands and knees crawl leads West.";
             Level = 1;
+            IsDark = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(game, Item.Vase) };
 
             ValidMoves = new List<IPlayerMove>

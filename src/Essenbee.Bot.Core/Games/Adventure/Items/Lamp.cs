@@ -20,6 +20,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             light.RegisteredInteractions.Add(new AddPlayerStatus(PlayerStatus.HasLight));
 
             Interactions.Add(light);
+
+            var extinguish = new ItemInteraction(Game, "extinguish", "ext");
+            extinguish.RegisteredInteractions.Add(new DeactivateItem("The lamp turns off."));
+            extinguish.RegisteredInteractions.Add(new UpdateItemName("battered *lamp*"));
+            extinguish.RegisteredInteractions.Add(new RemovePlayerStatus(PlayerStatus.HasLight));
+
+            Interactions.Add(extinguish);
         }
 
         public override bool Interact(string verb, IAdventurePlayer player)
@@ -40,7 +47,17 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 {
                     if (IsActive)
                     {
-                        var msg = new Display($"Your{ItemId} is already lit!");
+                        var msg = new Display($"Your {ItemId} is already lit!");
+                        msg.Do(player);
+                        return true;
+                    }
+                }
+
+                if (interaction.Verbs.Contains("extinguish"))
+                {
+                    if (!IsActive)
+                    {
+                        var msg = new Display($"Your {ItemId} isn't lit already!");
                         msg.Do(player);
                         return true;
                     }

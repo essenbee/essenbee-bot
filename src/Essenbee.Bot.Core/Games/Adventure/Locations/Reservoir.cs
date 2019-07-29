@@ -18,7 +18,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "A dimly-seen passage exits through the northern wall, but you can't get " +
                 "across the water to get to it. Another passage leads south from here.";
             WaterPresent = true;
-            
+            Level = 2;
+            IsDark = true;
+
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove("There is no way you can swim across a subterranean lake!", 

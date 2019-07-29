@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "mist swaying to and fro, almost as if alive. A cold wind blows up the staircase. There is a passage at the top " +
                 "of a dome behind you.";
             Level = 1;
+            IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>
             {

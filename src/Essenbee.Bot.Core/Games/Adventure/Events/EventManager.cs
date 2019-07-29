@@ -2,6 +2,7 @@
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Events
 {
@@ -9,6 +10,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
     {
         public static void CheckForEvents(IAdventurePlayer player)
         {
+            if (player.Statuses.Contains(PlayerStatus.IsDead))
+            {
+                return;
+            }
+
             if (player.CurrentLocation.Level.Equals(1))
             {
                 if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
@@ -30,6 +36,20 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
             foreach (var manager in game.MonsterManagers)
             {
                 manager.Act(game, player);
+            }
+
+            // Points for recovering stolen treasure
+            if (!player.EventRecord.ContainsKey(EventIds.RecoveredStolenTreasure))
+            {
+                if (player.CurrentLocation.LocationId == Location.PirateChestCave)
+                {
+                    var found = game.Dungeon.TryGetLocation(Location.PirateChestCave, out var pirateChest);
+                    if (found && pirateChest.Items.Where(x => x.IsTreasure).Count() > 0)
+                    {
+                        player.EventRecord.Add(EventIds.RecoveredStolenTreasure, 1);
+                        player.Score += 10;
+                    }
+                }
             }
 
             // Handle dead dragon -> rotting dead dragon

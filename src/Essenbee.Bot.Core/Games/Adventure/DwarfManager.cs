@@ -166,12 +166,13 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         private void SpawnDwarfs(IAdventureLocation playerLocation)
         {
-            var spawnPoints = Locations.Values.Where(l => l.IsSpawnPoint);
-            var altSpawnPoint = Locations.Values.Where(l => l.IsAlternateSpawnPoint).FirstOrDefault();
+            var spawnPoints = Locations.Values.Where(l => l.IsSpawnPoint && l.SpawnType == MonsterGroup.Dwarves);
+            var altSpawnPoint = Locations.Values.Where(l => l.IsAlternateSpawnPoint && 
+                l.SpawnType == MonsterGroup.Dwarves).FirstOrDefault();
 
             foreach (var spawnPoint in spawnPoints)
             {
-                Monsters.Add(new WanderingMonster(spawnPoint));
+                Monsters.Add(new WanderingMonster(spawnPoint, MonsterGroup.Dwarves));
             }
 
             if (altSpawnPoint != null)

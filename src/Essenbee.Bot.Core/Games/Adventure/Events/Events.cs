@@ -4,5 +4,6 @@
     {
         CaveOpen,
         Dwarves,
+        RecoveredStolenTreasure,
     }
 }

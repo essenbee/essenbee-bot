@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             IsDark = true;
             Level = 1;
             IsSpawnPoint = true;
+            SpawnType = MonsterGroup.Dwarves;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
                 // Dead end? new PlayerMove("", Location.AllAlike1, "north", "n"),

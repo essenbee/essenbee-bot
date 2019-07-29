@@ -11,6 +11,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "secret North-South passage";
             ShortDescription = "in a secret North/South canyon above a sizable passage.";
             LongDescription = "in a secret North/South canyon above a sizable passage.";
+            Level = 1;
+            IsDark = true;
+
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>
             {

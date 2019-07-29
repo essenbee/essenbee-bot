@@ -12,6 +12,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             Name = "secret canyon";
             ShortDescription = "in a secret canyon which exits to the north and south, above a large room";
             LongDescription = "in a secret canyon which exits to the north and south, above a large room";
+            Level = 1;
+            IsDark = true;
 
             ValidMoves = new List<IPlayerMove>
             {

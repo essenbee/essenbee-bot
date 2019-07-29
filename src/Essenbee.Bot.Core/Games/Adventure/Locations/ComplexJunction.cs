@@ -15,7 +15,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "going West. There is also a large room above. The air is damp here.";
             Items = new List<IAdventureItem>();
             Level = 1;
+            IsDark = true;
             IsSpawnPoint = true;
+            SpawnType = MonsterGroup.Dwarves;
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove(string.Empty, Location.DustyCave, "up", "u", "climb"),

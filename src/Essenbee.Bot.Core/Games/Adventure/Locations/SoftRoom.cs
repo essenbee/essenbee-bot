@@ -14,7 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in the soft room. The walls are covered with heavy curtains, " +
                 "the floor with a thick pile carpet. Moss covers the ceiling.";
             Level = 1;
-
+            IsDark = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Pillow) };
 
             ValidMoves = new List<IPlayerMove>

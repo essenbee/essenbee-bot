@@ -16,6 +16,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "Marks in the dust around the window would seem to indicate that someone has been here recently. Directly across the pit from you and " +
                 "25 feet away there is a similar window looking into a lighted room.  A  shadowy figure can be seen there peering back at you.";
 
+            Level = 1;
+            IsDark = true;
+
             Items = new List<IAdventureItem>
             {
                 ItemFactory.GetInstance(Game, Item.ShadowyFigure),

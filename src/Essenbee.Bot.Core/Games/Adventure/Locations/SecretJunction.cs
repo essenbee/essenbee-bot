@@ -13,6 +13,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a secret canyon at a junction of three canyons, bearing North, " +
                 "South, and SE.  The North one is as tall as the other two combined.";
             Items = new List<IAdventureItem>();
+            IsDark = true;
+            Level = 1;
             ValidMoves = new List<IPlayerMove>
             {
                 new PlayerMove(string.Empty, Location.SecretNorthSouthPassage, "south", "s"),

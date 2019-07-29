@@ -31,16 +31,17 @@ namespace Essenbee.Bot.Core.Games.Adventure
             return !(itemInInventory is null && itemInContainer is null);
         }
 
+        public bool HasTreasure() => _items.Any(x => x.IsTreasure);
+
+        public List<IAdventureItem> GetTreasures() => _items.Where(x => x.IsTreasure).ToList();
+
         public bool AddItem(IAdventureItem item)
         {
             _items.Add(item);
             return true;
         }
 
-        public void RemoveItem(IAdventureItem item)
-        {
-            _items.Remove(item);
-        }
+        public void RemoveItem(IAdventureItem item) => _items.Remove(item);
 
         public bool AddItemToContainer(IAdventureItem item, Item containerId)
         {

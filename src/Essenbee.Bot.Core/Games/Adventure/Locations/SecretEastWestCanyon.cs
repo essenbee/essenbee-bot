@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a secret canyon which here runs East-West. It crosses over a very tight canyon 15 feet below. " +
                 "If you go down you may not be able to get back up.";
             IsDark = true;
+            Level = 1;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("", Location.HallOfMountainKing, "east", "e"),

@@ -14,6 +14,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "head west, east, NE, and NW. Part of the room is occupied by a large bedrock block that " +
                 "is full of small holes, just like a Swiss cheese.";
             Level = 1;
+            IsDark = true;
+
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>
             {

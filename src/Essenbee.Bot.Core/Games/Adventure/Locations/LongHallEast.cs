@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "chambers. To the East a low wide crawl slants up. To the North a " +
                 "round two foot hole slants down.";
             Level = 1;
+            IsDark = true;
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove>

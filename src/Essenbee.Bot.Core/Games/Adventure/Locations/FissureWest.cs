@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             IsDark = true;
             Level = 1;
             IsSpawnPoint = true;
+            SpawnType = MonsterGroup.Dwarves;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(game, Item.Diamond) };
             ValidMoves = new List<IPlayerMove> 
             {

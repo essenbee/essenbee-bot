@@ -22,6 +22,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
             {
                 player.EventRecord.Add(EventIds.CaveOpen, 1);
+                player.Score += 25;
             }
 
             if (!player.EventRecord.ContainsKey(EventIds.Dwarves))
@@ -29,6 +30,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 player.EventRecord.Add(EventIds.Dwarves, 1);
                 var addItem = new AddToInventory();
                 addItem.Do(player, ItemFactory.GetInstance(_game, Item.LittleAxe));
+
+                // Treasures
+                addItem.Do(player, ItemFactory.GetInstance(_game, Item.Coins));
+                addItem.Do(player, ItemFactory.GetInstance(_game, Item.Diamond));
             }
 
             player.CurrentLocation = place;

@@ -13,6 +13,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a tight canyon which exits to the north and south. " +
                 "There is a crack in the roof, but there is no way you could climb up there...";
             Level = 1;
+            IsDark = true;
+
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove> {

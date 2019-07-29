@@ -22,6 +22,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 {
                     if (!player.Statuses.Contains(PlayerStatus.HasLight))
                     {
+                        if (DieRoller.Percentage(34))
+                        {
+                            player.ChatClient.PostDirectMessage(player, "You stumble around in the darkness and fall into " +
+    "a deep pit. Your bones break as you thud into the rock at its base. Your lamp smashes and darkness engulfs you...");
+                            player.Statuses.Add(PlayerStatus.IsDead);
+                            _game.EndOfGame(player);
+                            return;
+                        }
+
                         player.ChatClient.PostDirectMessage(player, "It is pitch black! If you move around, you'll probably fall into a chasm or something...");
                     }
                 }

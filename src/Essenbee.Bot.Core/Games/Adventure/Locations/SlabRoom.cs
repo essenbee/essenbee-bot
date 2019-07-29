@@ -16,7 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "passages go north and south, and the south one quickly bends west " +
                 "around the boulders.";
             Level = 1;
-
+            IsDark = true;
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove>

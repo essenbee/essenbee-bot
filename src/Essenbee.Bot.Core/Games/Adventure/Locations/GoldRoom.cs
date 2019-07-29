@@ -14,6 +14,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "in a low room with a crude note on the wall. The note says, `You won't get it up the steps`. " +
                 "The only way out is north, up some crude steps cut into the rock.";
             Level = 1;
+            IsDark = true;
+            SpawnType = MonsterGroup.Dwarves;
             IsAlternateSpawnPoint = true;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Nugget) };
             ValidMoves = new List<IPlayerMove>

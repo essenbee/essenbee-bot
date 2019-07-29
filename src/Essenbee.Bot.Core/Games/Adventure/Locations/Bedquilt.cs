@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
             Items = new List<IAdventureItem>();
             Level = 1;
+            IsDark = true;
 
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.SlabRoom, "slab"),

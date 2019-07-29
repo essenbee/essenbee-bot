@@ -13,7 +13,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in Hall of the Mountain King";
             LongDescription = "in the Hall of the Mountain King, with passages off in all directions. Sounds echo in this vast, high space.";
             Level = 1;
+            IsDark = true;
             IsSpawnPoint = true;
+            SpawnType = MonsterGroup.Dwarves;
+            SpawnType = MonsterGroup.Dwarves;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Snake) };
             ValidMoves = new List<IPlayerMove>
             {

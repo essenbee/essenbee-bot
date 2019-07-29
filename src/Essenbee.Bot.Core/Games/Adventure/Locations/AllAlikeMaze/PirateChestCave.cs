@@ -15,6 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations.AllAlikeMaze
             IsDark = true;
             Level = 1;
             IsSpawnPoint = true;
+            SpawnType = MonsterGroup.Pirate;
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.PirateChest) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove("", Location.AllAlike14, "southeast", "se"),

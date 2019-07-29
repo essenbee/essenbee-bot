@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in hall of mists";
             LongDescription = "at one end of a vast hall stretching out of sight to the east.";
             Level = 1;
+            IsDark = true;
             Items = new List<IAdventureItem>();
             ValidMoves = new List<IPlayerMove>
             {

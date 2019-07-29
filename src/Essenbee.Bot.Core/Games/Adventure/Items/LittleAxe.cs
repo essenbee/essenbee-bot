@@ -15,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "small *axes*";
             IsPortable = true;
             IsWeapon = true;
-            
+
             var use = new ItemInteraction(Game, "use", "swing", "throw", "wield");
             use.RegisteredInteractions.Add(new Display("You attack the dwarf, throwing the little axe at it!!"));
             use.RegisteredInteractions.Add(new RemoveFromInventory());
@@ -78,15 +78,19 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
         private WanderingMonster GetDwarfIfPresent(IAdventurePlayer player)
         {
-            var manager = Game.MonsterManagers.FirstOrDefault();
-
-            if (manager is null)
+            foreach (var manager in Game.MonsterManagers)
             {
-                return null;
+                if (manager.Monsters.Any(d => (d.CurrentLocation != null) &&
+                 d.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId) &&
+                 (d.Group == MonsterGroup.Dwarves)))
+                {
+                    return manager.Monsters.First(d => (d.CurrentLocation != null) &&
+                        d.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId) &&
+                        (d.Group == MonsterGroup.Dwarves));
+                }
             }
 
-            return manager.Monsters.FirstOrDefault(d => d.CurrentLocation != null &&
-             d.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId));
+            return null;
         }
     }
 }

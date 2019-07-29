@@ -17,7 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
                 "midway between the canyon walls. (The mirror is obviously provided " +
                 "for the use of the dwarves, who as you know, are extremely vain.) A " +
                 "small window can be seen in either wall, some fifty feet up.";
-
+            Level = 1;
+            IsDark = true;
             Items = new List<IAdventureItem>();
 
             ValidMoves = new List<IPlayerMove>
