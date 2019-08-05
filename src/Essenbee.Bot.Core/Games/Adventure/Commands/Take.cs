@@ -1,5 +1,6 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Items;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
@@ -17,6 +18,15 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             var item = e.ArgsAsList[1].ToLower();
 
             var locationItem = location.Items.FirstOrDefault(i => i.IsMatch(item));
+            
+            // Cannot pick up another lamp from the Small Building
+            if (locationItem.ItemId == Item.Lamp && 
+                player.CurrentLocation.LocationId.Equals(Location.Building) &&
+                player.EventRecord.ContainsKey(Events.EventIds.HasLamp))
+            {
+                locationItem = null;
+            }
+            
             var containers = location.Items.Where(i => i.IsContainer && i.Contents.Count > 0).ToList();
 
             if (locationItem != null && player.Inventory.GetItems().Any(i => i.ItemId.Equals(locationItem.ItemId)))

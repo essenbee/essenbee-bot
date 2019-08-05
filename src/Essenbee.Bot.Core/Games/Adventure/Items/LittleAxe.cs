@@ -11,7 +11,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal LittleAxe(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.LittleAxe;
-            Name = "a small *axe*";
+            Name = "small *axe*";
             PluralName = "small *axes*";
             IsPortable = true;
             IsWeapon = true;

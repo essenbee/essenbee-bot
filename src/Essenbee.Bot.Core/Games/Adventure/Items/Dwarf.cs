@@ -8,7 +8,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         internal Dwarf(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
             ItemId = Item.Dwarf;
-            Name = "a threatening little *dwarf*";
+            Name = "threatening little *dwarf*";
             PluralName = "threatening little *dwarves*";
             IsPortable = false;
             IsEndlessSupply = false;

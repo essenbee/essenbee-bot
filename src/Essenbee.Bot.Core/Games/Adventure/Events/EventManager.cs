@@ -15,6 +15,42 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
                 return;
             }
 
+            // Lamp processing
+            var lamp = player.Inventory.GetItems().FirstOrDefault(x => x.ItemId == Item.Lamp);
+            if (lamp != null)
+            {
+                if (!player.EventRecord.ContainsKey(EventIds.HasLamp))
+                {
+                    player.EventRecord.Add(EventIds.HasLamp, 330);
+                }
+                else
+                {
+                    if (lamp.IsActive)
+                    {
+                        player.EventRecord[EventIds.HasLamp]--;
+                    }
+                }
+            }
+
+            if (player.EventRecord.ContainsKey(EventIds.HasLamp))
+            {
+                var lampTurns = player.EventRecord[EventIds.HasLamp];
+                var theLamp = player.Inventory.GetItems().FirstOrDefault(x => x.ItemId == Item.Lamp);
+
+                if (theLamp != null)
+                {
+                    if (lampTurns > 0 && lampTurns <= 30)
+                    {
+                        player.ChatClient.PostDirectMessage(player, "Your lamp is going dim!");
+                    }
+
+                    if (lampTurns <= 0)
+                    {
+                        theLamp.IsActive = false;
+                    }
+                }
+            }
+
             if (player.CurrentLocation.Level.Equals(1))
             {
                 if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))

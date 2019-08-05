@@ -5,5 +5,6 @@
         CaveOpen,
         Dwarves,
         RecoveredStolenTreasure,
+        HasLamp,
     }
 }

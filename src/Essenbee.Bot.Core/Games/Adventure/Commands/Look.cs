@@ -1,4 +1,6 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Linq;
 using System.Text;
 
@@ -47,6 +49,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 {
                     if (item != null)
                     {
+                        if (item.ItemId.Equals(Item.Lamp) && 
+                            player.CurrentLocation.LocationId.Equals(Location.Building) && 
+                            player.EventRecord.ContainsKey(Events.EventIds.HasLamp))
+                        {
+                            continue;
+                        }
+
                         description.AppendLine(item.IsEndlessSupply
                             ? $"There are several {item.PluralName} here."
                             : $"There is a {item.Name} here.");

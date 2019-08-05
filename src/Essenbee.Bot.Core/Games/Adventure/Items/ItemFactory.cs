@@ -82,6 +82,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new LittleAxe(game, "axe", "hatchet");
                 case Item.Dwarf:
                     return new Dwarf(game, "dwarf");
+                case Item.Batteries:
+                    return new Batteries(game, "batteries");
+                case Item.SpentBatteries:
+                    return new SpentBatteries(game, "batteries");
+                case Item.VendingMachine:
+                    return new VendingMachine(game, "vending", "machine", "dispenser");
             }
 
             return null;

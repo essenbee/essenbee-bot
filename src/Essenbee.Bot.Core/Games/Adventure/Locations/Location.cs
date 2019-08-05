@@ -70,5 +70,18 @@
         TallEastWestCanyon,
         SoftRoom,
         Oriental,
+        AllDifferent1,
+        AllDifferent2,
+        AllDifferent3,
+        AllDifferent4,
+        AllDifferent5,
+        AllDifferent6,
+        AllDifferent7,
+        AllDifferent8,
+        AllDifferent9,
+        AllDifferent10,
+        AllDifferent11,
+        VendingMachine,
+        RoughHewn,
     }
 }

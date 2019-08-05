@@ -1,4 +1,5 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
+﻿using Essenbee.Bot.Core.Games.Adventure.Events;
+using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "battered *lamp*"; ;
             PluralName = "battered *lamps*";
             IsPortable = true;
-            IsEndlessSupply = true;
+            IsEndlessSupply = false;
 
             var light = new ItemInteraction(Game, "light");
             light.RegisteredInteractions.Add(new ActivateItem("The lamp shines brightly."));
@@ -48,6 +49,14 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     if (IsActive)
                     {
                         var msg = new Display($"Your {ItemId} is already lit!");
+                        msg.Do(player);
+                        return true;
+                    }
+
+                    if (player.EventRecord.ContainsKey(EventIds.HasLamp) && 
+                        player.EventRecord[EventIds.HasLamp] <= 0)
+                    {
+                        var msg = new Display($"Your {ItemId} is out of batteries!");
                         msg.Do(player);
                         return true;
                     }

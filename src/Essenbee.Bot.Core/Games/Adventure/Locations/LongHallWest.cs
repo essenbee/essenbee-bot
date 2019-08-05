@@ -18,8 +18,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
             ValidMoves = new List<IPlayerMove>
             {
-                //new PlayerMove(string.Empty, Location., "north", "n"), // To Maze all different entrance
-                new PlayerMove(string.Empty, Location.Crossover, "south", "s"),
+                new PlayerMove(string.Empty, Location.AllDifferent1, "south", "s"), // To Maze all different entrance
+                new PlayerMove(string.Empty, Location.Crossover, "north", "n"),
                 new PlayerMove(string.Empty, Location.LongHallEast, "east", "e"),
             };
         }

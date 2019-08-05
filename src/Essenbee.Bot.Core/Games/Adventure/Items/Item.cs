@@ -38,5 +38,8 @@
         BrokenVase,
         LittleAxe,
         Dwarf,
+        Batteries,
+        SpentBatteries,
+        VendingMachine,
     }
 }
