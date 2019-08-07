@@ -8,6 +8,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
     public class Take : BaseAdventureCommand
     {
+        private const string All = "all";
+
         public Take(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs) => CheckEvents = true;
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
@@ -16,7 +18,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             var item = e.ArgsAsList[1].ToLower();
             var containers = location.Items.Where(i => i.IsContainer && (i.Contents.Count > 0)).ToList();
 
-            if (item.Equals("all") || item.StartsWith("every"))
+            if (item.Equals(All))
             {
                 var portableItems = location.Items.Where(x => x.IsPortable).ToList();
 
@@ -36,7 +38,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                     PickUpItem(player, anItem);
                 }
 
-                PickUpContainedItems(player, containers, "all");
+                PickUpContainedItems(player, containers, All);
             }
             else
             {

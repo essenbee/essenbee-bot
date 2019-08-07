@@ -5,6 +5,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 {
     public class Drop : BaseAdventureCommand
     {
+        private const string All = "all";
+
         public Drop(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs)
         {
             CheckEvents = false;
@@ -22,36 +24,49 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             var itemToDrop = args[1];
 
-            if (!player.Inventory.Has(itemToDrop))
+            if (itemToDrop.Equals(All))
             {
-                player.ChatClient.PostDirectMessage(player, $"You don't have a {itemToDrop} to drop!");
+                foreach (var carriedItem in player.Inventory.GetItems())
+                {
+                    player.Inventory.RemoveItem(carriedItem);
+                    player.CurrentLocation.Items.Add(carriedItem);
+                    player.ChatClient.PostDirectMessage(player, $"You dropped a {carriedItem.Name}");
+                    carriedItem.RemovePlayerStatusCondition(player, carriedItem.GivesPlayerStatus);
+                }
             }
             else
             {
-                var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.IsMatch(itemToDrop));
-
-                if (itemInInventory != null)
+                if (!player.Inventory.Has(itemToDrop))
                 {
-                    player.Inventory.RemoveItem(itemInInventory);
-                    player.CurrentLocation.Items.Add(itemInInventory);
-                    player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
-                    itemInInventory.RemovePlayerStatusCondition(player, itemInInventory.GivesPlayerStatus);
-                    return;
+                    player.ChatClient.PostDirectMessage(player, $"You don't have a {itemToDrop} to drop!");
                 }
-
-                itemInInventory = player.Inventory.GetContainedItem(itemToDrop);
-
-                if (itemInInventory != null)
+                else
                 {
-                    player.Inventory.RemoveItemContainer(itemInInventory);
-                    player.CurrentLocation.Items.Add(itemInInventory);
-                    player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
-                    itemInInventory.RemovePlayerStatusCondition(player, itemInInventory.GivesPlayerStatus);
-                    return;
-                }
+                    var itemInInventory = player.Inventory.GetItems().FirstOrDefault(i => i.IsMatch(itemToDrop));
 
-                // Just in case ...
-                player.ChatClient.PostDirectMessage(player, $"You don't have a {itemToDrop} to drop!");
+                    if (itemInInventory != null)
+                    {
+                        player.Inventory.RemoveItem(itemInInventory);
+                        player.CurrentLocation.Items.Add(itemInInventory);
+                        player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
+                        itemInInventory.RemovePlayerStatusCondition(player, itemInInventory.GivesPlayerStatus);
+                        return;
+                    }
+
+                    itemInInventory = player.Inventory.GetContainedItem(itemToDrop);
+
+                    if (itemInInventory != null)
+                    {
+                        player.Inventory.RemoveItemContainer(itemInInventory);
+                        player.CurrentLocation.Items.Add(itemInInventory);
+                        player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
+                        itemInInventory.RemovePlayerStatusCondition(player, itemInInventory.GivesPlayerStatus);
+                        return;
+                    }
+
+                    // Just in case ...
+                    player.ChatClient.PostDirectMessage(player, $"You don't have a {itemToDrop} to drop!");
+                }
             }
         }
     }
