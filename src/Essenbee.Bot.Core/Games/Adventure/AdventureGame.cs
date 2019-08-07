@@ -91,7 +91,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 player.ChatClient.PostDirectMessage(player, "You have been killed, another victim of the perils of Colossal Cave.");
             }
 
-            // TODO: calculate points gained during game...
             var found = Dungeon.TryGetLocation(Locations.Location.Building, out var building);
 
             if (found)

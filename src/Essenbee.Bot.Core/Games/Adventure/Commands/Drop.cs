@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Commands
@@ -28,10 +29,16 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             {
                 foreach (var carriedItem in player.Inventory.GetItems())
                 {
+                    if (carriedItem.ItemId.Equals(Item.Lamp))
+                    {
+                        carriedItem.Interact("extinguish", player);
+                    }
+                    
                     player.Inventory.RemoveItem(carriedItem);
                     player.CurrentLocation.Items.Add(carriedItem);
                     player.ChatClient.PostDirectMessage(player, $"You dropped a {carriedItem.Name}");
                     carriedItem.RemovePlayerStatusCondition(player, carriedItem.GivesPlayerStatus);
+                    
                 }
             }
             else
@@ -46,10 +53,17 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                     if (itemInInventory != null)
                     {
+                        if (itemInInventory.ItemId.Equals(Item.Lamp))
+                        {
+                            itemInInventory.Interact("extinguish", player);
+                        }
+                        
                         player.Inventory.RemoveItem(itemInInventory);
                         player.CurrentLocation.Items.Add(itemInInventory);
                         player.ChatClient.PostDirectMessage(player, $"You dropped a {itemToDrop}");
                         itemInInventory.RemovePlayerStatusCondition(player, itemInInventory.GivesPlayerStatus);
+                        
+
                         return;
                     }
 

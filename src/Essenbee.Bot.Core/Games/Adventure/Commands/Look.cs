@@ -49,12 +49,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 {
                     if (item != null)
                     {
-                        if (item.ItemId.Equals(Item.Lamp) && 
-                            player.CurrentLocation.LocationId.Equals(Location.Building) && 
-                            player.EventRecord.ContainsKey(Events.EventIds.HasLamp))
-                        {
-                            continue;
-                        }
+                        // ToDo: need to devise a correct solution for each player only getting one lamp in multi-player
+                        //if (item.ItemId.Equals(Item.Lamp) && 
+                        //    player.CurrentLocation.LocationId.Equals(Location.Building) && 
+                        //    player.EventRecord.ContainsKey(Events.EventIds.HasLamp))
+                        //{
+                        //    continue;
+                        //}
 
                         description.AppendLine(item.IsEndlessSupply
                             ? $"There are several {item.PluralName} here."
