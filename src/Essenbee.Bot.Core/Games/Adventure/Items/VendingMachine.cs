@@ -21,7 +21,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             {
                 new PlayerMove(string.Empty, Location.RoughHewn, "south", "s"),
             }, Game));
-            push.RegisteredInteractions.Add(new Display("You give a mighty heavy on the machine, and it slides aside, revealing a passageway heading South..."));
+            push.RegisteredInteractions.Add(new Display("You give a mighty heave on the machine, and it slides aside, revealing a passageway heading South..."));
 
             Interactions.Add(push);
         }
