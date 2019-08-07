@@ -19,6 +19,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "inside a small brick building.";
             LongDescription = " inside a small brick building, a well house for a bubbling spring.";
             WaterPresent = true;
+
             Items = new List<IAdventureItem>
             {
                 key,

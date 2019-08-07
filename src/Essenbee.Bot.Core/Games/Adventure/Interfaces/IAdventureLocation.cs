@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         IList<IPlayerMove> MonsterValidMoves { get; set; }
         bool WaterPresent { get; set; }
         bool IsStart { get; set; }
+        bool NoBack { get; set; }
         int Level { get; set; }
         bool IsSpawnPoint { get; set; }
         MonsterGroup SpawnType { get; set; }

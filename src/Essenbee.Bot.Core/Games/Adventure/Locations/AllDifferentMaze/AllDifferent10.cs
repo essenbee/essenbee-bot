@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "in a maze of little twisting passages, all different";
             LongDescription = "in a maze of little twisting passages, all different";
             IsDark = true;
+            NoBack = true;
             Items = new List<IAdventureItem>();
             Level = 1;
             ValidMoves = new List<IPlayerMove> {
