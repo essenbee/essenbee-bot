@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "*leaflet*";
             PluralName = "*leaflets*";
             IsPortable = true;
+            Slots = 0;
 
             var whenRead = new StringBuilder("You read the leaflet and this is what it says:");
             whenRead.AppendLine();

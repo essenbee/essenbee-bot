@@ -24,6 +24,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsTransparent { get; set; }
         public bool IsTreasure { get; set; }
         public bool IsWeapon { get; set; }
+        public int Slots { get; set; } = 1;
         public IList<IAdventureItem> Contents { get; set; }
         public IList<IInteraction> Interactions { get; set; }
         public IReadonlyAdventureGame Game { get; }
@@ -42,6 +43,8 @@ namespace Essenbee.Bot.Core.Games.Adventure
         }
 
         public bool IsMatch(string noun) => Nouns.Any(v => noun.Equals(v));
+        
+        public virtual bool RunItemEvents(IAdventurePlayer player, IAdventureItem item) => true;
 
         public bool ContainerRequired() => MustBeContainedIn != Item.None;
 

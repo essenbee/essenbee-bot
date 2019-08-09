@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "chests made of wood and iron";
             IsOpen = false;
             IsContainer = true;
+            Slots = 2;
             Contents = new List<IAdventureItem>();
         }
     }

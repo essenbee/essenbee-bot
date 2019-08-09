@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsPortable = false;
             IsEndlessSupply = true;
             MustBeContainedIn = Item.Bottle;
+            Slots = 0;
 
             var drink = new ItemInteraction(Game, "drink");
             Interactions.Add(drink);

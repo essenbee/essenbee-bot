@@ -17,6 +17,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsPortable = true;
             IsActive = true;
             MustBeContainedIn = Item.Cage;
+            Slots = 0;
 
             PreventTakeItemId = Item.Rod;
             PreventTakeText = "The *bird* was unafraid when you entered, but as you approach " + 

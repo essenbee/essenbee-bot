@@ -21,6 +21,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         bool IsTransparent { get; set; }
         bool IsTreasure { get; set; }
         bool IsWeapon { get; set; }
+        int Slots { get; set; }
         Item ItemId { get; set; }
         Item ItemIdToUnlock { get; set; }
         Item MustBeContainedIn { get; set; }
@@ -37,6 +38,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         bool Interact(string verb, IAdventurePlayer player);
         bool IsMatch(string noun);
         bool HasState(IAdventurePlayer player, string state);
+        bool RunItemEvents(IAdventurePlayer player, IAdventureItem item);
         void AddPlayerStatusCondition(IAdventurePlayer player, PlayerStatus status);
         void RemovePlayerStatusCondition(IAdventurePlayer player, PlayerStatus status);
     }

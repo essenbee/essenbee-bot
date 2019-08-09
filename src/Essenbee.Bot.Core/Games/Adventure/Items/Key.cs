@@ -10,6 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "large iron *key*";
             PluralName = "large iron *keys*";
             IsPortable = true;
+            Slots = 0;
         }
     }
 }

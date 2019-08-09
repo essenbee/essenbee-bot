@@ -9,6 +9,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
     public class Take : BaseAdventureCommand
     {
         private const string All = "all";
+        public const int MaxSlots = 8;
+        public int UsedSlots { get; set; }
 
         public Take(IReadonlyAdventureGame game, params string[] verbs) : base(game, verbs) => CheckEvents = true;
 
@@ -16,6 +18,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
         {
             var location = player.CurrentLocation;
             var item = e.ArgsAsList[1].ToLower();
+
+            UsedSlots = player.Inventory.GetItems().Select(i => i.Slots).Sum();
+            
             var containers = location.Items.Where(i => i.IsContainer && (i.Contents.Count > 0)).ToList();
 
             if (item.Equals(All))
@@ -98,6 +103,11 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
                 PickUpItem(player, locationItem);
             }
+            
+            if (UsedSlots == MaxSlots)
+            {
+                player.ChatClient.PostDirectMessage(player, "You have reached your maximum carrying capacity!");
+            }
         }
 
         private static bool PickUpContainedItems(IAdventurePlayer player, List<IAdventureItem> containers, string item)
@@ -132,16 +142,19 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
             }
         }
 
-        private static void PickUpItem(IAdventurePlayer player, IAdventureItem anItem)
+        private void PickUpItem(IAdventurePlayer player, IAdventureItem anItem)
         {
-            var okay = anItem.ContainerRequired()
-                ? player.Inventory.AddItemToContainer(anItem, anItem.MustBeContainedIn)
-                : player.Inventory.AddItem(anItem);
+            if (UsedSlots + anItem.Slots <= MaxSlots)
+            {
+                var okay = anItem.ContainerRequired()
+                    ? player.Inventory.AddItemToContainer(anItem, anItem.MustBeContainedIn)
+                    : player.Inventory.AddItem(anItem);
 
-            player.CurrentLocation.Items.Remove(anItem);
-            anItem.AddPlayerStatusCondition(player, anItem.GivesPlayerStatus);
+                player.CurrentLocation.Items.Remove(anItem);
+                anItem.AddPlayerStatusCondition(player, anItem.GivesPlayerStatus);
 
-            player.ChatClient.PostDirectMessage(player, $"You are now carrying a {anItem.Name} with you.");
+                player.ChatClient.PostDirectMessage(player, $"You are now carrying a {anItem.Name} with you.");
+            }
         }
 
         private void CreateNewInstance(IAdventurePlayer player, IAdventureItem locationItem)

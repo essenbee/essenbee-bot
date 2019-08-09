@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "source of *water*";
             IsPortable = false;
             MustBeContainedIn = Item.None;
+            Slots = 0;
 
             var drink = new ItemInteraction(Game, "drink");
             drink.RegisteredInteractions.Add(new Display("Mmmmm, refreshing!"));

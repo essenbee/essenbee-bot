@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "battered *lamps*";
             IsPortable = true;
             IsEndlessSupply = false;
+            Slots = 0; // Takes up no space in inventory
 
             var light = new ItemInteraction(Game, "light");
             light.RegisteredInteractions.Add(new ActivateItem("The lamp shines brightly."));
@@ -81,6 +82,45 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             }
 
             return false;
+        }
+        
+        public override bool RunItemEvents(IAdventurePlayer player, IAdventureItem lamp)
+        {
+            if (lamp != null)
+            {
+                if (!player.EventRecord.ContainsKey(EventIds.HasLamp))
+                {
+                    player.EventRecord.Add(EventIds.HasLamp, 330);
+                }
+                else
+                {
+                    if (lamp.IsActive)
+                    {
+                        player.EventRecord[EventIds.HasLamp]--;
+                    }
+                }
+            }
+
+            if (player.EventRecord.ContainsKey(EventIds.HasLamp))
+            {
+                var lampTurns = player.EventRecord[EventIds.HasLamp];
+                var theLamp = player.Inventory.GetItems().FirstOrDefault(x => x.ItemId == Item.Lamp);
+
+                if (theLamp != null)
+                {
+                    if (lampTurns > 0 && lampTurns <= 30)
+                    {
+                        player.ChatClient.PostDirectMessage(player, "Your lamp is going dim!");
+                    }
+
+                    if (lampTurns <= 0)
+                    {
+                        theLamp.IsActive = false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }
