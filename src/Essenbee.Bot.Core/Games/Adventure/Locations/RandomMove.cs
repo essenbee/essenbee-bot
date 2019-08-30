@@ -23,6 +23,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
 
         public bool IsMatch(string move) => Moves.Any(v => move.Equals(v));
 
+        public (bool, string) IsMoveAllowed(IAdventurePlayer player, IReadonlyAdventureGame game) => (true, string.Empty);
+
         private Location GetRandomLocation()
         {
             var loc = GetRandomNumber(0, _possibleDestinations.Count);

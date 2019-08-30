@@ -83,5 +83,13 @@
         AllDifferent11,
         VendingMachine,
         RoughHewn,
+        MistyCavern,
+        Alcove,
+        PloverRoom,
+        DarkRoom,
+        LongWindingCorridor,
+        SouthWestOfChasm,
+        TrollBridge,
+        NorthEastOfChasm,
     }
 }

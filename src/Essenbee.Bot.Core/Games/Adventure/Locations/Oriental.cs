@@ -22,7 +22,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             {
                 new PlayerMove(string.Empty, Location.SwissCheese, "southeast", "se"),
                 new PlayerMove(string.Empty, Location.LowRoom, "west", "w", "crawl"),
-                //new PlayerMove(string.Empty, Location., "up", "u", "north", "n", "cavern"), // misty room
+                new PlayerMove(string.Empty, Location.MistyCavern, "up", "u", "north", "n", "cavern"),
             };
         }
     }

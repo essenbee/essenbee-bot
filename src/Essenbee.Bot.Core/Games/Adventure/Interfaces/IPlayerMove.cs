@@ -10,5 +10,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         string MoveText { get; set; }
 
         bool IsMatch(string move);
+
+        (bool, string) IsMoveAllowed(IAdventurePlayer player, IReadonlyAdventureGame game);
     }
 }

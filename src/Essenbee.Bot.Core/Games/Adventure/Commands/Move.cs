@@ -38,40 +38,53 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
                 if (player.CurrentLocation.ValidMoves.Any(d => d.IsMatch(direction)))
                 {
                     var move = player.CurrentLocation.ValidMoves.First(d => d.IsMatch(direction));
-                    var moveTo = move.Destination;
-                    var moveText = move.MoveText;
 
-                    canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
+                    var (moveAllowed, notAllowedText) = move.IsMoveAllowed(player, _game);
 
-                    if (canMove)
+                    if (moveAllowed)
                     {
-                        if (MoveAffectedByEncumberedStatus(player, move))
+                        var moveTo = move.Destination;
+                        var moveText = move.MoveText;
+
+                        canMove = _game.Dungeon.TryGetLocation(moveTo, out var place);
+
+                        if (canMove)
                         {
+                            if (MoveAffectedByEncumberedStatus(player, move))
+                            {
+                                return;
+                            }
+
+                            player.PriorLocation = player.CurrentLocation;
+                            player.CurrentLocation = place;
+                            player.Moves++;
+
+                            if (player.Clocks != null && player.Clocks.Count > 0)
+                            {
+                                var keys = player.Clocks.Keys.ToList();
+
+                                foreach (var key in keys)
+                                {
+                                    var ticks = player.Clocks[key];
+                                    ticks++;
+                                    player.Clocks[key] = ticks;
+                                }
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(moveText))
+                            {
+                                player.ChatClient.PostDirectMessage(player, moveText);
+                            }
+
+                            player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+
                             return;
                         }
-
-                        player.PriorLocation = player.CurrentLocation;
-                        player.CurrentLocation = place;
-                        player.Moves++;
-
-                        if (player.Clocks != null && player.Clocks.Count > 0)
-                        {
-                            var keys = player.Clocks.Keys.ToList();
-
-                            foreach (var key in keys)
-                            {
-                                var ticks = player.Clocks[key];
-                                ticks++;
-                                player.Clocks[key] = ticks;
-                            }
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(moveText))
-                        {
-                            player.ChatClient.PostDirectMessage(player, moveText);
-                        }
-
+                    }
+                    else
+                    {
                         player.ChatClient.PostDirectMessage(player, "*" + player.CurrentLocation.Name + "*");
+                        player.ChatClient.PostDirectMessage(player, notAllowedText);
 
                         return;
                     }

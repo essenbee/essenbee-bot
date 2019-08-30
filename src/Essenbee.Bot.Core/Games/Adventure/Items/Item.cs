@@ -41,5 +41,8 @@
         Batteries,
         SpentBatteries,
         VendingMachine,
+        Emerald,
+        PlatinumPyramid,
+        Troll,
     }
 }

@@ -16,7 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
-            var moveTo = Location.Debris;
+            var moveTo = Location.LowRoom;
             _ = _game.Dungeon.TryGetLocation(moveTo, out var place);
 
             if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))

@@ -88,6 +88,12 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                     return new SpentBatteries(game, "batteries");
                 case Item.VendingMachine:
                     return new VendingMachine(game, "vending", "machine", "dispenser");
+                case Item.Emerald:
+                    return new Emerald(game, "emerald", "jewel");
+                case Item.PlatinumPyramid:
+                    return new PlatinumPyramid(game, "pyramid");
+                case Item.Troll:
+                    return new Troll(game, "troll");
             }
 
             return null;

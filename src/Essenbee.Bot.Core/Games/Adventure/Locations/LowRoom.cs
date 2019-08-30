@@ -17,8 +17,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ValidMoves = new List<IPlayerMove>
             {
                 //new PlayerMove(string.Empty, Location., "north", "n"),      // dead end
-                //new PlayerMove(string.Empty, Location., "southwest", "sw"), // long winding corridor
-                //new PlayerMove(string.Empty, Location., "southeast", "se"), // oriental room
+                new PlayerMove(string.Empty, Location.LongWindingCorridor, "southwest", "sw"), // long winding corridor
+                new PlayerMove(string.Empty, Location.Oriental, "southeast", "se"), // oriental room
                 new PlayerMove(string.Empty, Location.Bedquilt, "bedquilt"),
             };
         }
