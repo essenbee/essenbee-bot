@@ -1,6 +1,7 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Items;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
 {
@@ -14,7 +15,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "You're in a small chamber lit by an eerie green light. An extremely " +
                               "narrow tunnel exits to the west. A dark corridor leads NE.";
             Level = 1;
-            IsDark = false;
+            IsDark = !Items.Any(x => x.ItemId == Item.Emerald);
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Emerald) }; ;
             ValidMoves = new List<IPlayerMove> {
                 new SqueezeMove("You breathe in and make yourself at thin as possible...", Location.Alcove, "west", "w"),

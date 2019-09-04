@@ -1,7 +1,9 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Events;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Essenbee.Bot.Core.Games.Adventure
 {
@@ -34,6 +36,26 @@ namespace Essenbee.Bot.Core.Games.Adventure
             Score = 0;
             Moves = 0;
             ChatClient = chatClient;
+        }
+
+        public bool Here(Item item, IMonsterManager manager = null)
+        {
+            if (item == Item.Dwarf)
+            {
+                if (manager.Monsters.Any(d => (d.CurrentLocation != null) &&
+                 d.CurrentLocation.LocationId.Equals(CurrentLocation.LocationId) &&
+                 (d.Group == MonsterGroup.Dwarves)))
+                {
+                    return true;
+                }
+            }
+
+            return CurrentLocation.Items.Any(x => x.ItemId == item);
+        }
+
+        public bool Here(string item)
+        {
+            return CurrentLocation.Items.Any(i => i.IsMatch(item));
         }
     }
 }

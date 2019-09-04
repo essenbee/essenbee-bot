@@ -1,4 +1,5 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using System.Collections.Generic;
 
 namespace Essenbee.Bot.Core.Games.Adventure.Locations
@@ -13,10 +14,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             LongDescription = "on one side of a large, deep chasm. A heavy white mist rising " +
                               "up from below obscures all view of the far side.  A SW path leads away " +
                               "from the chasm into a winding corridor. ";
-            Items = new List<IAdventureItem>();
+            Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Troll) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.LongWindingCorridor, "southwest", "sw", "down", "d"),
-                new PlayerMove(string.Empty, Location.TrollBridge, "northeast", "ne"),
             };
         }
     }

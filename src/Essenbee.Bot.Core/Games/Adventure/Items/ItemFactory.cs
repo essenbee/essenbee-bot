@@ -93,7 +93,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
                 case Item.PlatinumPyramid:
                     return new PlatinumPyramid(game, "pyramid");
                 case Item.Troll:
-                    return new Troll(game, "troll");
+                    return Troll.GetInstance(game, "troll"); // Singleton
             }
 
             return null;
