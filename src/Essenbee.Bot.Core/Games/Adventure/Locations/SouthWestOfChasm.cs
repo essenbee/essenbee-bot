@@ -13,7 +13,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Locations
             ShortDescription = "on the southwest side of a chasm";
             LongDescription = "on one side of a large, deep chasm. A heavy white mist rising " +
                               "up from below obscures all view of the far side.  A SW path leads away " +
-                              "from the chasm into a winding corridor. ";
+                              "from the chasm into a winding corridor, and a bridge spans the chasm to " +
+                              "the NE. A sign at the foot of the bridge reads 'Pay Troll'.";
             Items = new List<IAdventureItem> { ItemFactory.GetInstance(Game, Item.Troll) };
             ValidMoves = new List<IPlayerMove> {
                 new PlayerMove(string.Empty, Location.LongWindingCorridor, "southwest", "sw", "down", "d"),
