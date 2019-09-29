@@ -7,7 +7,6 @@ using Essenbee.Bot.Infra.Twitch;
 using Essenbee.Bot.Infra.GraphQL;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,7 @@ using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Essenbee.Bot.Clients.GraphQL;
 using Hangfire.Logging.LogProviders;
+using Microsoft.Extensions.Hosting;
 
 namespace Essenbee.Bot.Web
 {
@@ -25,14 +25,14 @@ namespace Essenbee.Bot.Web
 
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
             _env = env;
         }
 
         public IConfiguration Configuration { get; }
-        private readonly IHostingEnvironment _env;
+        private readonly IHostEnvironment _env;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -94,7 +94,7 @@ namespace Essenbee.Bot.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
