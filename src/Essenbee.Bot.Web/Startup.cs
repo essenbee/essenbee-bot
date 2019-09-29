@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Essenbee.Bot.Clients.GraphQL;
+using Hangfire.Logging.LogProviders;
 
 namespace Essenbee.Bot.Web
 {
@@ -72,7 +73,11 @@ namespace Essenbee.Bot.Web
             services.AddSingleton<IBotSettings, BotSettings>();
             services.AddSingleton<IBotClient, BotGraphClient>();
 
-            services.AddHangfire(x => x.UseSqlServerStorage(secrets.DatabaseConnectionString));
+            //services.AddHangfire(x => x.UseSqlServerStorage(secrets.DatabaseConnectionString));
+
+            services.AddHangfire(config => config
+                .UseLogProvider(new ColouredConsoleLogProvider())
+                .UseSqlServerStorage(secrets.DatabaseConnectionString));
 
             services.AddDbContext<AppDataContext>(options =>
                 options.UseSqlServer(secrets.DatabaseConnectionString));
@@ -84,7 +89,8 @@ namespace Essenbee.Bot.Web
 
             RegisterGraphQL.Configure(services, _env);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
