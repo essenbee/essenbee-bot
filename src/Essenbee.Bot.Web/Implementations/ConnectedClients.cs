@@ -36,7 +36,8 @@ namespace Essenbee.Bot.Web
                 connectedClients.Add(
                     new TwitchChatClient(_config.Value.TwitchUsername, 
                                          _config.Value.TwitchToken, 
-                                         _config.Value.TwitchChannel));
+                                         _config.Value.TwitchChannel,
+                                         _config.Value.TwitchClientId));
             }
 
             if (_clientSettings.Value.EnableSlack)

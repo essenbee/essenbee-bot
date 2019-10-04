@@ -17,6 +17,7 @@ using GraphQL.Server.Ui.Playground;
 using Essenbee.Bot.Clients.GraphQL;
 using Hangfire.Logging.LogProviders;
 using Microsoft.Extensions.Hosting;
+using TwitchLib.Api;
 
 namespace Essenbee.Bot.Web
 {
@@ -75,6 +76,8 @@ namespace Essenbee.Bot.Web
                 Username = secrets.TwitchUsername,
                 Token = secrets.TwitchToken,
                 Channel = secrets.TwitchChannel,
+                ClientId = secrets.TwitchClientId,
+                BaseApiUrl = secrets.BaseTwitchApiUrl,
             };
 
             services.AddSingleton(slackConfig);

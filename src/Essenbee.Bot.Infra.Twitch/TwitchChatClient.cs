@@ -9,7 +9,9 @@ using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 using TwitchLib.Communication.Events;
+using TwitchLib.Api;
 using static System.Console;
+using System.Linq;
 
 namespace Essenbee.Bot.Infra.Twitch
 {
@@ -22,9 +24,12 @@ namespace Essenbee.Bot.Infra.Twitch
 
         private readonly TwitchClient _twitchClient;
         private readonly TwitchConfig _settings;
+        private readonly TwitchAPI _api;
         private int _connectionFailures = 0;
         private bool _isReady = false;
         private const int MaxMsgSize = 500;
+        private const string TeamName = "livecoders";
+        private IEnumerable<string> _teamMembers = new List<string>();
 
         public TwitchChatClient(TwitchConfig settings)
         {
@@ -40,7 +45,7 @@ namespace Essenbee.Bot.Infra.Twitch
             Connect();
         }
 
-        public TwitchChatClient(string username, string token, string channel)
+        public TwitchChatClient(string username, string token, string channel, string clientId)
         {
             var credentials = new ConnectionCredentials(username, token);
             _twitchClient = new TwitchClient();
@@ -48,8 +53,22 @@ namespace Essenbee.Bot.Infra.Twitch
             _settings = new TwitchConfig {
                 Username = username,
                 Token = token,
-                Channel = channel
+                Channel = channel,
+                ClientId = clientId,
             };
+
+            _api = new TwitchAPI();
+            _api.Settings.ClientId = _settings.ClientId;
+
+            if (_api != null)
+            {
+                var team = _api.V5.Teams.GetTeamAsync(TeamName).Result;
+
+                if (team != null)
+                {
+                    _teamMembers = team.Users.ToList().Select(x => x.Name);
+                }
+            }
 
             UseUsernameForIM = true;
             DefaultChannel = _settings.Channel;
@@ -157,6 +176,14 @@ namespace Essenbee.Bot.Infra.Twitch
 
             var user = e?.ChatMessage?.Username ?? string.Empty;
             var text = e?.ChatMessage?.Message ?? "<< none >>";
+
+            if (_api != null && _teamMembers.Count() > 0)
+            {
+                if (_teamMembers.Contains(user))
+                {
+                    // PostMessage(e.ChatMessage.Channel, $"Welcome {user}!");
+                }
+            }
 
             WriteLine($"{DateTime.Now:yyyy-MM-dd hh:mm:ss}\tMessage.\t\t[{user}] [{text}]");
         }

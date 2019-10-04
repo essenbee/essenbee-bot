@@ -9,6 +9,8 @@
         public string TwitchChannel { get; set; }
         public string ProjectAnswerKey { get; set; }
         public string DatabaseConnectionString { get; set; }
+        public string TwitchClientId { get; set; }
+        public string BaseTwitchApiUrl { get; set; }
 
         public UserSecrets()
         {
