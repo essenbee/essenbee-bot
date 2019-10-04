@@ -29,7 +29,7 @@ namespace Essenbee.Bot.Infra.Twitch
         private bool _isReady = false;
         private const int MaxMsgSize = 500;
         private const string TeamName = "livecoders";
-        private IEnumerable<string> _teamMembers = new List<string>();
+        private IList<string> _teamMembers = new List<string>();
 
         public TwitchChatClient(TwitchConfig settings)
         {
@@ -66,7 +66,7 @@ namespace Essenbee.Bot.Infra.Twitch
 
                 if (team != null)
                 {
-                    _teamMembers = team.Users.ToList().Select(x => x.Name);
+                    _teamMembers = team.Users.Select(x => x.Name).ToList();
                 }
             }
 
@@ -177,11 +177,14 @@ namespace Essenbee.Bot.Infra.Twitch
             var user = e?.ChatMessage?.Username ?? string.Empty;
             var text = e?.ChatMessage?.Message ?? "<< none >>";
 
-            if (_api != null && _teamMembers.Count() > 0)
+            if (_api != null && _teamMembers.Count() > 0 &&
+                !e.ChatMessage.IsBroadcaster)
             {
                 if (_teamMembers.Contains(user))
                 {
-                    // PostMessage(e.ChatMessage.Channel, $"Welcome {user}!");
+                    _teamMembers.Remove(user);
+                    PostMessage(e.ChatMessage.Channel, $"A very warm welcome to fellow Liver Coders member {user}! " +
+                        $"Check out their stream at https://twitch.tv/{user}");
                 }
             }
 
