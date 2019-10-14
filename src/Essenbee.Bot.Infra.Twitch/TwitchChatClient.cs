@@ -183,7 +183,7 @@ namespace Essenbee.Bot.Infra.Twitch
                 if (_teamMembers.Contains(user))
                 {
                     _teamMembers.Remove(user);
-                    PostMessage(e.ChatMessage.Channel, $"A very warm welcome to fellow Liver Coders member {user}! " +
+                    PostMessage(e.ChatMessage.Channel, $"A very warm welcome to fellow Live Coders member {user}! " +
                         $"Check out their stream at https://twitch.tv/{user}");
                 }
             }
