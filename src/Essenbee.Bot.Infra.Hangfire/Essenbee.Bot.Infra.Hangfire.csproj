@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HangFire" Version="1.6.20" />
+    <PackageReference Include="HangFire" Version="1.7.7" />
   </ItemGroup>
   
   <ItemGroup>
