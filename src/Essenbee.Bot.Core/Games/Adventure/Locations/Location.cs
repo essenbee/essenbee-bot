@@ -90,6 +90,7 @@
         LongWindingCorridor,
         SouthWestOfChasm,
         TrollBridge,
+        TrollCave,
         NorthEastOfChasm,
     }
 }

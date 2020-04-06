@@ -13,6 +13,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsPortable = false;
             IsEndlessSupply = false;
             IsTreasure = false;
+            IsCreature = true;
         }
     }
 }

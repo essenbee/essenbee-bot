@@ -19,6 +19,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
         public bool IsActive { get; set; }
         public Item ItemIdToUnlock { get; set; } = Item.None;
         public Item MustBeContainedIn { get; set; } = Item.None;
+        public bool IsCreature { get; set; }
         public bool IsPortable { get; set; }
         public bool IsEndlessSupply { get; set; }
         public bool IsTransparent { get; set; }
@@ -97,6 +98,16 @@ namespace Essenbee.Bot.Core.Games.Adventure
             {
                 player.Statuses.Remove(status);
             }
+        }
+
+        public virtual void Give(IAdventurePlayer player, IAdventureItem itemInInventory, IAdventureItem recipient)
+        {
+            player.ChatClient.PostDirectMessage(player, $"I'm not sure why you are trying to give a {itemInInventory.Name} to a {recipient.Name}");
+        }
+
+        public virtual void Attack(IAdventurePlayer player, IAdventureItem target)
+        {
+            player.ChatClient.PostDirectMessage(player, $"Why you are trying to attack a {target.Name}? That's not very productive!");
         }
     }
 }

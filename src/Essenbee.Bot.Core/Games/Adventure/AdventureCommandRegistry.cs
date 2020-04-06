@@ -24,6 +24,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             var say = new Say(game, "say");
             var back = new Back(game, "back", "retreat");
             var give = new Give(game, "give");
+            var attack = new Attack(game, "attack", "assault", "kill", "murder", "slay");
 
             // ToDo: Remove this as its for TESTING ONLY
             var teleport = new Teleport(game, "teleport");
@@ -44,6 +45,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 back,
                 teleport,
                 give,
+                attack,
             };
         }
     }

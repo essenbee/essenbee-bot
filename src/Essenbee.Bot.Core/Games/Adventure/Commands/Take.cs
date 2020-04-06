@@ -16,6 +16,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
+            // ToDo: handle too few arguments!
+            if (e.ArgsAsList.Count < 2)
+            {
+                player.ChatClient.PostDirectMessage(player, "What to do wish to take?");
+                return;
+            }
+
             var location = player.CurrentLocation;
             var item = e.ArgsAsList[1].ToLower();
 

@@ -16,6 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             PluralName = "little *birds* singing cheerfully";
             IsPortable = true;
             IsActive = true;
+            IsCreature = true;
             MustBeContainedIn = Item.Cage;
             Slots = 0;
 

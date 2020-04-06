@@ -8,6 +8,8 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
 {
     public static class EventManager
     {
+        private const string TheDragon = "dragon";
+        private const string TheTroll = "troll";
         public static void CheckForEvents(IAdventurePlayer player)
         {
             if (player.Statuses.Contains(PlayerStatus.IsDead))
@@ -60,7 +62,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
             }
 
             // Handle dead dragon -> rotting dead dragon
-            if (player.Clocks.ContainsKey("dragon") && (player.Clocks["dragon"] > 10))
+            if (player.Clocks.ContainsKey(TheDragon) && (player.Clocks[TheDragon] > 10))
             {
                 game.Dungeon.TryGetLocation(Location.SecretNorthEastCanyon, out var location);
 
@@ -69,7 +71,28 @@ namespace Essenbee.Bot.Core.Games.Adventure.Events
                 var addItem = new AddToLocation(ItemFactory.GetInstance(game, Item.RottingDeadDragon), location);
                 addItem.Do(null, null);
 
-                player.Clocks.Remove("dragon");
+                player.Clocks.Remove(TheDragon);
+            }
+
+            // Handle return of troll to guard its bridge
+            if (player.Clocks.ContainsKey(TheTroll) && (player.Clocks[TheTroll] > 5))
+            {
+                var troll = ItemFactory.GetInstance(game, Item.Troll);
+
+                game.Dungeon.TryGetLocation(Location.SouthWestOfChasm, out var swOfChasm);
+                game.Dungeon.TryGetLocation(Location.NorthEastOfChasm, out var neOfChasm);
+                var addTroll1 = new AddToLocation(troll, swOfChasm);
+                var addTroll2 = new AddToLocation(troll, neOfChasm);
+                addTroll1.Do(player, troll);
+                addTroll2.Do(player, troll);
+
+                // Block access to Troll Bridge
+                var denyPassage1 = new RemoveDestination(game, Location.TrollBridge, swOfChasm.LocationId);
+                var denyPassage2 = new RemoveDestination(game, Location.TrollBridge, neOfChasm.LocationId);
+                denyPassage1.Do(player, troll);
+                denyPassage2.Do(player, troll);
+
+                player.Clocks.Remove(TheTroll);
             }
         }
     }

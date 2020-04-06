@@ -14,6 +14,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "huge fierce green dragon blocking your way! The dragon is sprawled out on an expensive-looking Persian rug lying";
             PluralName = "huge fierce green dragon blocking the way! The dragon is sprawled out on an expensive-looking Persian rug lying";
             IsPortable = false;
+            IsCreature = true;
 
             var kill = new ItemInteraction(Game, "kill", "slay", "murder", "attack");
             kill.RegisteredInteractions.Add(new AddPlayerItemState("kill"));

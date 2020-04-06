@@ -12,6 +12,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         IReadonlyAdventureGame Game { get; }
         IList<IInteraction> Interactions { get; set; }
         PlayerStatus GivesPlayerStatus { get; set; }
+        bool IsCreature { get; set; }
         bool IsActive { get; set; }
         bool IsContainer { get; set; }
         bool IsEndlessSupply { get; set; }
@@ -41,5 +42,9 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         bool RunItemEvents(IAdventurePlayer player, IAdventureItem item);
         void AddPlayerStatusCondition(IAdventurePlayer player, PlayerStatus status);
         void RemovePlayerStatusCondition(IAdventurePlayer player, PlayerStatus status);
+
+        void Give(IAdventurePlayer player, IAdventureItem itemInInventory, IAdventureItem recipient);
+
+        void Attack(IAdventurePlayer player, IAdventureItem target);
     }
 }
