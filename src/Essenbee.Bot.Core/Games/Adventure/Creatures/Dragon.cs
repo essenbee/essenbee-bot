@@ -1,12 +1,13 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Essenbee.Bot.Core.Games.Adventure.Items
+namespace Essenbee.Bot.Core.Games.Adventure.Creatures
 {
-    public class Dragon : AdventureItem
+    public class Dragon : AdventureCreature
     {
         internal Dragon(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
@@ -14,16 +15,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             Name = "huge fierce green dragon blocking your way! The dragon is sprawled out on an expensive-looking Persian rug lying";
             PluralName = "huge fierce green dragon blocking the way! The dragon is sprawled out on an expensive-looking Persian rug lying";
             IsPortable = false;
-            IsCreature = true;
 
-            var kill = new ItemInteraction(Game, "kill", "slay", "murder", "attack");
-            kill.RegisteredInteractions.Add(new AddPlayerItemState("kill"));
-            kill.RegisteredInteractions.Add(new Display("Do you just want to use your bare hands?"));
-            Interactions.Add(kill);
-
-            // Player says yes
+            // Player says yes to attacking with bare hands...
             var yes = new ItemInteraction(Game, "yes");
-            yes.RegisteredInteractions.Add(new RemovePlayerItemState("kill"));
+            yes.RegisteredInteractions.Add(new RemovePlayerItemState("attack"));
             yes.RegisteredInteractions.Add(new Display("Congratulations! You have just vanquished a dragon with your bare " +
                 "hands! (Unbelievable, isn't it?)"));
             yes.RegisteredInteractions.Add(new RemoveFromLocation(this));
@@ -33,12 +28,19 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             yes.RegisteredInteractions.Add(new AddMoves(new List<IPlayerMove>
                 { new PlayerMove(string.Empty, Location.SecretNorthSouthCanyon, "north", "n") }, Game, Location.SecretNorthEastCanyon));
             Interactions.Add(yes);
+        }
 
-            // Player says no
-            var no = new ItemInteraction(Game, "no");
-            no.RegisteredInteractions.Add(new RemovePlayerItemState("kill"));
-            no.RegisteredInteractions.Add(new Display("I don't blame you!"));
-            Interactions.Add(no);
+        public override void Attack(IAdventurePlayer player, IAdventureItem troll, IAdventureItem weapon)
+        {
+            if (weapon != null)
+            {
+                player.ChatClient.PostDirectMessage(player, $"You try to to attack the dragon, but it breathes acid at your {weapon.Name}!");
+                player.ChatClient.PostDirectMessage(player, $"You drop the ruined {weapon.Name} and it quickly dissolves into a puddle of slag!");
+                var loseWeapon = new RemoveFromInventory();
+                loseWeapon.Do(player, weapon);
+            }
+
+            return;
         }
 
         public override bool Interact(string verb, IAdventurePlayer player)
@@ -49,7 +51,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             if (interaction != null)
             {
                 if ((interaction.Verbs.Contains("yes") || interaction.Verbs.Contains("no"))
-                    && !HasState(player, "kill"))
+                    && !HasState(player, "attack"))
                 {
                     return false;
                 }

@@ -1,9 +1,10 @@
 ﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using System.Linq;
 
-namespace Essenbee.Bot.Core.Games.Adventure.Items
+namespace Essenbee.Bot.Core.Games.Adventure.Creatures
 {
-    public class Dwarf : AdventureItem
+    public class Dwarf : AdventureCreature
     {
         internal Dwarf(IReadonlyAdventureGame game, params string[] nouns) : base(game, nouns)
         {
@@ -13,7 +14,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             IsPortable = false;
             IsEndlessSupply = false;
             IsTreasure = false;
-            IsCreature = true;
         }
     }
 }

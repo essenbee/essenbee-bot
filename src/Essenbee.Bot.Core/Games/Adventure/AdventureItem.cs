@@ -1,5 +1,7 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
+using Essenbee.Bot.Core.Games.Adventure.Interfaces;
 using Essenbee.Bot.Core.Games.Adventure.Items;
+using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,20 +53,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
         public virtual bool Interact(string verb, IAdventurePlayer player)
         {
-            verb = verb.ToLower();
-            var interaction = Interactions.FirstOrDefault(c => c.IsMatch(verb) && c.ShouldExecute());
-
-            if (interaction != null)
-            {
-                foreach (var action in interaction.RegisteredInteractions)
-                {
-                    if (!action.Do(player, this)) break;
-                }
-
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public bool HasState(IAdventurePlayer player, string state)
@@ -105,7 +94,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
             player.ChatClient.PostDirectMessage(player, $"I'm not sure why you are trying to give a {itemInInventory.Name} to a {recipient.Name}");
         }
 
-        public virtual void Attack(IAdventurePlayer player, IAdventureItem target)
+        public virtual void Attack(IAdventurePlayer player, IAdventureItem target, IAdventureItem weapon = null)
         {
             player.ChatClient.PostDirectMessage(player, $"Why you are trying to attack a {target.Name}? That's not very productive!");
         }

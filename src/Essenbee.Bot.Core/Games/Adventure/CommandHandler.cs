@@ -25,7 +25,7 @@ namespace Essenbee.Bot.Core.Games.Adventure
 
             if (!command.IsVerbatim)
             {
-                var nullWords = new List<string> { "a", "an", "the", "this", "that", "to" };
+                var nullWords = new List<string> { "a", "an", "the", "this", "that", "to", "with", "using" };
                 var argsSent = advCommands.ToArray();
 
                 foreach (var word in argsSent.Where(word => nullWords.Contains(word)).Select(word => word))

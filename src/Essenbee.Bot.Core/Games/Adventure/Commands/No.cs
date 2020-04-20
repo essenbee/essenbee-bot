@@ -29,7 +29,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             if (!didProcess)
             {
-                player.ChatClient.PostDirectMessage(player, "I'm not sure what you mean?");
+                player.ChatClient.PostDirectMessage(player, "I'm not sure what question you are answering?");
             }
         }
     }

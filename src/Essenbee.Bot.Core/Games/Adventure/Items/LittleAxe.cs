@@ -80,7 +80,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
         {
             foreach (var manager in Game.MonsterManagers)
             {
-                if (player.Here(Item.Dwarf))
+                if (player.Here(Item.Dwarf, manager))
                 {
                     return manager.Monsters.First(d => (d.CurrentLocation != null) &&
                         d.CurrentLocation.LocationId.Equals(player.CurrentLocation.LocationId) &&

@@ -1,13 +1,13 @@
-﻿using Essenbee.Bot.Core.Games.Adventure.Commands;
-using Essenbee.Bot.Core.Games.Adventure.Interactions;
+﻿using Essenbee.Bot.Core.Games.Adventure.Interactions;
 using Essenbee.Bot.Core.Games.Adventure.Interfaces;
+using Essenbee.Bot.Core.Games.Adventure.Items;
 using Essenbee.Bot.Core.Games.Adventure.Locations;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Essenbee.Bot.Core.Games.Adventure.Items
+namespace Essenbee.Bot.Core.Games.Adventure.Creatures
 {
-    public class Troll : AdventureItem
+    public class Troll : AdventureCreature
     {
         private static Troll _instance = null;
         private static object _mutex = new object();
@@ -17,10 +17,13 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             ItemId = Item.Troll;
             Name = "large troll barring your way";
             PluralName = "large trolls barring your way";
-            IsCreature = true;
 
-            var kill = new ItemInteraction(Game, "kill", "slay", "murder", "attack");
-            Interactions.Add(kill);
+            // Player says yes to attacking with bare hands...
+            var yes = new ItemInteraction(Game, "yes");
+            yes.RegisteredInteractions.Add(new RemovePlayerItemState("attack"));
+            yes.RegisteredInteractions.Add(new Display("As you approach the hideous troll, it points at its sign and yells 'Pay troll!'"));
+            yes.RegisteredInteractions.Add(new Display("The creature's foul breath drives you back, gasping for air."));
+            Interactions.Add(yes);
         }
 
         public static Troll GetInstance(IReadonlyAdventureGame game, params string[] nouns)
@@ -46,9 +49,10 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
 
             if (interaction != null)
             {
-                if (interaction.Verbs.Contains("kill"))
+                if ((interaction.Verbs.Contains("yes") || interaction.Verbs.Contains("no"))
+                    && !HasState(player, "attack"))
                 {
-
+                    return false;
                 }
 
                 foreach (var action in interaction.RegisteredInteractions)
@@ -62,9 +66,20 @@ namespace Essenbee.Bot.Core.Games.Adventure.Items
             return false;
         }
 
-        public override void Attack(IAdventurePlayer player, IAdventureItem troll)
+        public override void Attack(IAdventurePlayer player, IAdventureItem troll, IAdventureItem weapon = null)
         {
-            player.ChatClient.PostDirectMessage(player, "You try to to attack the troll, but its foul breath drives you back!");
+            if (weapon != null)
+            {
+                player.ChatClient.PostDirectMessage(player, $"You try to to attack the troll, but it snatches the {weapon.Name} from your puny grasp and casts it into the chasm!");
+                var loseWeapon = new RemoveFromInventory();
+                loseWeapon.Do(player, weapon);
+            }
+            else
+            {
+                player.ChatClient.PostDirectMessage(player, $"As you approach the hideous troll, it points at its sign and yells 'Pay troll!'");
+                player.ChatClient.PostDirectMessage(player, $"The creature's foul breath drives you back, gasping for air.");
+
+            }
         }
 
         public override void Give(IAdventurePlayer player, IAdventureItem item, IAdventureItem troll)

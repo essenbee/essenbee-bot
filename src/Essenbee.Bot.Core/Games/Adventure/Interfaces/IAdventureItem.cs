@@ -45,6 +45,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
 
         void Give(IAdventurePlayer player, IAdventureItem itemInInventory, IAdventureItem recipient);
 
-        void Attack(IAdventurePlayer player, IAdventureItem target);
+        void Attack(IAdventurePlayer player, IAdventureItem target, IAdventureItem weapon = null);
     }
 }

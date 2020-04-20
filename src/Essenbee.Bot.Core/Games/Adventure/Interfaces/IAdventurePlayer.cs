@@ -20,7 +20,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Interfaces
         Dictionary<EventIds, int> EventRecord { get; set; }
 
         bool Here(Item item, IMonsterManager manager = null);
-        bool Here(string item);
+        bool Here(string item, IMonsterManager manager = null);
     }
 
 }

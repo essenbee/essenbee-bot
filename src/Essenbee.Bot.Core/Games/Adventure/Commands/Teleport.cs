@@ -16,7 +16,7 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
         public override void Invoke(IAdventurePlayer player, ChatCommandEventArgs e)
         {
-            var moveTo = Location.SouthWestOfChasm;
+            var moveTo = Location.SecretEastWestCanyon;
             _ = _game.Dungeon.TryGetLocation(moveTo, out var place);
 
             if (!player.EventRecord.ContainsKey(EventIds.CaveOpen))
@@ -38,8 +38,6 @@ namespace Essenbee.Bot.Core.Games.Adventure.Commands
 
             player.CurrentLocation = place;
             player.ChatClient.PostDirectMessage(player, "Teleported to *" + player.CurrentLocation.Name + "*");
-
-
         }
     }
 }

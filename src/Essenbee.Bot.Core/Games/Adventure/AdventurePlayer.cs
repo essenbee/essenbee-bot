@@ -38,7 +38,6 @@ namespace Essenbee.Bot.Core.Games.Adventure
             ChatClient = chatClient;
         }
 
-        // ToDo: Throw Axe throws an exception in this method
         public bool Here(Item item, IMonsterManager manager = null)
         {
             if (item == Item.Dwarf)
@@ -60,9 +59,17 @@ namespace Essenbee.Bot.Core.Games.Adventure
                 != null;
         }
 
-        public bool Here(string item)
+        public bool Here(string item, IMonsterManager manager = null)
         {
-            //ToDo: expand to find wandering monsters!
+            if (item.ToLower().Equals("dwarf"))
+            {
+                if (manager.Monsters.Any(d => (d.CurrentLocation != null) &&
+                 d.CurrentLocation.LocationId.Equals(CurrentLocation.LocationId) &&
+                 (d.Group == MonsterGroup.Dwarves)))
+                {
+                    return true;
+                }
+            }
 
             if (CurrentLocation.Items.Any(i => i.IsMatch(item)))
             {
